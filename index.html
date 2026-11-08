@@ -757,6 +757,36 @@
       .to-top{right:14px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:44px;height:44px}
       .score-pill{min-width:40px;min-height:40px}
     }
+
+    /* Мобилка / тач: только лёгкие анимации (opacity + короткий translate), без 3D и blur */
+    @media (max-width:768px), (pointer:coarse){
+      .bg-glow{opacity:.45;animation:none!important}
+      .card{
+        --tilt-x:0deg!important;--tilt-y:0deg!important;--tilt-z:0px!important;--tilt-s:1!important;
+        transform:none;
+        animation:cardInMobile .35s ease-out both;
+        transition:border-color .2s ease, box-shadow .2s ease;
+        box-shadow:var(--shadow-sm);
+      }
+      .card:hover,.card:active{
+        transform:none;
+        box-shadow:var(--shadow-sm);
+      }
+      .card-cover-wrap::after{animation:none!important;opacity:0!important}
+      .header,.toolbar,.brand{animation:none!important}
+      .overlay .modal,.detail-sheet{
+        transition:transform .28s ease-out, opacity .22s ease-out;
+      }
+      .detail-body > *{animation:none!important;opacity:1!important;transform:none!important}
+      .toast{transition:transform .22s ease, opacity .22s ease}
+      .btn{transition:background .15s ease, color .15s ease, opacity .15s ease}
+      .btn::after{display:none!important} /* без ripple-слоя на таче, если вдруг есть */
+      *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+    }
+    @keyframes cardInMobile{
+      from{opacity:0;transform:translateY(8px)}
+      to{opacity:1;transform:translateY(0)}
+    }
 </style>
 </head>
 <body>
@@ -1998,7 +2028,8 @@
         const cover = g.coverUrl
           ? `<div class="card-cover-wrap"><img class="card-cover" src="${esc(g.coverUrl)}" alt="" loading="lazy" decoding="async" onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')" onerror="this.parentElement.classList.add('is-failed')" /></div>`
           : '';
-        const delay = i < 36 ? Math.min(i * 0.04, 1.2) : 0;
+        const isTouchUI = matchMedia('(pointer: coarse)').matches || matchMedia('(max-width: 768px)').matches;
+        const delay = (!isTouchUI && i < 24) ? Math.min(i * 0.03, 0.7) : 0;
         const accentStyle = g.accentColor
           ? ` --card-accent:${g.accentColor};${delay ? `animation-delay:${delay.toFixed(2)}s` : 'animation:none'}`
           : (delay ? `animation-delay:${delay.toFixed(2)}s` : 'animation:none');
