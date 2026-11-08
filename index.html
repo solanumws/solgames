@@ -1,0 +1,3092 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="system">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#09090b" id="metaTheme" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="SolGames — личный трекер оценок и отзывов на видеоигры" />
+  <title>SolGames</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icons/icon-192.png" sizes="192x192" />
+  <link rel="icon" href="./icons/icon-512.png" sizes="512x512" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAANeUlEQVR42u3de3BU1R0H8O85d+9unuRByIMESEIICCQoAkahgrZ2CrYgitp2dGxrp7Z/1E6r2NrOdNqZtnaKY/9oZ/qHtX9YbWV8FpyqtZYRRAVECBBoQsImgSQE8iAk5LF77zn94ypQFcjebPZ1v5+Z/BMyZG/29z2Pe86eCxARERERERERERERERERERERUSoQyfaCN90zrPm2Ja6Nz2QIBoAFT0kSCMGiJy+HQbDwyctBECx88nIQBAufvBwEwcInLwdBsvjJy3NAyeInL4dAsPDJy0MiyeInL/cGksVPXg6BZPGTl0MgWfzk5RBI/mnJy2SyJJVoMmpLsvjJyyGQLH7ycgg4ByDOAdj6k1d7AfYAxB6ArT95tRdgD0DsAdj6k1d7AfYAxB6ArT95tRdgD0DsAYgYAA5/yIPDIPYAxB6AiAEgYgA4/idvzQPYAxB7ACIGgIgBIGIAiBgAIgaAiAEgYgCIGAAiBoCIASBiAIgYACIGgIgBIGIAiBgAIgaAiAEgSmw+T6TcAIrKJUqqJApKBXKLJLJyBdKnAKZfwDABZQNWSCM8BlghYHRYY7BXY7Dvo69ejd4Ojb4uBdtKzOs0fMDUUomicoGCMonsqQLZ+QKZuQKmH/D5BXx+QCvAtpzrHT0HjAw51zhwWuNMt8bp4wo9xxXCYwxA8hJA+UIDC1YYmL3YgD/tysVj+AQCGRf+g+KKT/+csoG+LoWe4xrdbQonGhW6gwrKjs9l5hYKzF5soKLWwIyrJIxxvKPCcBoFMyCQng3kQXzqZ7QGTrUqtDUotB2y0dGkYIVTskwikwzHosxZYmDFBhNTS0VMfl84BHQ1K5z4r409r1kIj05+jzb3OgM1K32YeZV08S5GzgoDx4/YOLTdRvNeO2F7wY3PZET010ipHiBjisDqB0xU1Box/b2mH5g5X2LmfInD79o4Mzo5bYSQwPzlBm5YbyJnmojpNfpMoKLW6WlGBjUadtg48LaFvs7kPiYqZQJQMEPizkf8yMwVSEWFsyRWf8fEtJnxv2+Rni2wZI0PVUsM/PmhUQYg7sVfKvHVn/mRlpl6xS8EcP1tPtStMyENEAPw/wIZAusfSs3iN9OAL3/Pj9mLWfkMwCWs+nrsx8OxkJYpcNejfhTO4lLNpN5QSOqhT5lEzY2p1zr604ENj7D4GYArWLLGF5NbgLEe8697MIDiShY/h0CXe+F+oHqpu9Y/NAK07LPRfkShr1PhbI/G2IiGFbrwf2dkOyuo+SUCU6dLFFdKFFVImIHJva7ld5iYtTA6xW9bwIlGhY5GG91tzkrvuX6NcEjDDju3Nn0B5zqz8wWmThcomCExvUoiv0QwAImstFpecXX3k7QGdr9qYdeWMEKjlw9IaETjzCmNjiYAcJZ5pQGUzZWYfY2ByqsN5BWLqF9T3dqJvyX9JzX2vmHh8E4LoZFL/1w4BIRDGiODGj3HgWD9hX/LzBEor5WoXmpg1kIDPpMBSCjT50TeSv7n6TD2/dv9EqaygfbDCu2HFbY9G0Z+icCCFT4sXGkgM2diYRAS+MJ95oSGdOFRYPvmMOq3WRPemnFuwFnsathhI5AhMH+5gdqbDEybIRmARJBfHNkb0dOhJlT8n6WvS2PH82HsfCmMOUsMLLrZB7hcGK1d5ZvQIldfp8ZLT4zhTHf0V2bHhjX2vWlh35sWKmoNLPuKDzPmSQYgnrLyI2sqg/Vq0l6LsoHGXTYad7lrdoUAlt7q/q043a6w+bEQRocmf1tC8ICN4AEb5TUSNSt9DEC8RDr+HzmbuHtW5iwxkFvobuxz7ozGi4/Hpvgv1npQofVgKOkD4Jl7bdlTE/euxoLPuV/LeP3JMIb6+dxCzwVg9FxkP1+9zIA/PfGuI5AhUF7jLgDNe53hCHkwACODkbV6mTkCa78fQCAjsXqCitrxfYjls+x8yWIFezUAbu52lNdI3P94AHXrfMjKS4wglFa7ewu6mhVOtytWsFcnwe1HbNSti/zlZ2QLrNhgYsUdJk62Khw/rNDRpHAyqOIylp5e5S4ATXs49PF0ADqbFKyQs23BFQEUV0gUV0gsvdX51rkBje5Whe6gRndQobtVYbBvEkMhnA/yuBE8yNbf0wGwwsChHRau/nz0LiEzR6BykYHKRRe+N9Sv0XnUWf1tPWjjzKnoBSIrV7ga/1shoLeDAfB0AABg91YLtat8k/pJqaw8geplBqqXGQBM9JxQaNzlbBE42zuxMEwpcDcP6T+poFn/DMDZXo33/hHG8ttjt1OroEyioEzihttNNO+18f4WC91Bd9WYkS1cX7dbs68xsP5H/qj+TbqDCn/9eXIeIpT0C2HvvWKh5cPYTwiFcFZw7/1lAGu+60d6VuTF7HO5tXp0iC03A/AxDbz6pxDaD8dpTCCco0q+8VgAJRHe0TFdNsRWmCu/DMBFwqPAi5vGsPd1y/VuzAlPoHMF7v5pACWz+UkuBiAObAvY9mwYf//VmOsx+YQnVCZw2w/9yB7nTlW3Rw0apmDlMgCfraPJmZC9/ER8hkWZOQK3fGt8k3K3h8+mZ7Jwo9ZopeqFteyz0bLPRk6hwLw6A1WLDRRXSogYNJ6Vi5zfdfLY5QMY6X6mj0X6WQjyYAA+NnBKY9cWC7u2WEjLEiitliitdj74XVQhXU9Er2TpGh+2/vHy++XP9rgLQH6JE2TNuTADEInRIY2WD+3zt02l4dzXn17lPDugbK6M2iFbsxZcuUiH+jVsCxGvBpsBIK9EJP3BtAxAnCkbONWmcKpNYf9bzvey8wUqFhmoXioxa6HhesiUliVQOEuiu/XSwyCtgZ4TCkXl0kXADPR1Rr4dumWfjcfvvfRREWYa8IMn0z1TA7xn9wmDfRoHtll44XchPPXwKBp3u19kmzbjyunpanY3UZ+zhOeFMgCT7Mwpja1/CGHXVncfPEkbx1aHjqPuAjDzKoncIk6GGYAY2PliGAMudoGOZ3tEsN7l45UEULfW5JvDAMRmrtCyP/IqHc9paqPnNNoa3A2zFqwweIYoAxAbwy6OVRnvSm/DDpfnCUlg9QP+iI+IoRQIwLw6A7d800ROYWzGwRlTIv894z2rp2mP+88WTJ0usPZBv+sP1jMAScpnAotu9uHbm9Kw9kE/Zs6fvEsREqi6NvK7LuNd6FI28ME/3Z/wUF5j4I6HE+/ECwYgBoR0jkm/69EA7t+Uhrp1vqg/MWbl3SamuDhYq7dj/K36/rcm9sTFmQsk7vt1IGpHq3tFSnWcecUfnfiwwUR3UKFlv0Kw3kZ3q7s7LVl5Aqu+ZmLe9ZG3/mPDGr2d47/FqWzgradDuPMn7h9AMKVA4M4fB9B60MYHr9loO2RHvF1CMACpoajC2etzw3rf+QdZn25X6DmhMHBaY7BPY2QQCI9pKNs5XcKfLpBbKFBQJlFRK1GxyHA9tg4eUBEXX1uDwt7XLVz7pYm9LeU1BsprDAwPaByrV+hsdq57sFdj9JzzIBAhnWFkerZAVp5zzSWzJSqvlgxAqrn4QdaxcuRdd3d23n4ufH5v0oQn7jkCC280sPBGrhqn7BwgEfV1ahzb7y4AygZefiKEXm50YwCS1fbN4QltVR4e1Hj+t2NRPYOIGICYDX2ao3BKxVC/xt9+MYbOozwAiAFIEl3NCm88Fb2HRgwPamz+zRgObEvsU6CTuZ/i+mGUtB9WeOX3Y+cftRottgX86y9hNO9V+OL9ZsKcag04RzQe2m5hz2sWAxBrx+oVtj8XRvV1Boor4teRKRt4f4uF914JT+pxhcfqbTy10caS1T4sXWPG9WEfvZ0aB9+20LDdxshQcs9TIm5ONt0znHBXnFPgnN85Z6mBkkoJIWNT+E17bLzzQnhSnsx4OelZAjWrDNTe5HP9bLFIDfRoHN1to3G3ja6WxJ2XbHwmsv0gKRGAi5lpQOkcibK5BkrnOos7UXvIswa6jik077XR8I4d/2dzCefB3VUfPbg7f3r0wjA8oNHZotDe4Hz1JMlp1J4PwKdm+QaQWyiQV+x8giqvWCC3UCI9y1n5NQOAP03ATAO0AmzbWR0eGXS2QA+c0ug/qdDdqtHVojCWwJefMUU4K+DlAnlFEtlTBbLzBQIZgM8v4DOdFWA7DNiWxtiwM9EePqtxtkfjTLdG/0nnGQnJ+uC9SAOQ8pNgZTsPtO7rSv0nqgyf1QjW2wjW86bEuBtI/gmIASBiAIgYACIGgIgBIGIAiBgAIgaAiAEgYgCIGAAiBoCIASBiAIgYACIGgIgBIGIAiBgAIgaAiAEgYgCIGAAiBoCIASBiAIgYAKLkCECkp+8SxYqb2mQPQOwBiBgAIgaA8wDyzvifPQCxB+CfgBgADoPIg8Mf9gDEHiBeySOKd+vPHoDYA8Q7gUTxrD32AMQegL0AebH1Zw9A7AESLZFEsaw1magvjCgWNSYT/QUSTWZtcQ5AnAOwFyAvtv6T2gMwBJQMtSST9YUTiz8p5gAMASVy7cS0ODfdM6z5tlIiNZoyVS+MWPwJFwCGgBKtNuJajBwSUbwbxYRojRkEFr6nA8AgsPAZAAaBhc8AMAwsegaAgWDBExERERERERERERERERERERERReR/5TTZy8l8/i0AAAAASUVORK5CYII=" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root, [data-theme="dark"] {
+      /* нейтрали с лёгким холодным подтоном — спокойнее, чем чистый zinc */
+      --bg: #0b0b0f;
+      --surface: #121218;
+      --surface-2: #1a1a22;
+      --surface-3: #24242e;
+      --border: rgba(255,255,255,.075);
+      --border-hover: rgba(255,255,255,.14);
+      --text: #f4f4f5;
+      --text-2: #a0a0ab;
+      --text-3: #6f6f7b;
+      /* акцент: чуть мягче, меньше «кислоты» */
+      --accent: #8b5cf6;
+      --accent-2: #a78bfa;
+      --accent-soft: rgba(139,92,246,.14);
+      --accent-glow: rgba(139,92,246,.22);
+      /* рейтинги — приглушённые, в одной тональности с UI */
+      --green: #4ade80;
+      --green-soft: rgba(74,222,128,.12);
+      --yellow: #fbbf24;
+      --yellow-soft: rgba(251,191,36,.12);
+      --red: #fb7185;
+      --red-soft: rgba(251,113,133,.12);
+      --shadow: 0 0 0 1px var(--border), 0 16px 48px rgba(0,0,0,.5);
+      --shadow-sm: 0 2px 12px rgba(0,0,0,.25);
+      --overlay: rgba(5,5,8,.62);
+      --header-bg: rgba(11,11,15,.8);
+      --glow-1: rgba(139,92,246,.12);
+      --glow-2: rgba(56,189,248,.05);
+      color-scheme: dark;
+    }
+    [data-theme="light"] {
+      --bg: #f3f3f7;
+      --surface: #ffffff;
+      --surface-2: #f0f0f5;
+      --surface-3: #e4e4ec;
+      --border: rgba(24,24,35,.08);
+      --border-hover: rgba(24,24,35,.14);
+      --text: #18181b;
+      --text-2: #52525b;
+      --text-3: #9292a0;
+      --accent: #7c3aed;
+      --accent-2: #6d28d9;
+      --accent-soft: rgba(124,58,237,.1);
+      --accent-glow: rgba(124,58,237,.15);
+      --green: #16a34a;
+      --green-soft: rgba(22,163,74,.1);
+      --yellow: #ca8a04;
+      --yellow-soft: rgba(202,138,4,.1);
+      --red: #e11d48;
+      --red-soft: rgba(225,29,72,.09);
+      --shadow: 0 0 0 1px var(--border), 0 14px 40px rgba(24,24,35,.07);
+      --shadow-sm: 0 2px 10px rgba(24,24,35,.05);
+      --overlay: rgba(24,24,35,.36);
+      --header-bg: rgba(243,243,247,.84);
+      --glow-1: rgba(124,58,237,.06);
+      --glow-2: rgba(14,165,233,.04);
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: light) {
+      [data-theme="system"] {
+        --bg: #f3f3f7; --surface: #fff; --surface-2: #f0f0f5; --surface-3: #e4e4ec;
+        --border: rgba(24,24,35,.08); --border-hover: rgba(24,24,35,.14);
+        --text: #18181b; --text-2: #52525b; --text-3: #9292a0;
+        --accent: #7c3aed; --accent-2: #6d28d9; --accent-soft: rgba(124,58,237,.1); --accent-glow: rgba(124,58,237,.15);
+        --green: #16a34a; --green-soft: rgba(22,163,74,.1);
+        --yellow: #ca8a04; --yellow-soft: rgba(202,138,4,.1);
+        --red: #e11d48; --red-soft: rgba(225,29,72,.09);
+        --shadow: 0 0 0 1px var(--border), 0 14px 40px rgba(24,24,35,.07);
+        --shadow-sm: 0 2px 10px rgba(24,24,35,.05);
+        --overlay: rgba(24,24,35,.36); --header-bg: rgba(243,243,247,.84);
+        --glow-1: rgba(124,58,237,.06); --glow-2: rgba(14,165,233,.04);
+        color-scheme: light;
+      }
+    }
+    :root {
+      --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+      --ease: cubic-bezier(.22,1,.36,1);
+      --ease-out: cubic-bezier(.16,1,.3,1);
+      --spring: cubic-bezier(.34,1.4,.64,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;-webkit-text-size-adjust:100%}
+    body{
+      font-family:var(--font);
+      font-feature-settings:"ss01","cv11";
+      background:var(--bg);color:var(--text);
+      min-height:100vh;min-height:100dvh;line-height:1.55;
+      -webkit-font-smoothing:antialiased;overflow-x:hidden;
+      transition:background-color .35s var(--ease),color .25s ease;
+      letter-spacing:-.011em;
+    }
+    .bg-glow{
+      position:fixed;inset:0;pointer-events:none;z-index:0;
+      background:
+        radial-gradient(ellipse 55% 45% at var(--gx,18%) var(--gy,10%),var(--glow-1),transparent 60%),
+        radial-gradient(ellipse 50% 40% at calc(100% - var(--gx,18%)) calc(100% - var(--gy,10%)),var(--glow-2),transparent 55%);
+      transition:background-position .4s ease-out;
+      will-change:background;
+    }
+    /* едва заметный шум поверх UI — убирает «пластик» */
+    body::after{
+      content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.022;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat:repeat;background-size:180px 180px;
+    }
+    html[data-theme="light"] body::after{opacity:.018}
+    @media (prefers-color-scheme:light){
+      html[data-theme="system"] body::after{opacity:.018}
+    }
+
+    /* Custom scrollbar */
+    *{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--text-3) 55%,transparent) transparent}
+    ::-webkit-scrollbar{width:8px;height:8px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{
+      background:color-mix(in srgb,var(--text-3) 45%,transparent);border-radius:99px;
+      border:2px solid transparent;background-clip:padding-box;
+    }
+    ::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--accent) 55%,transparent);background-clip:padding-box}
+
+    .app{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 22px 110px}
+
+    /* Header */
+    .header-wrap{
+      position:sticky;top:0;z-index:50;margin:0 -22px;padding:0 22px;
+      background:var(--header-bg);backdrop-filter:blur(16px) saturate(1.35);
+      -webkit-backdrop-filter:blur(16px) saturate(1.35);
+      border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s;
+    }
+    .header-wrap.scrolled{border-bottom-color:var(--border);box-shadow:var(--shadow-sm)}
+    .header{
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding:16px 0;flex-wrap:wrap;animation:fadeDown .5s var(--ease-out) both;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-mark{
+      width:40px;height:40px;border-radius:12px;
+      background:linear-gradient(145deg,#8b5cf6 0%,#7c3aed 45%,#6d28d9 100%);
+      display:grid;place-items:center;
+      color:#fff;line-height:1;
+      box-shadow:0 4px 18px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,.22);
+      transition:transform .2s var(--ease),box-shadow .2s;
+      user-select:none;
+    }
+    .brand:hover .brand-mark{transform:scale(1.06) rotate(-4deg)}
+    .brand-text h1{
+      font-size:1.22rem;font-weight:700;letter-spacing:-.035em;line-height:1.15;color:var(--text);
+    }
+    .brand-text p{font-size:.7rem;color:var(--text-3);font-weight:500;margin-top:2px;letter-spacing:.02em}
+
+    .header-actions{display:flex;align-items:center;gap:6px}
+    .header-actions .divider{
+      width:1px;height:22px;background:var(--border);margin:0 2px;
+    }
+
+    /* Buttons + ripple */
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:6px;
+      padding:9px 14px;border-radius:11px;font-family:inherit;font-size:.84rem;font-weight:600;
+      border:none;cursor:pointer;letter-spacing:-.01em;
+      transition:transform .2s var(--spring),background .2s,box-shadow .22s,border-color .2s,color .2s;
+      white-space:nowrap;user-select:none;
+      position:relative;overflow:hidden;isolation:isolate;
+    }
+    .btn:active{transform:scale(.96)}
+    :focus{outline:none}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+    .btn:focus-visible,.filter-chip:focus-visible,.sort-pill:focus-visible,
+    .fav-btn:focus-visible,.to-top:focus-visible,.platform-chip:focus-visible{
+      outline:2px solid var(--accent);outline-offset:2px;
+      box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 22%,transparent);
+    }
+    .btn .ripple{
+      position:absolute;border-radius:50%;transform:scale(0);pointer-events:none;
+      background:rgba(255,255,255,.35);animation:rippleOut .55s ease-out forwards;
+    }
+    .btn-secondary .ripple,.btn-ghost .ripple,.btn-danger .ripple{background:color-mix(in srgb,var(--accent) 28%,transparent)}
+    @keyframes rippleOut{to{transform:scale(2.6);opacity:0}}
+    .btn-primary{
+      background:var(--accent);color:#fff;
+      box-shadow:0 1px 2px rgba(0,0,0,.12),0 4px 14px var(--accent-glow);
+    }
+    .btn-primary:hover{background:var(--accent-2);transform:translateY(-1px)}
+    .btn-secondary{
+      background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:var(--shadow-sm);
+    }
+    .btn-secondary:hover{background:var(--surface-2);border-color:var(--border-hover);transform:translateY(-1px)}
+    .btn-ghost{background:transparent;color:var(--text-2);padding:8px 10px}
+    .btn-ghost:hover{color:var(--text);background:var(--surface-2)}
+    .btn-danger{background:var(--red-soft);color:var(--red)}
+    .btn-danger:hover{filter:brightness(1.08)}
+    #clearAllBtn{color:var(--text-3)}
+    #clearAllBtn:hover{color:var(--red);background:var(--red-soft)}
+    .btn-icon{width:38px;height:38px;padding:0;border-radius:11px}
+    .btn-sm{padding:6px 11px;font-size:.78rem;border-radius:9px}
+
+    .theme-btn .ic{position:absolute;inset:0;display:grid;place-items:center;
+      opacity:0;transform:scale(.55) rotate(-18deg);transition:opacity .22s,transform .32s var(--spring)}
+    .theme-btn{position:relative}
+    html[data-theme="light"] .theme-btn .ic-sun,
+    html[data-theme="dark"] .theme-btn .ic-moon{opacity:1;transform:scale(1) rotate(0)}
+    /* system: показываем иконку фактической темы */
+    html[data-theme="system"] .theme-btn .ic-auto{opacity:1;transform:scale(1) rotate(0)}
+    @media (prefers-color-scheme: dark){
+      html[data-theme="system"] .theme-btn .ic-auto{opacity:0}
+      html[data-theme="system"] .theme-btn .ic-moon{opacity:1;transform:scale(1) rotate(0)}
+    }
+    @media (prefers-color-scheme: light){
+      html[data-theme="system"] .theme-btn .ic-auto{opacity:0}
+      html[data-theme="system"] .theme-btn .ic-sun{opacity:1;transform:scale(1) rotate(0)}
+    }
+    @media (max-width:560px){
+      .sort-pills{max-width:100%;overflow-x:auto}
+    }
+
+    /* Toolbar */
+    .toolbar{display:flex;flex-direction:column;gap:12px;margin:18px 0 16px;animation:fadeDown .55s var(--ease-out) .05s both}
+    .toolbar-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .search-box{flex:1;min-width:200px;position:relative}
+    .search-box > svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none;transition:color .2s;z-index:1}
+    .search-box:focus-within > svg{color:var(--accent)}
+    .search-clear{
+      position:absolute;right:8px;top:50%;transform:translateY(-50%);
+      width:28px;height:28px;border:none;border-radius:8px;cursor:pointer;
+      display:none;align-items:center;justify-content:center;
+      background:transparent;color:var(--text-3);padding:0;
+      transition:background .15s,color .15s;
+    }
+    .search-clear:hover{background:var(--surface-3);color:var(--text)}
+    .search-box.has-query .search-clear{display:inline-flex}
+    .search-box input{
+      width:100%;padding:11px 36px 11px 40px;background:var(--surface);border:1px solid var(--border);
+      border-radius:12px;color:var(--text);font-family:inherit;font-size:.875rem;font-weight:500;
+      box-shadow:var(--shadow-sm);transition:border-color .2s,box-shadow .22s;
+    padding-right:36px;}
+    .search-box input[type="search"]::-webkit-search-cancel-button{display:none}
+    .search-box input:focus{outline:none;border-color:color-mix(in srgb,var(--accent) 50%,transparent);box-shadow:0 0 0 3px var(--accent-soft)}
+    .search-box input::placeholder{color:var(--text-3);font-weight:400}
+    .sort-pills{display:flex;gap:4px;flex-shrink:0}
+    .sort-pill{
+      padding:8px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface);
+      color:var(--text-2);font-family:inherit;font-size:.78rem;font-weight:600;cursor:pointer;
+      transition:all .2s var(--ease);white-space:nowrap;box-shadow:var(--shadow-sm);
+    }
+    .sort-pill:hover{border-color:var(--border-hover);color:var(--text)}
+    .sort-pill.active{
+      background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 35%,transparent);
+      color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 10%,transparent);
+    }
+
+    .filter-chips{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+    .filter-chip{
+      padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--border);
+      color:var(--text-2);font-size:.78rem;font-weight:560;cursor:pointer;letter-spacing:-.01em;
+      transition:background .22s,border-color .22s,color .22s,transform .25s var(--spring),box-shadow .22s;
+      user-select:none;box-shadow:var(--shadow-sm);
+    }
+    .filter-chip:hover{border-color:var(--border-hover);color:var(--text);transform:translateY(-1px)}
+    .filter-chip:active{transform:scale(.96)}
+    .filter-chip.active{
+      background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 38%,transparent);
+      color:var(--accent);transform:translateY(-1px);
+      box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent);
+    }
+    .filter-chip[data-fav="1"].active{background:var(--red-soft);border-color:color-mix(in srgb,var(--red) 32%,transparent);color:var(--red);box-shadow:0 0 0 3px color-mix(in srgb,var(--red) 12%,transparent)}
+    .filter-chip[hidden]{display:none!important}
+
+    /* Grid / List */
+    .games-grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:14px;
+    }
+
+    .card{
+      --tilt-x:0deg;--tilt-y:0deg;--tilt-z:0px;--tilt-s:1;
+      --card-accent:var(--accent);
+      background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;
+      display:flex;flex-direction:column;box-shadow:var(--shadow-sm);
+      transform:perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(var(--tilt-z)) scale(var(--tilt-s));
+      transition:border-color .25s,box-shadow .3s;
+      animation:cardIn .55s var(--ease-out) backwards;
+    }
+    .card.has-accent{border-color:color-mix(in srgb,var(--card-accent) 32%,var(--border))}
+    .card:hover{
+      border-color:color-mix(in srgb,var(--card-accent) 40%,var(--border));
+      box-shadow:var(--shadow),0 0 0 1px color-mix(in srgb,var(--card-accent) 20%,transparent),0 10px 32px color-mix(in srgb,var(--card-accent) 22%,transparent);
+    }
+    /* появление через отдельные свойства — transform остаётся свободным для tilt */
+    @keyframes cardIn{
+      from{opacity:0;transform:perspective(900px) translateY(14px) scale(.97)}
+      to{opacity:1;transform:perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(var(--tilt-z)) scale(var(--tilt-s))}
+    }
+
+    .card-cover-wrap{
+      display:block;position:relative;width:100%;aspect-ratio:460/215;
+      background:var(--surface-2);overflow:hidden;
+    }
+    .card-cover-wrap.is-failed{
+      display:flex;align-items:center;justify-content:center;
+      background:var(--surface-3);color:var(--text-3);font-size:.75rem;font-weight:600;
+    }
+    .card-cover-wrap.is-failed::before{content:'Нет обложки';z-index:2}
+    .card-cover-wrap.is-failed::after{display:none}
+    .card-cover-wrap.is-failed .card-cover{display:none}
+    #detailCoverWrap.is-failed{display:flex!important;align-items:center;justify-content:center;min-height:140px;background:var(--surface-3);color:var(--text-3);font-size:.8rem;font-weight:600}
+    #detailCoverWrap.is-failed::before{content:'Нет обложки'}
+    #detailCoverWrap.is-failed img{display:none}
+    .card-cover-wrap::after{
+      content:'';position:absolute;inset:0;z-index:1;
+      background:linear-gradient(105deg,
+        transparent 30%,
+        color-mix(in srgb,var(--text) 6%,transparent) 45%,
+        color-mix(in srgb,var(--text) 10%,transparent) 50%,
+        color-mix(in srgb,var(--text) 6%,transparent) 55%,
+        transparent 70%);
+      background-size:200% 100%;
+      animation:shimmer 1.4s ease-in-out infinite;
+      pointer-events:none;
+    }
+    .card-cover-wrap.loaded::after{opacity:0;transition:opacity .35s ease}
+    @keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+    .card-cover{
+      width:100%;height:100%;object-fit:cover;object-position:center;
+      display:block;opacity:0;transition:opacity .4s ease,transform .45s var(--ease);
+    }
+    .card-cover.loaded{opacity:1}
+    .card:hover .card-cover.loaded{transform:scale(1.03)}
+
+    .card-body{padding:14px 16px 12px;display:flex;flex-direction:column;flex:1;gap:6px}
+    .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .card-title{
+      font-size:1rem;font-weight:650;letter-spacing:-.025em;line-height:1.3;flex:1;min-width:0;
+      overflow-wrap:anywhere;word-break:break-word;
+    }
+    .rating{
+      flex-shrink:0;font-family:var(--mono);font-weight:700;font-size:1.02rem;
+      padding:5px 10px;border-radius:10px;line-height:1.2;min-width:2.4ch;text-align:center;
+      letter-spacing:-.02em;
+      color:var(--r-c, var(--text-2));
+      background:var(--r-bg, var(--surface-3));
+      box-shadow:0 1px 8px color-mix(in srgb, var(--r-c, transparent) 18%, transparent);
+    }
+    .rating.none{--r-c:var(--text-3);--r-bg:var(--surface-3);font-weight:600;font-size:.9rem;box-shadow:none}
+    .card-meta{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:.75rem;color:var(--text-3);font-weight:500}
+    .card-tags{display:flex;flex-wrap:wrap;gap:5px}
+    .tag{
+      font-size:.7rem;font-weight:560;padding:2px 8px;border-radius:6px;
+      background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent);
+    }
+    .card-review{
+      font-size:.84rem;color:var(--text-2);line-height:1.5;font-weight:450;
+      display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1;
+    }
+    .card-review.is-empty{color:var(--text-3);font-style:italic;font-weight:400}
+    .card-links{display:flex;flex-wrap:wrap;gap:5px}
+    .link-chip{
+      font-size:.72rem;font-weight:560;color:var(--accent);text-decoration:none;padding:3px 8px;border-radius:7px;
+      background:var(--accent-soft);transition:background .2s,transform .2s;
+      display:inline-flex;align-items:center;gap:4px;
+    }
+    .link-chip:hover{background:color-mix(in srgb,var(--accent) 20%,transparent);transform:translateY(-1px)}
+    .steam-chip{
+      color:#e8e8f0;background:linear-gradient(135deg,#1b2838,#2a475e);
+      border:1px solid rgba(102,192,244,.25);
+    }
+    .steam-chip:hover{background:linear-gradient(135deg,#2a475e,#1b2838);color:#66c0f4}
+    .card{cursor:pointer}
+    .card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;padding-top:8px;border-top:1px solid var(--border)}
+    .fav-btn{
+      width:34px;height:34px;border-radius:9px;border:none;background:transparent;color:var(--text-3);
+      font-size:1.1rem;cursor:pointer;display:grid;place-items:center;
+      transition:transform .28s var(--spring),color .2s,background .2s;
+    }
+    .fav-btn:hover{background:var(--red-soft);color:var(--red);transform:scale(1.12)}
+    .fav-btn.active{color:var(--red);animation:heartPop .38s var(--spring)}
+    @keyframes heartPop{0%{transform:scale(1)}35%{transform:scale(1.35)}100%{transform:scale(1)}}
+    .card-actions{display:flex;gap:5px}
+
+    .empty{grid-column:1/-1;text-align:center;padding:64px 16px;animation:fadeIn .4s var(--ease-out)}
+    .empty-icon{font-size:2.6rem;margin-bottom:12px;display:inline-block;animation:floatY 3s ease-in-out infinite}
+    @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+    .empty h2{font-size:1.15rem;font-weight:650;letter-spacing:-.02em;margin-bottom:6px}
+    .empty p{color:var(--text-3);font-size:.875rem;max-width:340px;margin:0 auto 16px;font-weight:450}
+
+    /* Modal */
+    .overlay{
+      position:fixed;inset:0;z-index:100;background:var(--overlay);
+      backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+      display:flex;align-items:flex-end;justify-content:center;
+      transition:opacity .28s ease,visibility .28s;opacity:0;visibility:hidden;transition:opacity .3s var(--ease),visibility .3s;
+    }
+    .overlay.open{opacity:1;visibility:visible}
+    .modal{
+      width:100%;max-width:500px;max-height:92dvh;background:var(--surface);border:1px solid var(--border);
+      border-radius:22px 22px 0 0;display:flex;flex-direction:column;
+      transform:translateY(100%);transition:transform .38s cubic-bezier(.22,1,.36,1);
+      box-shadow:0 -10px 40px rgba(0,0,0,.2);
+    }
+    @media (min-width:640px){
+      .overlay{align-items:center;padding:24px}
+      .modal{border-radius:20px;max-height:88vh;transform:translateY(24px) scale(.95);opacity:0;
+        transition:transform .38s var(--ease-out),opacity .3s}
+      .overlay.open .modal{transform:none;opacity:1}
+      .modal-handle{display:none}
+    }
+    .overlay.open .modal{transform:none}
+    .modal-handle{padding:10px 0 2px;display:flex;justify-content:center}
+    .modal-handle span{width:36px;height:4px;border-radius:99px;background:var(--surface-3)}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;padding:6px 18px 10px;border-bottom:1px solid var(--border)}
+    .modal-head h2{font-size:1.08rem;font-weight:650;letter-spacing:-.025em}
+    .modal-form{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+    .modal-body{padding:16px 18px 12px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;flex:1;min-height:0;-webkit-overflow-scrolling:touch}
+    .modal-actions{
+      display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;
+      padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));
+      border-top:1px solid var(--border);background:var(--surface);
+    }
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field label{font-size:.78rem;font-weight:600;color:var(--text-2);letter-spacing:-.01em}
+    .field label em{font-style:normal;color:var(--text-3);font-weight:450}
+    .field input[type=text],.field input[type=url],.field input[type=date],.field textarea{
+      width:100%;padding:10px 13px;background:var(--bg);border:1px solid var(--border);border-radius:11px;
+      color:var(--text);font-family:inherit;font-size:.875rem;font-weight:500;
+      transition:border-color .2s,box-shadow .2s;
+    }
+    .field input:focus,.field textarea:focus{outline:none;border-color:color-mix(in srgb,var(--accent) 50%,transparent);box-shadow:0 0 0 3px var(--accent-soft)}
+    .field textarea{min-height:96px;resize:vertical;line-height:1.5;font-weight:450}
+
+    .title-wrap{position:relative}
+    .steam-suggest{
+      position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:20;
+      background:var(--surface);border:1px solid var(--border);border-radius:12px;max-height:220px;overflow-y:auto;
+      box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(-6px);
+      transition:opacity .2s,transform .22s var(--ease),visibility .2s;
+    }
+    .steam-suggest.open{opacity:1;visibility:visible;transform:none}
+    .steam-item{
+      display:flex;align-items:center;gap:9px;padding:9px 11px;cursor:pointer;border:none;width:100%;
+      background:none;color:var(--text);font-family:inherit;font-size:.84rem;font-weight:500;text-align:left;
+      transition:background .15s;
+    }
+    .steam-item:hover,.steam-item.active{background:var(--accent-soft)}
+    .steam-item img{width:38px;height:17px;object-fit:cover;border-radius:3px;background:var(--surface-3);flex-shrink:0}
+    .steam-item span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+    .score-picker{
+      display:grid;grid-template-columns:repeat(10,1fr);gap:5px;
+    }
+    .score-btn{
+      aspect-ratio:1;min-height:0;border:none;border-radius:10px;cursor:pointer;
+      font-family:var(--mono);font-weight:700;font-size:.82rem;letter-spacing:-.02em;
+      color:var(--r-c);background:var(--r-bg);
+      transition:transform .18s var(--spring),box-shadow .2s,filter .2s,opacity .2s;
+      opacity:.72;position:relative;
+    }
+    .score-btn:hover{opacity:1;transform:translateY(-2px)}
+    .score-btn:active{transform:scale(.94)}
+    .score-btn.active{
+      opacity:1;transform:translateY(-3px) scale(1.08);
+      box-shadow:0 0 0 2px var(--r-c),0 8px 20px color-mix(in srgb,var(--r-c) 32%,transparent);
+      filter:saturate(1.2);
+    }
+    .score-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    @media (max-width:400px){
+      .score-picker{gap:4px}
+      .score-btn{font-size:.74rem;border-radius:8px}
+    }
+
+    .disclose{
+      width:100%;
+      border:1px solid var(--border);border-radius:12px;background:var(--bg);
+      overflow:hidden;flex-shrink:0;
+    }
+    .disclose-toggle{
+      width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:11px 13px;border:none;background:transparent;color:var(--text-2);
+      font-family:inherit;font-size:.8rem;font-weight:600;cursor:pointer;text-align:left;
+      transition:color .15s,background .15s;
+      box-sizing:border-box;
+    }
+    .disclose-toggle > span{min-width:0;flex:1;line-height:1.3}
+    .disclose-toggle:hover{color:var(--text);background:var(--surface-2)}
+    .disclose-toggle .chev{
+      width:18px;height:18px;flex-shrink:0;transition:transform .22s var(--ease);
+      opacity:.55;
+    }
+    .disclose.open .disclose-toggle .chev{transform:rotate(180deg);opacity:.9}
+    .disclose-body{
+      display:none;
+      width:100%;
+      box-sizing:border-box;
+      padding:0 13px 13px;
+      flex-direction:column;
+      gap:8px;
+      min-width:0;
+    }
+    .disclose.open .disclose-body{display:flex}
+    .disclose-hint{font-size:.72rem;color:var(--text-3);font-weight:450;line-height:1.35;margin:0}
+    .disclose-body input[type=url],
+    .disclose-body input[type=text]{
+      width:100%;box-sizing:border-box;
+      padding:10px 13px;background:var(--surface);border:1px solid var(--border);border-radius:10px;
+      color:var(--text);font-family:inherit;font-size:.875rem;font-weight:500;
+    }
+    .disclose-body input:focus{
+      outline:none;border-color:color-mix(in srgb,var(--accent) 50%,transparent);
+      box-shadow:0 0 0 3px var(--accent-soft);
+    }
+    .disclose-body .links-editor{width:100%;min-width:0}
+    .disclose-body .link-row{width:100%;min-width:0}
+    .disclose-body .link-row input{
+      width:100%;min-width:0;box-sizing:border-box;
+      padding:10px 13px;background:var(--surface);border:1px solid var(--border);border-radius:10px;
+      color:var(--text);font-family:inherit;font-size:.875rem;font-weight:500;
+    }
+
+    .steam-hint{font-size:.72rem;color:var(--text-3);font-weight:450;line-height:1.35;margin-top:2px}
+    .rating-num{display:none}
+
+    .platform-grid{display:flex;flex-wrap:wrap;gap:7px}
+    .platform-chip{
+      padding:7px 12px;border-radius:9px;background:var(--bg);border:1px solid var(--border);
+      color:var(--text-2);font-size:.78rem;font-weight:560;cursor:pointer;transition:all .2s var(--ease);user-select:none;
+    }
+    .platform-chip:hover{border-color:var(--border-hover);color:var(--text)}
+    .platform-chip.active{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 38%,transparent);color:var(--accent)}
+
+    .links-editor{display:flex;flex-direction:column;gap:7px}
+    .link-row{display:flex;gap:7px;align-items:center}
+    .link-row input{
+      flex:1;padding:9px 11px;background:var(--bg);border:1px solid var(--border);border-radius:10px;
+      color:var(--text);font-family:inherit;font-size:.84rem;font-weight:500;
+    }
+    .link-row input:focus{outline:none;border-color:color-mix(in srgb,var(--accent) 50%,transparent)}
+
+    /* Detail view */
+    .detail-overlay{
+      position:fixed;inset:0;z-index:110;background:var(--overlay);
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      display:flex;align-items:flex-end;justify-content:center;
+      opacity:0;visibility:hidden;
+      transition:opacity .28s cubic-bezier(.22,1,.36,1),visibility .28s;
+    }
+    .detail-overlay.open{opacity:1;visibility:visible}
+    .detail-sheet{
+      width:100%;max-width:560px;max-height:92dvh;background:var(--surface);border:1px solid var(--border);
+      border-radius:22px 22px 0 0;display:flex;flex-direction:column;overflow:hidden;
+      transform:translateY(100%);
+      transition:transform .38s cubic-bezier(.22,1,.36,1);
+      box-shadow:0 -12px 48px rgba(0,0,0,.25);
+      will-change:transform;
+    }
+    .detail-overlay.open .detail-sheet{transform:none}
+    @media (min-width:640px){
+      .detail-overlay{align-items:center;padding:24px}
+      .detail-sheet{border-radius:20px;max-height:88vh;transform:translateY(18px) scale(.97);opacity:0;
+        transition:transform .38s cubic-bezier(.22,1,.36,1),opacity .28s cubic-bezier(.22,1,.36,1)}
+      .detail-overlay.open .detail-sheet{transform:none;opacity:1}
+    }
+    .detail-cover-wrap{
+      position:relative;width:100%;aspect-ratio:460/215;background:var(--surface-2);overflow:hidden;flex-shrink:0;
+    }
+    .detail-cover-wrap::after{
+      content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+      background:linear-gradient(105deg,transparent 30%,color-mix(in srgb,var(--text) 6%,transparent) 45%,color-mix(in srgb,var(--text) 10%,transparent) 50%,color-mix(in srgb,var(--text) 6%,transparent) 55%,transparent 70%);
+      background-size:200% 100%;animation:shimmer 1.4s ease-in-out infinite;
+    }
+    .detail-cover-wrap.loaded::after{opacity:0;transition:opacity .35s ease}
+    .detail-cover{
+      width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .4s ease;
+    }
+    .detail-cover.loaded{opacity:1}
+
+    /* Back to top */
+    .to-top{
+      position:fixed;right:20px;bottom:24px;z-index:60;
+      width:46px;height:46px;border-radius:14px;border:1px solid var(--border);
+      background:var(--surface);color:var(--text);box-shadow:var(--shadow);
+      display:grid;place-items:center;cursor:pointer;
+      opacity:0;visibility:hidden;transform:translateY(14px) scale(.92);
+      transition:opacity .3s,visibility .3s,transform .4s var(--spring),background .2s,border-color .2s,box-shadow .25s;
+    }
+    .to-top.show{opacity:1;visibility:visible;transform:none}
+    .to-top:hover{
+      border-color:color-mix(in srgb,var(--accent) 35%,var(--border));
+      box-shadow:var(--shadow),0 0 0 1px color-mix(in srgb,var(--accent) 18%,transparent),0 8px 24px var(--accent-glow);
+      color:var(--accent);
+    }
+    .to-top:active{transform:scale(.94)}
+    .to-top svg{transition:transform .35s var(--ease)}
+    .to-top:hover svg{transform:translateY(-2px)}
+    @media (max-width:480px){.to-top{right:14px;bottom:18px;width:42px;height:42px;border-radius:12px}}
+
+    /* Stats panel — чистый, воздушный */
+    .stats-panel .modal{max-width:420px}
+    .stats-body{padding:8px 20px 22px}
+    .stats-hero{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;
+    }
+    .stats-hero-item{
+      text-align:center;padding:16px 10px;border-radius:14px;
+      background:var(--bg);border:1px solid var(--border);
+    }
+    .stats-hero-item strong{
+      display:block;font-size:1.35rem;font-weight:700;font-family:var(--mono);
+      letter-spacing:-.03em;line-height:1.25;margin-bottom:4px;
+    }
+    .stats-hero-item span{
+      font-size:.68rem;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;
+    }
+    .stats-section{margin-bottom:20px}
+    .stats-section:last-child{margin-bottom:0}
+    .stats-section h4{
+      font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);
+      font-weight:650;margin:0 0 12px;
+    }
+    .bar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;font-size:.8rem}
+    .bar-row:last-child{margin-bottom:0}
+    .bar-row .bar-label{
+      width:48px;min-width:48px;color:var(--text-2);font-weight:560;flex-shrink:0;
+      font-variant-numeric:tabular-nums;
+    }
+    .bar-row .bar-track{flex:1;height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+    .bar-row .bar-fill{
+      height:100%;border-radius:99px;background:var(--accent);min-width:2px;
+      transition:width .6s var(--ease);
+    }
+    .bar-row .bar-val{
+      width:28px;min-width:28px;text-align:right;font-family:var(--mono);
+      font-size:.75rem;color:var(--text-3);font-weight:600;
+    }
+    .stats-empty{text-align:center;padding:32px 16px;color:var(--text-3);font-size:.9rem}
+
+    .detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+    .detail-title{
+      font-size:1.22rem;font-weight:700;letter-spacing:-.03em;line-height:1.3;
+      overflow-wrap:anywhere;word-break:break-word;min-width:0;flex:1;
+    }
+    .detail-meta{display:flex;flex-wrap:wrap;gap:8px 12px;font-size:.8rem;color:var(--text-3);font-weight:500}
+    .detail-review{
+      font-size:.92rem;color:var(--text-2);line-height:1.65;font-weight:450;
+      white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;
+      max-width:100%;min-width:0;
+    }
+    .detail-review.empty{color:var(--text-3);font-style:italic}
+    .detail-tools{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:2px}
+    .detail-linkbtn{
+      border:none;background:transparent;padding:6px 0;cursor:pointer;
+      font:inherit;font-size:.82rem;font-weight:600;color:var(--text-3);
+      transition:color .15s;
+    }
+    .detail-linkbtn:hover{color:var(--accent)}
+    .detail-linkbtn:active{transform:scale(.98)}
+    .detail-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+    .detail-actions .btn{flex:1 1 auto;min-width:120px}
+    .detail-body{padding:18px 20px 24px;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:14px;min-width:0}
+    .detail-sheet .card-tags,.detail-sheet .card-links{min-width:0;max-width:100%}
+    .detail-body > *{animation:detailIn .4s var(--ease-out) both}
+    .detail-body > *:nth-child(1){animation-delay:.04s}
+    .detail-body > *:nth-child(2){animation-delay:.08s}
+    .detail-body > *:nth-child(3){animation-delay:.12s}
+    .detail-body > *:nth-child(4){animation-delay:.16s}
+    .detail-body > *:nth-child(5){animation-delay:.2s}
+    .detail-body > *:nth-child(6){animation-delay:.24s}
+    @keyframes detailIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+    .confirm-overlay{
+      position:fixed;inset:0;z-index:120;background:var(--overlay);backdrop-filter:blur(4px);
+      display:flex;align-items:center;justify-content:center;padding:20px;
+      opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;
+    }
+    .confirm-overlay.open{opacity:1;visibility:visible}
+    .confirm-box{
+      background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:22px;
+      max-width:340px;width:100%;text-align:center;transform:scale(.92);
+      transition:transform .3s var(--spring);box-shadow:var(--shadow);
+    }
+    .confirm-overlay.open .confirm-box{transform:none}
+    .confirm-box h3{font-size:1.05rem;font-weight:650;margin-bottom:6px;letter-spacing:-.02em}
+    .confirm-box p{color:var(--text-2);font-size:.875rem;margin-bottom:18px;font-weight:450}
+    .confirm-actions{display:flex;gap:8px;justify-content:center}
+
+    .toast{
+      position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px) scale(.96);z-index:200;
+      background:var(--surface);border:1px solid var(--border);color:var(--text);padding:11px 18px;border-radius:12px;
+      font-size:.84rem;font-weight:560;box-shadow:var(--shadow);display:flex;align-items:center;gap:7px;
+      opacity:0;visibility:hidden;transition:opacity .28s,transform .35s var(--spring),visibility .28s;pointer-events:none;
+    }
+    .toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0) scale(1)}
+
+    @keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+    @media (prefers-reduced-motion:reduce){
+      .detail-body > *{animation:none!important}
+      .detail-sheet,.detail-overlay{transition:none!important}
+
+      *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+      .bg-glow,.empty-icon,.card-cover-wrap::after{animation:none!important}
+      .card{--tilt-x:0deg!important;--tilt-y:0deg!important;--tilt-z:0px!important;--tilt-s:1!important}
+      body::after{display:none}
+    }
+    @media (min-width:900px){
+      .app{padding:0 28px 110px}
+      .header-wrap{margin:0 -28px;padding:0 28px}
+      .games-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+    }
+    @media (max-width:480px){
+      .games-grid{grid-template-columns:1fr;gap:12px}
+      .app{padding:0 14px calc(96px + env(safe-area-inset-bottom,0px))}
+      .header-wrap{margin:0 -14px;padding:0 14px}
+      .header-actions{gap:6px}
+      .header-actions .btn-primary span{display:none}
+      .btn-icon{width:40px;height:40px;min-width:40px}
+      .brand-mark{width:36px;height:36px;border-radius:10px}
+      .brand-text h1{font-size:.95rem}
+      .toolbar{margin:12px 0 12px}
+      .search-box input,.modal input,.modal textarea,.modal select{font-size:16px} /* iOS no-zoom */
+      .platform-chip{min-height:40px;padding:8px 12px}
+      .detail-sheet{
+        max-height:94dvh;
+        border-radius:18px 18px 0 0;
+        padding-bottom:env(safe-area-inset-bottom,0px);
+      }
+      .detail-tools{gap:8px 16px;padding:4px 0}
+      .detail-linkbtn{padding:10px 0;font-size:.88rem;min-height:44px}
+      .detail-actions{
+        display:flex;flex-wrap:wrap;gap:8px;
+        position:sticky;bottom:0;
+        padding-bottom:max(8px, env(safe-area-inset-bottom,0px));
+        background:linear-gradient(to top, var(--surface) 70%, transparent);
+      }
+      .detail-actions .btn{flex:1 1 calc(50% - 8px);min-height:44px}
+      .modal-actions{padding-bottom:max(12px, env(safe-area-inset-bottom,0px))}
+      .to-top{right:14px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:44px;height:44px}
+      .score-pill{min-width:40px;min-height:40px}
+    }
+</style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="app">
+    <div class="header-wrap" id="headerWrap">
+      <header class="header">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true" title="SolGames">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6.5 10.5h11c1.8 0 3.2 1.5 3.1 3.3l-.4 4.2c-.2 1.6-1.6 2.8-3.2 2.8h-1.4c-.7 0-1.3-.4-1.6-1l-.8-1.5c-.2-.4-.6-.7-1-.7h-1.4c-.4 0-.8.3-1 .7l-.8 1.5c-.3.6-.9 1-1.6 1H6c-1.6 0-3-1.2-3.2-2.8l-.4-4.2c-.1-1.8 1.3-3.3 3.1-3.3z" fill="currentColor" opacity=".95"/>
+              <path d="M9.2 8.2c0-1.8 1.3-3.2 3-3.2s3 1.4 3 3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M8.2 13.2v2.2M7.1 14.3h2.2M15.4 13.5h2.4M15.4 15.3h2.4" stroke="#fff" stroke-width="1.55" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1>SolGames</h1>
+            <p>Личный трекер игр</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary btn-icon theme-btn" id="themeBtn" title="Тема" aria-label="Сменить тему">
+            <span class="ic ic-sun" aria-hidden="true"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+            <span class="ic ic-moon" aria-hidden="true"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 14.5A8.5 8.5 0 1111.5 3a7 7 0 009.5 11.5z"/></svg></span>
+            <span class="ic ic-auto" aria-hidden="true"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+          </button>
+          <button class="btn btn-primary" id="addBtn">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Добавить</span>
+          </button>
+          <span class="divider" aria-hidden="true"></span>
+          <button class="btn btn-secondary btn-icon" id="steamSyncBtn" title="Подтянуть Steam для игр без года" aria-label="Синхронизация Steam">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 01-9 9 9 9 0 01-6.3-2.6L3 21l2.7-2.7A9 9 0 1112 21"/><path d="M12 7v5l3 2"/></svg>
+          </button>
+          <button class="btn btn-secondary btn-icon" id="statsBtn" title="Статистика" aria-label="Статистика">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19V9M12 19V5M20 19v-7"/></svg>
+          </button>
+          <button class="btn btn-secondary btn-icon" id="exportBtn" title="Экспорт" aria-label="Экспорт">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+          </button>
+          <button class="btn btn-secondary btn-icon" id="importBtn" title="Импорт" aria-label="Импорт">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          </button>
+          <button class="btn btn-ghost btn-icon" id="clearAllBtn" title="Удалить все" aria-label="Удалить все игры">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          </button>
+        </div>
+      </header>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-row">
+                <div class="search-box" id="searchBox">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="search" id="search" placeholder="Поиск: название, тег, год..." autocomplete="off" />
+          <button type="button" class="search-clear" id="searchClear" title="Сбросить" aria-label="Сбросить поиск">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="sort-pills" id="sortPills" role="group" aria-label="Сортировка">
+          <button type="button" class="sort-pill" data-sort="date">Новые</button>
+          <button type="button" class="sort-pill active" data-sort="rating" data-dir="desc">Оценка ↓</button>
+          <button type="button" class="sort-pill" data-sort="year" data-dir="desc">Год ↓</button>
+        </div>
+      </div>
+      <div class="filter-chips" id="filterChips">
+        <span class="filter-chip active" data-p="all">Все</span>
+        <span class="filter-chip" data-p="PC">PC</span>
+        <span class="filter-chip" data-p="Android">Android</span>
+        <span class="filter-chip" data-p="Switch">Switch</span>
+        <span class="filter-chip" data-p="PS1">PS1</span>
+        <span class="filter-chip" data-p="PS2">PS2</span>
+        <span class="filter-chip" data-p="PSP">PSP</span>
+        <span class="filter-chip" data-fav="1" title="Избранное">♥</span>
+      </div>
+    </div>
+
+    <div class="games-grid" id="grid" role="list"></div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-handle"><span></span></div>
+      <div class="modal-head">
+        <h2 id="modalTitle">Новая игра</h2>
+        <button class="btn btn-ghost btn-icon" id="closeModal" aria-label="Закрыть">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <form class="modal-form" id="form">
+        <div class="modal-body">
+        <input type="hidden" id="fieldId" />
+        <div class="field">
+          <label for="fieldTitle">Название *</label>
+          <div class="title-wrap">
+            <input type="text" id="fieldTitle" required placeholder="Название или ссылка Steam" maxlength="150" autocomplete="off" />
+            <div class="steam-suggest" id="steamSuggest" role="listbox"></div>
+          </div>
+          <p class="steam-hint">Можно вставить ссылку Steam — подтянется само</p>
+        </div>
+        <div class="field">
+          <label>Оценка</label>
+          <div class="score-picker" id="scorePicker" role="radiogroup" aria-label="Оценка от 1 до 10">
+            <button type="button" class="score-btn" data-score="1" aria-label="Оценка 1">1</button><button type="button" class="score-btn" data-score="2" aria-label="Оценка 2">2</button><button type="button" class="score-btn" data-score="3" aria-label="Оценка 3">3</button><button type="button" class="score-btn" data-score="4" aria-label="Оценка 4">4</button><button type="button" class="score-btn" data-score="5" aria-label="Оценка 5">5</button><button type="button" class="score-btn" data-score="6" aria-label="Оценка 6">6</button><button type="button" class="score-btn" data-score="7" aria-label="Оценка 7">7</button><button type="button" class="score-btn" data-score="8" aria-label="Оценка 8">8</button><button type="button" class="score-btn" data-score="9" aria-label="Оценка 9">9</button><button type="button" class="score-btn" data-score="10" aria-label="Оценка 10">10</button>
+          </div>
+          <input type="hidden" id="fieldRating" value="8" />
+          <span class="rating-num" id="ratingVal" hidden>8</span>
+        </div>
+        <div class="field">
+          <label>Платформа</label>
+          <div class="platform-grid" id="platformGrid">
+            <span class="platform-chip" data-p="PC">PC</span>
+            <span class="platform-chip" data-p="Android">Android</span>
+            <span class="platform-chip" data-p="Switch">Switch</span>
+            <span class="platform-chip" data-p="PS1">PS1</span>
+            <span class="platform-chip" data-p="PS2">PS2</span>
+            <span class="platform-chip" data-p="PSP">PSP</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="fieldDate">Дата прохождения <em>(необязательно)</em></label>
+          <input type="date" id="fieldDate" />
+        </div>
+        <div class="field">
+          <label for="fieldReview">Отзыв <em>(необязательно)</em></label>
+          <textarea id="fieldReview" placeholder="Что запомнилось..." maxlength="5000"></textarea>
+        </div>
+        <div class="disclose" id="coverDisclose">
+          <button type="button" class="disclose-toggle" id="coverToggle" aria-expanded="false">
+            <span>Обложка <em style="font-style:normal;color:var(--text-3);font-weight:450">· если нужна своя</em></span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="disclose-body">
+            <p class="disclose-hint">Обычно подтягивается из Steam. Укажи URL, только если хочешь свою</p>
+            <input type="url" id="fieldCover" placeholder="https://…" />
+          </div>
+        </div>
+        <div class="disclose" id="linksDisclose">
+          <button type="button" class="disclose-toggle" id="linksToggle" aria-expanded="false">
+            <span>Ссылки <em style="font-style:normal;color:var(--text-3);font-weight:450">· необязательно</em></span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="disclose-body">
+            <p class="disclose-hint">Steam-ссылка из названия сохраняется сама. Здесь — дополнительные</p>
+            <div class="links-editor" id="linksEditor"></div>
+            <button type="button" class="btn btn-secondary btn-sm" id="addLink" style="align-self:flex-start">+ Ссылка</button>
+          </div>
+        </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="cancelBtn">Отмена</button>
+          <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="overlay stats-panel" id="statsOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="statsTitle">
+      <div class="modal-handle"><span></span></div>
+      <div class="modal-head">
+        <h2 id="statsTitle">Статистика</h2>
+        <button type="button" class="btn btn-ghost btn-icon" id="statsClose" aria-label="Закрыть">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="statsBody" class="stats-body"></div>
+    </div>
+  </div>
+
+  <div class="detail-overlay" id="detailOverlay">
+    <div class="detail-sheet" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <div class="detail-cover-wrap" id="detailCoverWrap">
+        <img class="detail-cover" id="detailCover" alt="" />
+      </div>
+      <div class="detail-body">
+        <div class="detail-head">
+          <h2 class="detail-title" id="detailTitle"></h2>
+          <span class="rating" id="detailRating">—</span>
+        </div>
+        <div class="detail-meta" id="detailMeta"></div>
+        <div class="card-tags" id="detailTags"></div>
+        <p class="detail-review" id="detailReview"></p>
+        <div class="card-links" id="detailLinks"></div>
+        <div class="detail-tools" id="detailTools">
+          <button type="button" class="detail-linkbtn" id="detailReplay" title="Отметить перепрохождение">↻ Перепрохождение</button>
+          <button type="button" class="detail-linkbtn" id="detailSteam" title="Обновить данные из Steam" hidden>Обновить из Steam</button>
+        </div>
+        <div class="detail-actions">
+          <button class="btn btn-primary btn-sm" id="detailEdit">Изменить</button>
+          <button class="btn btn-secondary btn-sm" id="detailClose">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-box">
+      <h3 id="confirmTitle">Удалить игру?</h3>
+      <p id="confirmText">Это действие нельзя отменить.</p>
+      <div class="confirm-actions">
+        <button class="btn btn-secondary" id="confirmCancel">Отмена</button>
+        <button class="btn btn-danger" id="confirmOk">Удалить</button>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="importFile" accept=".json,application/json" hidden />
+  <button type="button" class="to-top" id="toTop" aria-label="Наверх" title="Наверх">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+  (() => {
+    const STORAGE = 'solgames-v5';
+    const PREFS = 'solgames-prefs';
+    const THEME_KEY = 'solgames-theme';
+    const STEAM_CDNS = [
+      'https://cdn.akamai.steamstatic.com/steam/apps/',
+      'https://steamcdn-a.akamaihd.net/steam/apps/',
+      'https://cdn.cloudflare.steamstatic.com/steam/apps/'
+    ];
+    function coverUrlFor(appid, idx = 0) {
+      return STEAM_CDNS[idx % STEAM_CDNS.length] + appid + '/header.jpg';
+    }
+    function coverFallbackAttrs(appid) {
+      // data-cdns for progressive onerror fallback in grid
+      return `data-appid="${appid}" data-cdn="0"`;
+    }
+
+    // Cover CDN fallback: if Akamai 404, try next CDN host
+    document.addEventListener('error', (e) => {
+      const img = e.target;
+      if (!img || img.tagName !== 'IMG' || !img.classList.contains('card-cover')) return;
+      const appid = img.dataset.appid;
+      if (!appid) return;
+      let i = Number(img.dataset.cdn || 0) + 1;
+      if (i >= STEAM_CDNS.length) return;
+      img.dataset.cdn = String(i);
+      img.src = coverUrlFor(appid, i);
+    }, true);
+
+        const PLATS = ['PC','Android','Switch','PS1','PS2','PSP'];
+    const THEMES = ['system','light','dark'];
+
+    const $ = id => document.getElementById(id);
+    const grid = $('grid');
+    const searchEl = $('search');
+    const searchBox = $('searchBox');
+    const searchClear = $('searchClear');
+    function syncSearchClear() {
+      if (searchBox) searchBox.classList.toggle('has-query', !!(searchEl && searchEl.value.trim()));
+    }
+    if (searchClear) {
+      searchClear.addEventListener('click', () => {
+        searchEl.value = '';
+        syncSearchClear();
+        render();
+        try { searchEl.focus(); } catch {}
+      });
+    }
+
+    const overlay = $('overlay');
+    const form = $('form');
+    const ratingInput = $('fieldRating');
+    const ratingVal = $('ratingVal');
+    const scorePicker = $('scorePicker');
+
+    function scoreHueStyle(n) {
+      // same scale as ratingStyle
+      const t = (n - 1) / 9;
+      const hue = 8 + t * 134;
+      const sat = 72 + t * 8;
+      const light = 52 - t * 6;
+      const c = `hsl(${hue.toFixed(1)} ${sat.toFixed(0)}% ${light.toFixed(0)}%)`;
+      const bg = `hsl(${hue.toFixed(1)} ${sat.toFixed(0)}% ${light.toFixed(0)}% / 0.18)`;
+      return `--r-c:${c};--r-bg:${bg}`;
+    }
+    function setScore(n, animate) {
+      n = Math.max(1, Math.min(10, Math.round(Number(n) || 8)));
+      ratingInput.value = String(n);
+      if (ratingVal) ratingVal.textContent = String(n);
+      if (!scorePicker) return;
+      scorePicker.querySelectorAll('.score-btn').forEach(btn => {
+        const v = Number(btn.dataset.score);
+        btn.style.cssText = scoreHueStyle(v);
+        btn.classList.toggle('active', v === n);
+        btn.setAttribute('aria-checked', v === n ? 'true' : 'false');
+        btn.setAttribute('role', 'radio');
+      });
+    }
+    if (scorePicker) {
+      scorePicker.querySelectorAll('.score-btn').forEach(btn => {
+        btn.style.cssText = scoreHueStyle(Number(btn.dataset.score));
+        btn.addEventListener('click', () => setScore(btn.dataset.score, true));
+      });
+      // keyboard: arrows within group
+      scorePicker.addEventListener('keydown', (e) => {
+        const cur = Number(ratingInput.value) || 8;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { e.preventDefault(); setScore(cur + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { e.preventDefault(); setScore(cur - 1); }
+        if (e.key === 'Home') { e.preventDefault(); setScore(1); }
+        if (e.key === 'End') { e.preventDefault(); setScore(10); }
+      });
+    }
+
+    function bindDisclose(rootId, toggleId) {
+      const root = $(rootId);
+      const btn = $(toggleId);
+      if (!root || !btn) return;
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const open = root.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
+    bindDisclose('coverDisclose', 'coverToggle');
+    bindDisclose('linksDisclose', 'linksToggle');
+
+    const linksEditor = $('linksEditor');
+    const toastEl = $('toast');
+    const confirmOverlay = $('confirmOverlay');
+    const titleInput = $('fieldTitle');
+    const steamSuggest = $('steamSuggest');
+    const coverInput = $('fieldCover');
+    const headerWrap = $('headerWrap');
+    const sortPills = $('sortPills');
+
+    let games = loadGames();
+    let editId = null;
+    let selectedPlatforms = [];
+    let pendingDeleteId = null;
+    let pendingClearAll = false;
+    let activePlatformFilter = 'all';
+    let favOnly = false;
+        let searchTimer = null;
+    let suggestIndex = -1;
+    let renderTimer = null;
+    let sortMode = 'rating-desc'; // date-desc | rating-desc | rating-asc | year-desc | year-asc
+    let pendingSteamMeta = null;
+
+
+    const IDB_NAME = 'solgames-db';
+    const IDB_STORE = 'kv';
+    let _idb = null;
+
+    function openIdb() {
+      if (_idb) return _idb;
+      _idb = new Promise((resolve) => {
+        if (!('indexedDB' in window)) { resolve(null); return; }
+        const req = indexedDB.open(IDB_NAME, 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE);
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => resolve(null);
+      });
+      return _idb;
+    }
+
+    async function idbGet(key) {
+      const db = await openIdb();
+      if (!db) return undefined;
+      return new Promise(resolve => {
+        try {
+          const tx = db.transaction(IDB_STORE, 'readonly');
+          const r = tx.objectStore(IDB_STORE).get(key);
+          r.onsuccess = () => resolve(r.result);
+          r.onerror = () => resolve(undefined);
+        } catch { resolve(undefined); }
+      });
+    }
+
+    async function idbSet(key, val) {
+      const db = await openIdb();
+      if (!db) return false;
+      return new Promise(resolve => {
+        try {
+          const tx = db.transaction(IDB_STORE, 'readwrite');
+          tx.objectStore(IDB_STORE).put(val, key);
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        } catch { resolve(false); }
+      });
+    }
+
+    function loadGamesFromLS() {
+      try {
+        const raw = localStorage.getItem(STORAGE);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          return (Array.isArray(parsed) ? parsed : []).map(normalizeGame);
+        }
+        for (const k of ['solgames-v4', 'solgames-v3', 'solgames-v2']) {
+          const old = localStorage.getItem(k);
+          if (!old) continue;
+          const parsed = JSON.parse(old);
+          const list = (Array.isArray(parsed) ? parsed : []).map(normalizeGame);
+          localStorage.setItem(STORAGE, JSON.stringify(list));
+          return list;
+        }
+      } catch {}
+      return [];
+    }
+
+    async function loadGamesAsync() {
+      const fromLs = loadGamesFromLS();
+      try {
+        const fromIdb = await idbGet('games');
+        if (Array.isArray(fromIdb) && fromIdb.length) {
+          // если в LS свежее/больше — не затираем молча
+          if (fromLs.length > fromIdb.length) {
+            idbSet('games', fromLs).catch(() => {});
+            return fromLs;
+          }
+          return fromIdb.map(normalizeGame);
+        }
+      } catch {}
+      if (fromLs.length) idbSet('games', fromLs).catch(() => {});
+      return fromLs;
+    }
+
+    function loadGames() {
+      return loadGamesFromLS();
+    }
+
+
+    
+    
+    /** Перевод частых EN-тегов Steam (SteamSpy / EN fallback) на русский */
+    function translateTag(s) {
+      const map = {
+        'action': 'Экшен', 'adventure': 'Приключения', 'rpg': 'RPG', 'strategy': 'Стратегия',
+        'simulation': 'Симулятор', 'casual': 'Казуальная', 'indie': 'Инди', 'sports': 'Спорт',
+        'racing': 'Гонки', 'massively multiplayer': 'ММО', 'mmo': 'ММО',
+        'early access': 'Ранний доступ', 'free to play': 'Бесплатная', 'free-to-play': 'Бесплатная',
+        'animation & modeling': 'Анимация и моделирование', 'design & illustration': 'Дизайн',
+        'photo editing': 'Фото', 'utilities': 'Утилиты', 'web publishing': 'Веб',
+        'education': 'Обучение', 'video production': 'Видео', 'audio production': 'Аудио',
+        'software training': 'Обучение ПО', 'game development': 'Разработка игр',
+        'violent': 'Насилие', 'gore': 'Кровь', 'nudity': 'Нагота', 'sexual content': 'Сексуальный контент',
+        'mature': 'Для взрослых', 'hentai': 'Хентай', 'nsfw': 'NSFW',
+        'horror': 'Хоррор', 'puzzle': 'Головоломка', 'platformer': 'Платформер',
+        'shooter': 'Шутер', 'fps': 'Шутер', 'open world': 'Открытый мир',
+        'story rich': 'Сюжетная', 'atmospheric': 'Атмосферная', '2d': '2D', '3d': '3D',
+        'pixel graphics': 'Пиксельная графика', 'anime': 'Аниме', 'visual novel': 'Визуальная новелла',
+        'roguelike': 'Рогалик', 'roguelite': 'Рогалик', 'metroidvania': 'Метроидвания',
+        'survival': 'Выживание', 'crafting': 'Крафт', 'building': 'Строительство',
+        'co-op': 'Кооператив', 'multiplayer': 'Мультиплеер', 'singleplayer': 'Одиночная',
+        'single-player': 'Одиночная', 'single player': 'Одиночная',
+        'sci-fi': 'Sci-Fi',
+        'cyberpunk': 'Киберпанк',
+        'first-person': 'От первого лица',
+        'third person': 'От третьего лица',
+        'third-person': 'От третьего лица',
+        'dating sim': 'Симулятор свиданий',
+        'action rpg': 'Action RPG',
+        'exploration': 'Исследование',
+        'sandbox': 'Песочница',
+        'great soundtrack': 'Саундтрек',
+        'souls-like': 'Souls-like',
+        'difficult': 'Сложная',
+        'comedy': 'Комедия'
+      };
+      const k = String(s || '').trim().toLowerCase();
+      if (map[k]) return map[k];
+      // already cyrillic
+      if (/[а-яё]/i.test(k)) return String(s).trim();
+      // title-case fallback keep original short tags
+      return String(s || '').trim();
+    }
+
+    function tagDedupeKey(s) {
+      s = String(s || '').toLowerCase().trim();
+      // сводим синонимы к одному ключу, чтобы «Экшен» + «Action» / «Экшены» не дублились
+      const syn = {
+        'action': 'action', 'экшен': 'action', 'экшены': 'action', 'экшеные': 'action',
+        'adventure': 'adventure', 'приключения': 'adventure', 'приключенческие игры': 'adventure',
+        'rpg': 'rpg', 'ролевые игры': 'rpg', 'ролевая': 'rpg',
+        'strategy': 'strategy', 'стратегия': 'strategy', 'стратегии': 'strategy',
+        'simulation': 'simulation', 'симулятор': 'simulation', 'симуляторы': 'simulation',
+        'casual': 'casual', 'казуальная': 'casual', 'казуальные игры': 'casual',
+        'indie': 'indie', 'инди': 'indie',
+        'sports': 'sports', 'спорт': 'sports', 'спортивные игры': 'sports',
+        'racing': 'racing', 'гонки': 'racing',
+        'horror': 'horror', 'хоррор': 'horror',
+        'puzzle': 'puzzle', 'головоломка': 'puzzle',
+        'open world': 'openworld', 'открытый мир': 'openworld',
+        'singleplayer': 'skip', 'single-player': 'skip', 'single player': 'skip',
+        'для одного игрока': 'skip', 'одиночная': 'skip'
+      };
+      const k = syn[s];
+      if (k === 'skip') return null;
+      return k || s.replace(/ё/g, 'е').replace(/\s+/g, ' ');
+    }
+
+    function cleanTags(list) {
+      if (!Array.isArray(list)) return null;
+      const skip = /steam|cloud|achievements|trading|workshop|leaderboard|controller|remote|stats|vr support|family|captions|includes level|mods|single-?player|single player|для одного|один игрок|local multiplayer|full controller|partial controller|remote play|local co-op|online co-op|одиночная/i;
+      const allowAbbrev = /^(RPG|JRPG|FPS|TPS|MMO|MOBA|2D|3D|VR|AR|PvP|PvE)$/i;
+      const out = [];
+      const seen = new Set();
+      list.forEach(raw => {
+        let s = String(raw || '').trim();
+        if (!s || skip.test(s)) return;
+        if (typeof translateTag === 'function') s = translateTag(s);
+        if (!s || skip.test(s)) return;
+        const hasCyr = /[а-яё]/i.test(s);
+        if (!hasCyr && !allowAbbrev.test(s)) return;
+        const key = tagDedupeKey(s);
+        if (!key || seen.has(key)) return;
+        seen.add(key);
+        out.push(s);
+      });
+      return out.length ? out.slice(0, 3) : null;
+    }
+
+    function normalizeGame(g) {
+      return {
+        id: g.id || uid(),
+        title: g.title || 'Без названия',
+        rating: Math.round(Number(g.rating) || 0) || null,
+        completedAt: g.completedAt || null,
+        coverUrl: g.coverUrl || null,
+        review: g.review || '',
+        platforms: (g.platforms || [])
+          .map(p => (p === 'Mobile' ? 'Android' : p))
+          .filter(p => PLATS.includes(p)),
+        links: Array.isArray(g.links) ? g.links.filter(Boolean) : [],
+        favorite: !!g.favorite,
+        releaseYear: g.releaseYear || null,
+        developers: g.developers || null,
+        publishers: g.publishers || null,
+        genres: cleanTags(g.genres),
+        metacritic: g.metacritic || null,
+        steamShort: g.steamShort || null,
+        accentColor: g.accentColor || null,
+        replays: Math.max(0, Math.round(Number(g.replays) || 0)),
+        lastReplayAt: g.lastReplayAt || null,
+        createdAt: g.createdAt || new Date().toISOString(),
+        updatedAt: g.updatedAt || g.createdAt || new Date().toISOString()
+      };
+    }
+
+    function save() {
+
+      try {
+        localStorage.setItem(STORAGE, JSON.stringify(games));
+      } catch {
+        toast('Не удалось сохранить', '!');
+        return false;
+      }
+      idbSet('games', games).catch(() => {});
+      return true;
+    }
+
+    function loadPrefs() {
+      try { return JSON.parse(localStorage.getItem(PREFS) || '{}'); } catch { return {}; }
+    }
+    function savePrefs(p) {
+      try { localStorage.setItem(PREFS, JSON.stringify(p)); } catch {}
+    }
+    function uid() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    }
+
+    /* Theme — default system */
+    function systemDark() {
+      return matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    function applyTheme(mode) {
+      document.documentElement.setAttribute('data-theme', mode);
+      localStorage.setItem(THEME_KEY, mode);
+      const effective = mode === 'system' ? (systemDark() ? 'dark' : 'light') : mode;
+      const meta = $('metaTheme');
+      if (meta) meta.content = effective === 'dark' ? '#0b0b0f' : '#f3f3f7';
+      const labels = { system: 'Системная', light: 'Светлая', dark: 'Тёмная' };
+      $('themeBtn').title = 'Тема: ' + labels[mode];
+    }
+    function cycleTheme() {
+      // Один клик: светлая ↔ тёмная (системная только как стартовый дефолт)
+      const mode = document.documentElement.getAttribute('data-theme') || 'system';
+      const effective = mode === 'system' ? (systemDark() ? 'dark' : 'light') : mode;
+      const next = effective === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      toast(next === 'dark' ? 'Тёмная тема' : 'Светлая тема', next === 'dark' ? '☾' : '☀');
+    }
+    {
+      const saved = localStorage.getItem(THEME_KEY);
+      applyTheme(THEMES.includes(saved) ? saved : 'system');
+      matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        if ((localStorage.getItem(THEME_KEY) || 'system') === 'system') applyTheme('system');
+      });
+    }
+
+    /* Prefs */
+    {
+      const p = loadPrefs();
+      const allowed = ['date-desc', 'rating-desc', 'rating-asc', 'year-desc', 'year-asc'];
+      if (p.sort && allowed.includes(p.sort)) sortMode = p.sort;
+      if (p.filter && (p.filter === 'all' || PLATS.includes(p.filter))) activePlatformFilter = p.filter;
+      if (p.favOnly) favOnly = !!p.favOnly;
+      document.querySelectorAll('#filterChips .filter-chip').forEach(c => {
+        c.classList.remove('active');
+        if (c.dataset.fav === '1') { if (favOnly) c.classList.add('active'); }
+        else if (c.dataset.p === activePlatformFilter) c.classList.add('active');
+      });
+      syncSortPills();
+    }
+
+    function persistUI() {
+      savePrefs({ sort: sortMode, filter: activePlatformFilter, favOnly });
+    }
+
+    function syncSortPills() {
+      if (!sortPills) return;
+      sortPills.querySelectorAll('.sort-pill').forEach(btn => {
+        const key = btn.dataset.sort;
+        let active = false;
+        if (key === 'date') active = sortMode === 'date-desc' || sortMode === 'date-asc';
+        else if (key === 'rating') active = sortMode.startsWith('rating');
+        else if (key === 'year') active = sortMode.startsWith('year');
+        btn.classList.toggle('active', active);
+        if (key === 'date') {
+          btn.dataset.dir = sortMode === 'date-asc' ? 'asc' : 'desc';
+          btn.textContent = sortMode === 'date-asc' ? 'Старые' : 'Новые';
+        }
+        if (key === 'rating') {
+          btn.dataset.dir = sortMode === 'rating-asc' ? 'asc' : 'desc';
+          btn.textContent = sortMode === 'rating-asc' ? 'Оценка ↑' : 'Оценка ↓';
+        }
+        if (key === 'year') {
+          btn.dataset.dir = sortMode === 'year-asc' ? 'asc' : 'desc';
+          btn.textContent = sortMode === 'year-asc' ? 'Год ↑' : 'Год ↓';
+        }
+      });
+    }
+
+    function resetFiltersUI() {
+      activePlatformFilter = 'all';
+      favOnly = false;
+      document.querySelectorAll('#filterChips .filter-chip').forEach(c => {
+        c.classList.remove('active');
+        if (c.dataset.p === 'all') c.classList.add('active');
+      });
+      persistUI();
+    }
+
+    const toTopBtn = $('toTop');
+    let scrollRaf = 0;
+    window.addEventListener('scroll', () => {
+      if (scrollRaf) return;
+      scrollRaf = requestAnimationFrame(() => {
+        scrollRaf = 0;
+        const y = window.scrollY || document.documentElement.scrollTop;
+        headerWrap.classList.toggle('scrolled', y > 6);
+        toTopBtn.classList.toggle('show', y > 420);
+      });
+    }, { passive: true });
+    toTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    // клик по логотипу — тоже наверх
+    document.querySelector('.brand')?.addEventListener('click', e => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    function toast(msg, icon = '✓') {
+      toastEl.innerHTML = `<span>${icon}</span> ${msg}`;
+      toastEl.classList.add('show');
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(() => toastEl.classList.remove('show'), 2300);
+    }
+
+    function esc(s) {
+      const d = document.createElement('div');
+      d.textContent = s == null ? '' : String(s);
+      return d.innerHTML;
+    }
+
+    function fmtDate(str) {
+      if (!str) return null;
+      try {
+        return new Date(str + (str.length === 10 ? 'T00:00:00' : '')).toLocaleDateString('ru-RU', {
+          day: 'numeric', month: 'short', year: 'numeric'
+        });
+      } catch { return str; }
+    }
+
+    /** Цвет оценки 1–10: плавный HSL от красного → жёлтого → зелёного (без «грязной» середины RGB) */
+    function ratingStyle(r) {
+      const n = Math.max(1, Math.min(10, Math.round(Number(r) || 0)));
+      // hue: 1→8° (red), 5→48° (amber), 10→142° (green)
+      const t = (n - 1) / 9;
+      const hue = 8 + t * 134;
+      const sat = 72 + t * 8;
+      const light = 52 - t * 6;
+      const c = `hsl(${hue.toFixed(1)} ${sat.toFixed(0)}% ${light.toFixed(0)}%)`;
+      const bg = `hsl(${hue.toFixed(1)} ${sat.toFixed(0)}% ${light.toFixed(0)}% / 0.16)`;
+      return `--r-c:${c};--r-bg:${bg}`;
+    }
+
+    function hostLabel(url) {
+      try {
+        let h = new URL(url).hostname.replace(/^www\./, '');
+        return h.length > 18 ? h.slice(0, 16) + '…' : h;
+      } catch { return 'Ссылка'; }
+    }
+
+    function isSteamUrl(url) {
+      return /steampowered\.com|steamdb\.info/i.test(url || '');
+    }
+
+    function linkChipHtml(url) {
+      if (isSteamUrl(url)) {
+        return `<a class="link-chip steam-chip" href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="Открыть в Steam">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-6.8 17.3l3.5-1.5a3.4 3.4 0 116.3-1.5l4.2 1.7A10 10 0 0012 2zm-1.7 14.6l-2.5 1a2.6 2.6 0 004.7-.9 2.6 2.6 0 00-2.2-3.1v1.2a1.4 1.4 0 11-1.4 1.4 1.4 1.4 0 011.4-.6z"/></svg>
+          Steam
+        </a>`;
+      }
+      return `<a class="link-chip" href="${esc(url)}" target="_blank" rel="noopener noreferrer">↗ ${esc(hostLabel(url))}</a>`;
+    }
+
+    /* Steam */
+    function parseSteamInput(str) {
+      if (!str) return null;
+      const s = String(str).trim();
+      if (/^\d{3,10}$/.test(s)) return s;
+      const m = s.match(/store\.steampowered\.com\/app\/(\d+)/i);
+      if (m) return m[1];
+      const m2 = s.match(/steamdb\.info\/app\/(\d+)/i);
+      if (m2) return m2[1];
+      const m3 = s.match(/steam\/apps\/(\d+)/i);
+      if (m3) return m3[1];
+      return null;
+    }
+
+    /** Имя из slug в URL Steam — мгновенно, без сети */
+    function nameFromSteamUrl(str) {
+      if (!str) return null;
+      const m = String(str).match(/store\.steampowered\.com\/app\/\d+\/([^/?#]+)/i);
+      if (!m) return null;
+      try {
+        return decodeURIComponent(m[1]).replace(/_/g, ' ').replace(/\+/g, ' ').trim() || null;
+      } catch {
+        return m[1].replace(/_/g, ' ').trim() || null;
+      }
+    }
+
+    const steamMetaCache = new Map();
+
+    /** CORS-прокси: несколько источников параллельно */
+    async function fetchJsonProxied(targetUrl, ms = 7000) {
+      // Быстрый путь: cors.dev (обычно <400ms). Остальные — только fallback.
+      const tryOne = async (fn, timeout) => {
+        const ac = new AbortController();
+        const timer = setTimeout(() => ac.abort(), timeout);
+        try {
+          return await fn(ac.signal);
+        } finally {
+          clearTimeout(timer);
+        }
+      };
+
+      try {
+        return await tryOne(async (signal) => {
+          const r = await fetch('https://proxy.cors.dev/' + targetUrl, { signal });
+          if (!r.ok) throw new Error('cors.dev ' + r.status);
+          return r.json();
+        }, Math.min(ms, 4500));
+      } catch { /* fallback */ }
+
+      const runners = [
+        async (signal) => {
+          const r = await fetch(
+            'https://corsproxy.io/?' + encodeURIComponent(targetUrl),
+            { signal }
+          );
+          if (!r.ok) throw new Error('corsproxy ' + r.status);
+          return r.json();
+        },
+        async (signal) => {
+          const r = await fetch(
+            'https://api.allorigins.win/raw?url=' + encodeURIComponent(targetUrl),
+            { signal }
+          );
+          if (!r.ok) throw new Error('allorigins');
+          return r.json();
+        }
+      ];
+      const ac = runners.map(() => new AbortController());
+      const timer = setTimeout(() => ac.forEach(c => c.abort()), Math.min(ms, 6000));
+      try {
+        return await Promise.any(runners.map((fn, i) => fn(ac[i].signal)));
+      } finally {
+        clearTimeout(timer);
+        ac.forEach(c => c.abort());
+      }
+    }
+
+    
+    async function resolveSteamApp(appid, sourceStr, force = false) {
+      const id = String(appid);
+      if (!force && steamMetaCache.has(id)) {
+        const c = steamMetaCache.get(id);
+        return { ...c };
+      }
+
+      const out = {
+        name: nameFromSteamUrl(sourceStr) || null,
+        coverUrl: coverUrlFor(id),
+        releaseYear: null,
+        genres: null,
+        steamShort: null
+      };
+
+      const takeTagsFromStore = (data) => {
+        if (!data) return null;
+        const skip = /для одного|один игрок|single|multiplayer|кооператив|контроллер|достижен|облако|мастерская|лидерборд|статистик|мод\b|family|remote|captions|уровень|карточки|коллекцион|стереозвук|громкост|qte|dualshock|dualsense|сохранение|камера|доступност/i;
+        const tags = [];
+        const push = (raw) => {
+          let s = (typeof raw === 'string' ? raw : (raw && raw.description)) || '';
+          s = String(s).trim();
+          if (!s || skip.test(s)) return;
+          if (tags.some(x => x.toLowerCase() === s.toLowerCase())) return;
+          tags.push(s);
+        };
+        if (Array.isArray(data.genres)) data.genres.forEach(push);
+        return tags.length ? tags.slice(0, 3) : null;
+      };
+
+      const applyAppDetails = (data, lang) => {
+        if (!data || typeof data !== 'object') return false;
+        if (data.name) out.name = data.name;
+        if (data.header_image) out.coverUrl = data.header_image;
+        const rd = data.release_date && data.release_date.date;
+        if (rd) {
+          const ym = String(rd).match(/(20\d{2}|19\d{2})/);
+          if (ym) out.releaseYear = +ym[1];
+        }
+        if (!out.releaseYear && data.release_date && /^\d{4}/.test(String(data.release_date))) {
+          out.releaseYear = parseInt(String(data.release_date).slice(0, 4), 10) || null;
+        }
+        // RU — предпочтительно; EN — если игра недоступна в РФ (нет года/тегов/имени)
+        if (lang === 'russian') {
+          const tags = takeTagsFromStore(data);
+          if (tags) out.genres = tags;
+          if (data.short_description) {
+            out.steamShort = String(data.short_description)
+              .replace(/<[^>]+>/g, ' ')
+              .replace(/\s+/g, ' ')
+              .trim()
+              .slice(0, 280);
+          }
+        } else {
+          // EN: добираем только пробелы
+          if (!out.genres && Array.isArray(data.genres)) {
+            const tags = data.genres
+              .map(g => translateTag(typeof g === 'string' ? g : (g && g.description)))
+              .filter(Boolean);
+            const cleaned = cleanTags(tags);
+            if (cleaned) out.genres = cleaned;
+          }
+          if (!out.steamShort && data.short_description) {
+            out.steamShort = String(data.short_description)
+              .replace(/<[^>]+>/g, ' ')
+              .replace(/\s+/g, ' ')
+              .trim()
+              .slice(0, 280);
+          }
+        }
+        return !!(out.name || out.releaseYear || out.genres);
+      };
+
+      // Важно: полный appdetails БЕЗ filters на 18+ часто даёт 403.
+      // С filters=basic,genres — данные есть (~300ms), в т.ч. adult (Subverse и т.д.).
+      // Как делают трекеры/Playnite: storefront API + узкий filters, не HTML store page.
+      // Параллельно RU store + SteamSpy (без cc=RU — с ним ломаются год/жанры).
+      const FILTERS = 'basic,genres,release_date';
+      const storeUrl =
+        'https://store.steampowered.com/api/appdetails?appids=' + id +
+        '&l=russian&filters=' + FILTERS;
+      const spyUrl = 'https://steamspy.com/api.php?request=appdetails&appid=' + id;
+
+      const [storeRes, spyRes] = await Promise.allSettled([
+        fetchJsonProxied(storeUrl, 4000),
+        fetchJsonProxied(spyUrl, 4000)
+      ]);
+
+      let gotDetails = false;
+      if (storeRes.status === 'fulfilled') {
+        const json = storeRes.value;
+        const entry = json && json[id];
+        if (entry && entry.success && entry.data) {
+          gotDetails = applyAppDetails(entry.data, 'russian') || gotDetails;
+        }
+      }
+
+      // US только если RU не дал критичное
+      if (!out.name || !out.releaseYear || !out.genres) {
+        try {
+          const json = await fetchJsonProxied(
+            'https://store.steampowered.com/api/appdetails?appids=' + id +
+              '&l=english&filters=' + FILTERS,
+            3500
+          );
+          const entry = json && json[id];
+          if (entry && entry.success && entry.data) {
+            gotDetails = applyAppDetails(entry.data, 'english') || gotDetails;
+          }
+        } catch { /* ignore */ }
+      }
+
+      // SteamSpy: имя, год, добор тегов до 3
+      if (spyRes.status === 'fulfilled' && spyRes.value && typeof spyRes.value === 'object') {
+        const spy = spyRes.value;
+        if (!out.name && spy.name) out.name = spy.name;
+        if (!out.releaseYear) {
+          const raw = spy.release_date || spy.releasedate || '';
+          const ym = String(raw).match(/(20\d{2}|19\d{2})/);
+          if (ym) out.releaseYear = +ym[1];
+        }
+        const have = out.genres ? out.genres.slice() : [];
+        if (have.length < 3) {
+          const extra = [];
+          if (spy.tags && typeof spy.tags === 'object') {
+            Object.keys(spy.tags)
+              .sort((a, b) => (spy.tags[b] || 0) - (spy.tags[a] || 0))
+              .forEach(k => extra.push(k));
+          }
+          if (typeof spy.genre === 'string') {
+            spy.genre.split(',').forEach(s => extra.push(s.trim()));
+          }
+          for (const raw of extra) {
+            if (have.length >= 3) break;
+            const s = translateTag(raw);
+            if (!s) continue;
+            const cleaned = cleanTags([s]);
+            if (!cleaned || !cleaned.length) continue;
+            const tag = cleaned[0];
+            if (have.some(x => x.toLowerCase() === tag.toLowerCase())) continue;
+            have.push(tag);
+          }
+          if (have.length) out.genres = have.slice(0, 3);
+        }
+        gotDetails = true;
+      }
+
+      // Cover always from CDN if API didn't give header_image
+      if (!out.coverUrl) out.coverUrl = coverUrlFor(id);
+      if (out.genres) out.genres = cleanTags(out.genres) || out.genres.slice(0, 3);
+
+      if (steamMetaCache.size > 200) {
+        const oldest = steamMetaCache.keys().next().value;
+        steamMetaCache.delete(oldest);
+      }
+      steamMetaCache.set(id, { ...out });
+      return out;
+    }
+
+    function normTitle(t) {
+      return String(t || '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '').trim();
+    }
+
+    function findDuplicate(title, exceptId) {
+      const n = normTitle(title);
+      if (!n) return null;
+      return games.find(g => g.id !== exceptId && normTitle(g.title) === n) || null;
+    }
+
+    function extractAccentFromUrl(url) {
+      return new Promise(resolve => {
+        if (!url || /cloudflare\.steamstatic\.com/.test(url)) return resolve(null);
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        const done = (v) => { try { img.onload = img.onerror = null; } catch {} resolve(v); };
+        img.onload = () => {
+          try {
+            const s = 24;
+            const c = document.createElement('canvas');
+            c.width = s; c.height = s;
+            const ctx = c.getContext('2d', { willReadFrequently: true });
+            ctx.drawImage(img, 0, 0, s, s);
+            const d = ctx.getImageData(0, 0, s, s).data;
+            let r = 0, g = 0, b = 0, n = 0;
+            for (let i = 0; i < d.length; i += 4) {
+              const rr = d[i], gg = d[i + 1], bb = d[i + 2], a = d[i + 3];
+              if (a < 140) continue;
+              const max = Math.max(rr, gg, bb), min = Math.min(rr, gg, bb);
+              if (max < 45 || min > 230) continue;
+              if (max === 0 || (max - min) / max < 0.1) continue;
+              r += rr; g += gg; b += bb; n++;
+            }
+            if (!n) return done(null);
+            done(`rgb(${Math.round(r / n)},${Math.round(g / n)},${Math.round(b / n)})`);
+          } catch { done(null); }
+        };
+        img.onerror = () => done(null);
+        img.src = url;
+      });
+    }
+
+    async function applySteamGame(appid, name) {
+      const source = titleInput.value;
+      const id = String(appid);
+      // Instant optimistic cover (Akamai CDN — CORS-friendly when image exists)
+      coverInput.value = coverUrlFor(id);
+      if (!selectedPlatforms.includes('PC')) {
+        selectedPlatforms.push('PC');
+        document.querySelectorAll('#platformGrid .platform-chip').forEach(c => {
+          if (c.dataset.p === 'PC') c.classList.add('active');
+        });
+      }
+      const steamUrl = `https://store.steampowered.com/app/${id}/`;
+      const inputs = [...linksEditor.querySelectorAll('input')];
+      const existing = inputs.find(i => isSteamUrl(i.value));
+      if (existing) existing.value = steamUrl;
+      else if (inputs[0] && !inputs[0].value) inputs[0].value = steamUrl;
+      else addLinkRow(steamUrl);
+      hideSuggest();
+
+      const slugName = name || nameFromSteamUrl(source);
+      if (slugName) titleInput.value = slugName;
+      else titleInput.value = 'Загрузка…';
+
+      titleInput.disabled = true;
+      try {
+        const meta = await resolveSteamApp(id, source, false);
+        if (meta.name) titleInput.value = meta.name;
+        else if (!slugName) titleInput.value = `Steam App ${id}`;
+
+        if (meta.coverUrl) coverInput.value = meta.coverUrl;
+        if (meta.releaseYear) titleInput.dataset.releaseYear = String(meta.releaseYear);
+        pendingSteamMeta = {
+          releaseYear: meta.releaseYear || null,
+          genres: meta.genres || null,
+          steamShort: meta.steamShort || null
+        };
+
+        const bits = [titleInput.value];
+        if (meta.releaseYear) bits.push(String(meta.releaseYear));
+        if (meta.genres && meta.genres.length) bits.push(meta.genres.slice(0, 2).join(', '));
+        toast(
+          meta.releaseYear || (meta.genres && meta.genres.length)
+            ? 'Steam: ' + bits.join(' · ')
+            : (slugName ? 'Название и обложка готовы' : 'Обложка добавлена'),
+          '✓'
+        );
+      } catch {
+        if (!titleInput.value || titleInput.value === 'Загрузка…') {
+          titleInput.value = slugName || `Steam App ${id}`;
+        }
+        toast(slugName ? 'Название и обложка готовы' : 'Обложка добавлена', '✓');
+      } finally {
+        titleInput.disabled = false;
+      }
+    }
+
+    function hideSuggest() {
+      steamSuggest.classList.remove('open');
+      steamSuggest.innerHTML = '';
+      suggestIndex = -1;
+    }
+
+    async function searchSteam(q) {
+      if (q.length < 2) { hideSuggest(); return; }
+      const appid = parseSteamInput(q);
+      if (appid) {
+        await applySteamGame(appid, null);
+        return;
+      }
+      try {
+        // Primary: store search API (richer, stable)
+        let items = [];
+        try {
+          const data = await fetchJsonProxied(
+            'https://store.steampowered.com/api/storesearch/?term=' + encodeURIComponent(q) + '&l=russian&cc=RU',
+            4500
+          );
+          if (data && Array.isArray(data.items)) {
+            items = data.items.slice(0, 8).map(it => ({
+              appid: it.id,
+              name: it.name,
+              logo: it.tiny_image || it.img || ''
+            }));
+          }
+        } catch { /* fall through */ }
+
+        if (!items.length) {
+          const data = await fetchJsonProxied(
+            'https://steamcommunity.com/actions/SearchApps/' + encodeURIComponent(q),
+            6000
+          );
+          if (Array.isArray(data)) {
+            items = data.slice(0, 8).map(it => ({
+              appid: it.appid,
+              name: it.name,
+              logo: it.logo || it.icon || ''
+            }));
+          }
+        }
+
+        if (!items.length) { hideSuggest(); return; }
+        steamSuggest.innerHTML = items.map(item =>
+          `<button type="button" class="steam-item" data-appid="${esc(item.appid)}" data-name="${esc(item.name)}">
+            <img src="${esc(item.logo || '')}" alt="" loading="lazy" onerror="this.style.visibility='hidden'" />
+            <span>${esc(item.name)}</span>
+          </button>`
+        ).join('');
+        steamSuggest.classList.add('open');
+        suggestIndex = -1;
+      } catch { hideSuggest(); }
+    }
+
+    titleInput.addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => searchSteam(titleInput.value.trim()), 300);
+    });
+    titleInput.addEventListener('paste', () => {
+      setTimeout(() => {
+        const v = titleInput.value.trim();
+        const id = parseSteamInput(v);
+        if (id) applySteamGame(id, null);
+      }, 0);
+    });
+    titleInput.addEventListener('keydown', e => {
+      const items = [...steamSuggest.querySelectorAll('.steam-item')];
+      if (!items.length || !steamSuggest.classList.contains('open')) return;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        suggestIndex = Math.min(suggestIndex + 1, items.length - 1);
+        items.forEach((el, i) => el.classList.toggle('active', i === suggestIndex));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        suggestIndex = Math.max(suggestIndex - 1, 0);
+        items.forEach((el, i) => el.classList.toggle('active', i === suggestIndex));
+      } else if (e.key === 'Enter' && suggestIndex >= 0) {
+        e.preventDefault();
+        items[suggestIndex].click();
+      } else if (e.key === 'Escape') hideSuggest();
+    });
+    steamSuggest.addEventListener('click', e => {
+      const item = e.target.closest('.steam-item');
+      if (!item) return;
+      applySteamGame(item.dataset.appid, item.dataset.name);
+      toast('Данные из Steam подтянуты');
+    });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.title-wrap')) hideSuggest();
+    });
+
+    /* Render */
+    function render() {
+      const q = searchEl.value.trim().toLowerCase();
+      let list = games.slice();
+
+      if (activePlatformFilter !== 'all')
+        list = list.filter(g => (g.platforms || []).includes(activePlatformFilter));
+      if (favOnly) list = list.filter(g => g.favorite);
+      if (q) {
+        list = list.filter(g => {
+          const title = (g.title || '').toLowerCase();
+          const rev = (g.review || '').toLowerCase();
+          const plats = (g.platforms || []).join(' ').toLowerCase();
+          const tags = (g.genres || []).join(' ').toLowerCase();
+          const year = g.releaseYear != null ? String(g.releaseYear) : '';
+          return title.includes(q) || rev.includes(q) || plats.includes(q) || tags.includes(q) || year.includes(q);
+        });
+      }
+
+      const numOr = (v, fb = -1) => (v == null || v === '' || Number.isNaN(+v) ? fb : +v);
+      list.sort((a, b) => {
+        switch (sortMode) {
+          case 'rating-desc':
+            return (numOr(b.rating) - numOr(a.rating)) || String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
+          case 'rating-asc':
+            return (numOr(a.rating, 99) - numOr(b.rating, 99)) || String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
+          case 'year-desc':
+            return (numOr(b.releaseYear, 0) - numOr(a.releaseYear, 0)) || String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
+          case 'year-asc':
+            return (numOr(a.releaseYear, 9999) - numOr(b.releaseYear, 9999)) || String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
+          case 'date-asc': {
+            const ka = dateSortKey(a);
+            const kb = dateSortKey(b);
+            return ka.localeCompare(kb);
+          }
+          case 'date-desc':
+          default: {
+            const ka = dateSortKey(a);
+            const kb = dateSortKey(b);
+            return kb.localeCompare(ka);
+          }
+        }
+      });
+
+      // Фильтры: показываем только платформы, которые реально есть в библиотеке
+      const usedPlats = new Set();
+      games.forEach(g => (g.platforms || []).forEach(p => usedPlats.add(p)));
+      document.querySelectorAll('#filterChips .filter-chip[data-p]').forEach(c => {
+        if (c.dataset.p === 'all') return;
+        const show = usedPlats.has(c.dataset.p);
+        c.hidden = !show;
+        if (!show && activePlatformFilter === c.dataset.p) {
+          activePlatformFilter = 'all';
+          c.classList.remove('active');
+          const allChip = document.querySelector('#filterChips .filter-chip[data-p="all"]');
+          if (allChip) allChip.classList.add('active');
+        }
+      });
+
+      if (!list.length) {
+        const filtered = !!(q || activePlatformFilter !== 'all' || favOnly);
+        const hasGames = games.length > 0;
+        grid.innerHTML = `
+          <div class="empty">
+            <div class="empty-icon">${filtered ? '🔍' : '🎮'}</div>
+            <h2>${filtered ? 'Ничего не найдено' : 'Пока пусто'}</h2>
+            <p>${filtered ? (hasGames ? 'Игры скрыты фильтрами.' : 'Попробуй изменить запрос') : 'Добавь первую игру'}</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+              ${!filtered || !hasGames ? '<button class="btn btn-primary" id="emptyAdd">Добавить</button>' : ''}
+              ${filtered && hasGames ? '<button class="btn btn-primary" id="emptyReset">Сбросить фильтры</button>' : ''}
+            </div>
+          </div>`;
+        const a = $('emptyAdd'); if (a) a.onclick = () => openModal();
+        const r = $('emptyReset'); if (r) r.onclick = () => { resetFiltersUI(); searchEl.value = ''; render(); };
+        return;
+      }
+
+      grid.innerHTML = list.map((g, i) => {
+        const links = (g.links || []).filter(Boolean).map(linkChipHtml).join('');
+        const hasRating = g.rating != null && g.rating >= 1;
+        const ratingHtml = hasRating
+          ? `<span class="rating" style="${ratingStyle(g.rating)}">${Math.round(g.rating)}</span>`
+          : `<span class="rating none">—</span>`;
+        const cover = g.coverUrl
+          ? `<div class="card-cover-wrap"><img class="card-cover" src="${esc(g.coverUrl)}" alt="" loading="lazy" decoding="async" onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')" onerror="this.parentElement.classList.add('is-failed')" /></div>`
+          : '';
+        const delay = i < 36 ? Math.min(i * 0.04, 1.2) : 0;
+        const accentStyle = g.accentColor
+          ? ` --card-accent:${g.accentColor};${delay ? `animation-delay:${delay.toFixed(2)}s` : 'animation:none'}`
+          : (delay ? `animation-delay:${delay.toFixed(2)}s` : 'animation:none');
+        return `
+          <article class="card${g.accentColor ? ' has-accent' : ''}" data-id="${g.id}" style="${accentStyle}">
+            ${cover}
+            <div class="card-body">
+              <div class="card-top">
+                <h3 class="card-title">${esc(g.title)}</h3>
+                ${ratingHtml}
+              </div>
+              <div class="card-meta">
+                ${g.releaseYear ? `<span class="meta-year">${g.releaseYear}</span>` : ''}
+                ${g.completedAt ? `<span>📅 ${fmtDate(g.completedAt)}</span>` : ''}
+              </div>
+              <p class="card-review ${g.review ? '' : 'is-empty'}">${g.review ? esc(g.review) : 'Без отзыва'}</p>
+              ${links ? `<div class="card-links">${links}</div>` : ''}
+              <div class="card-footer">
+                <button class="fav-btn ${g.favorite ? 'active' : ''}" data-fav="${g.id}" aria-label="Избранное">${g.favorite ? '♥' : '♡'}</button>
+                <div class="card-actions">
+                  <button class="btn btn-secondary btn-sm" data-edit="${g.id}">Изменить</button>
+                  <button class="btn btn-danger btn-sm" data-del="${g.id}">Удалить</button>
+                </div>
+              </div>
+            </div>
+          </article>`;
+      }).join('');
+      // кэш: если картинка уже в памяти — сразу убираем скелетон
+      grid.querySelectorAll('.card-cover').forEach(img => {
+        if (img.complete && img.naturalWidth) {
+          img.classList.add('loaded');
+          img.parentElement?.classList.add('loaded');
+        }
+      });
+    }
+
+
+    /* Focus trap + scroll lock for modals */
+    let _focusBack = null;
+    let _trapHandler = null;
+
+    function focusableIn(root) {
+      if (!root) return [];
+      return [...root.querySelectorAll(
+        'button:not([disabled]), [href], input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )].filter(el => {
+        if (el.closest('[hidden]')) return false;
+        const s = window.getComputedStyle(el);
+        return s.visibility !== 'hidden' && s.display !== 'none';
+      });
+    }
+
+    function trapFocus(root) {
+      releaseFocusTrap();
+      _focusBack = document.activeElement;
+      _trapHandler = (e) => {
+        if (e.key !== 'Tab' || !root) return;
+        const list = focusableIn(root);
+        if (!list.length) { e.preventDefault(); return; }
+        const first = list[0];
+        const last = list[list.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        }
+      };
+      document.addEventListener('keydown', _trapHandler);
+    }
+
+    function releaseFocusTrap() {
+      if (_trapHandler) {
+        document.removeEventListener('keydown', _trapHandler);
+        _trapHandler = null;
+      }
+    }
+
+    function restoreFocus() {
+      releaseFocusTrap();
+      const el = _focusBack;
+      _focusBack = null;
+      if (el && typeof el.focus === 'function') {
+        try { el.focus(); } catch {}
+      }
+    }
+
+    function lockBodyScroll() {
+      document.body.style.overflow = 'hidden';
+    }
+
+    function releaseBodyScroll() {
+      const open =
+        (overlay && overlay.classList.contains('open')) ||
+        ($('detailOverlay') && $('detailOverlay').classList.contains('open')) ||
+        ($('statsOverlay') && $('statsOverlay').classList.contains('open')) ||
+        ($('confirmOverlay') && $('confirmOverlay').classList.contains('open'));
+      if (!open) document.body.style.overflow = '';
+    }
+
+    function openModal(id = null) {
+      editId = id;
+      form.reset();
+      selectedPlatforms = [];
+      linksEditor.innerHTML = '';
+      addLinkRow();
+      hideSuggest();
+      document.querySelectorAll('#platformGrid .platform-chip').forEach(c => c.classList.remove('active'));
+      // collapse optional sections
+      ['coverDisclose', 'linksDisclose'].forEach(id => {
+        const el = $(id);
+        if (el) el.classList.remove('open');
+      });
+      ['coverToggle', 'linksToggle'].forEach(id => {
+        const el = $(id);
+        if (el) el.setAttribute('aria-expanded', 'false');
+      });
+
+      titleInput.dataset.releaseYear = '';
+      pendingSteamMeta = null;
+      if (id) {
+        const g = games.find(x => x.id === id);
+        if (!g) return;
+        $('modalTitle').textContent = 'Редактировать';
+        $('fieldId').value = g.id;
+        titleInput.value = g.title || '';
+        if (g.releaseYear) titleInput.dataset.releaseYear = String(g.releaseYear);
+        setScore(Math.round(g.rating ?? 8));
+        $('fieldDate').value = g.completedAt || '';
+        coverInput.value = g.coverUrl || '';
+        $('fieldReview').value = g.review || '';
+        selectedPlatforms = [...(g.platforms || [])];
+        document.querySelectorAll('#platformGrid .platform-chip').forEach(c => {
+          if (selectedPlatforms.includes(c.dataset.p)) c.classList.add('active');
+        });
+        linksEditor.innerHTML = '';
+        (g.links?.length ? g.links : ['']).forEach(l => addLinkRow(l));
+      } else {
+        $('modalTitle').textContent = 'Новая игра';
+        $('fieldId').value = '';
+        setScore(8);
+      }
+      overlay.classList.add('open');
+      lockBodyScroll();
+      trapFocus(overlay);
+      setTimeout(() => { try { titleInput.focus(); } catch {} }, 40);
+    }
+
+    function closeModal() {
+      overlay.classList.remove('open');
+      editId = null;
+      hideSuggest();
+      releaseBodyScroll();
+      restoreFocus();
+    }
+
+    function fillDetail(g, id) {
+      const cover = $('detailCover');
+      const wrap = $('detailCoverWrap');
+      cover.classList.remove('loaded');
+      wrap.classList.remove('loaded');
+      wrap.classList.remove('is-failed');
+      if (g.coverUrl) {
+        wrap.style.display = '';
+        cover.onload = () => {
+          cover.classList.add('loaded');
+          wrap.classList.add('loaded');
+        };
+        cover.onerror = () => { wrap.classList.add('is-failed'); };
+        cover.removeAttribute('src');
+        cover.src = g.coverUrl;
+        if (cover.complete && cover.naturalWidth) {
+          cover.classList.add('loaded');
+          wrap.classList.add('loaded');
+        }
+      } else {
+        wrap.style.display = 'none';
+        cover.removeAttribute('src');
+      }
+      $('detailTitle').textContent = g.title || '';
+      const hasR = g.rating != null && g.rating >= 1;
+      const dr = $('detailRating');
+      dr.textContent = hasR ? String(Math.round(g.rating)) : '—';
+      dr.className = 'rating' + (hasR ? '' : ' none');
+      if (hasR) dr.setAttribute('style', ratingStyle(g.rating));
+      else dr.removeAttribute('style');
+      const meta = [];
+      if (g.releaseYear) meta.push(`<span>${g.releaseYear}</span>`);
+      if (g.completedAt) meta.push(`<span>📅 ${fmtDate(g.completedAt)}</span>`);
+      if (g.replays > 0) meta.push(`<span>↻ ${g.replays} ${phraseReplays(g.replays)}</span>`);
+      if (g.favorite) meta.push('<span>♥ Избранное</span>');
+      $('detailMeta').innerHTML = meta.join('') || '';
+      const genreTags = (g.genres || []).slice(0, 3).map(p => `<span class="tag">${esc(p)}</span>`).join('');
+      const platTags = (g.platforms || []).slice(0, 2).map(p => `<span class="tag">${esc(p)}</span>`).join('');
+      $('detailTags').innerHTML = genreTags || platTags;
+      const rev = $('detailReview');
+      if (g.review) {
+        rev.textContent = g.review;
+        rev.classList.remove('empty');
+      } else if (g.steamShort) {
+        rev.textContent = g.steamShort;
+        rev.classList.remove('empty');
+      } else {
+        rev.textContent = 'Отзыв не написан';
+        rev.classList.add('empty');
+      }
+      $('detailLinks').innerHTML = (g.links || []).filter(Boolean).map(linkChipHtml).join('');
+      // перезапуск плавного появления блоков
+      const body = document.querySelector('#detailOverlay .detail-body');
+      if (body) {
+        body.querySelectorAll(':scope > *').forEach((el, i) => {
+          el.style.animation = 'none';
+          void el.offsetWidth;
+          el.style.animation = '';
+        });
+      }
+      $('detailEdit').onclick = () => { closeDetail(); openModal(id); };
+      const replayBtn = $('detailReplay');
+      if (replayBtn) {
+        replayBtn.onclick = () => {
+          pendingReplayId = id;
+          pendingDeleteId = null;
+          pendingClearAll = false;
+          pendingImport = null;
+          $('confirmTitle').textContent = 'Отметить перепрохождение?';
+          $('confirmText').textContent = 'Дата прохождения станет сегодняшней, счётчик +1. Это можно сделать снова позже.';
+          $('confirmOk').textContent = 'Да, перепрошёл';
+          $('confirmOk').className = 'btn btn-primary';
+          confirmOverlay.classList.add('open');
+          lockBodyScroll();
+          trapFocus(confirmOverlay);
+        };
+      }
+      const steamBtn = $('detailSteam');
+      const appid = appidFromGame(g);
+      if (appid) {
+        steamBtn.hidden = false;
+        steamBtn.onclick = () => refreshGameFromSteam(id, appid);
+      } else {
+        steamBtn.hidden = true;
+        steamBtn.onclick = null;
+      }
+    }
+
+    function openDetail(id) {
+      const g = games.find(x => x.id === id);
+      if (!g) return;
+      fillDetail(g, id);
+      // force reflow so CSS transition always plays
+      const ov = $('detailOverlay');
+      ov.classList.remove('open');
+      void ov.offsetWidth;
+      ov.classList.add('open');
+      lockBodyScroll();
+      trapFocus(ov);
+    }
+
+    
+    const detailTagsEl = $('detailTags');
+    if (detailTagsEl) {
+      detailTagsEl.addEventListener('click', e => {
+        const tag = e.target.closest('.tag');
+        if (!tag) return;
+        const text = (tag.textContent || '').trim();
+        if (!text) return;
+        closeDetail();
+        searchEl.value = text;
+        syncSearchClear();
+        render();
+        try { searchEl.focus(); } catch {}
+      });
+    }
+
+    function closeDetail() {
+      $('detailOverlay').classList.remove('open');
+      releaseBodyScroll();
+      restoreFocus();
+    }
+
+    function appidFromGame(g) {
+      for (const link of (g.links || [])) {
+        const id = parseSteamInput(link);
+        if (id) return id;
+      }
+      const m = (g.coverUrl || '').match(/\/apps\/(\d+)\//);
+      return m ? m[1] : null;
+    }
+
+    async function refreshGameFromSteam(id, appid) {
+      const btn = $('detailSteam');
+      btn.disabled = true;
+      btn.textContent = '…';
+      try {
+        const meta = await resolveSteamApp(appid, null, true);
+        const i = games.findIndex(x => x.id === id);
+        if (i === -1) return;
+        const g = games[i];
+        if (meta.releaseYear) g.releaseYear = meta.releaseYear;
+        // Полная замена тегов, без склейки со старыми дублями
+        if (meta.genres && meta.genres.length) g.genres = cleanTags(meta.genres) || meta.genres.slice(0, 3);
+        else g.genres = cleanTags(g.genres);
+        if (meta.steamShort) g.steamShort = meta.steamShort;
+        if (meta.coverUrl) g.coverUrl = meta.coverUrl;
+        g.updatedAt = new Date().toISOString();
+        save();
+        fillDetail(g, id);
+        render();
+        toast('Данные Steam обновлены', '✓');
+      } catch {
+        toast('Не удалось обновить из Steam', '!');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Обновить';
+      }
+    }
+
+    function needsSteamRefresh(g) {
+      if (!appidFromGame(g)) return false;
+      if (!g.releaseYear) return true;
+      if (!g.coverUrl) return true;
+      const tags = g.genres || [];
+      if (!tags.length) return true;
+      // английские / дубли / мусор после старых версий
+      const joined = tags.join(' | ');
+      if (/[A-Za-z]{4,}/.test(joined) && !/(RPG|JRPG|FPS|MMO|MOBA|PvP|PvE)/i.test(joined)) return true;
+      if (tags.length !== new Set(tags.map(x => String(x).toLowerCase())).size) return true;
+      if (cleanTags(tags) && cleanTags(tags).length < tags.length) return true;
+      return false;
+    }
+
+    async function batchSteamEnrich() {
+      const need = games.filter(needsSteamRefresh);
+      if (!need.length) {
+        toast('Все Steam-игры уже обновлены', '✓');
+        return;
+      }
+      const btn = $('steamSyncBtn');
+      if (btn) btn.disabled = true;
+      toast(`Обновляю ${need.length} ${phraseImported(need.length)}…`, '…');
+      let ok = 0, fail = 0;
+      const concurrency = 4;
+      for (let i = 0; i < need.length; i += concurrency) {
+        const chunk = need.slice(i, i + concurrency);
+        await Promise.all(chunk.map(async (g) => {
+          const appid = appidFromGame(g);
+          try {
+            const meta = await resolveSteamApp(appid, null, true);
+            if (meta.releaseYear) g.releaseYear = meta.releaseYear;
+            // теги всегда перезаписываем свежими (без склейки со старыми)
+            if (meta.genres && meta.genres.length) g.genres = cleanTags(meta.genres) || meta.genres.slice(0, 3);
+            else g.genres = cleanTags(g.genres);
+            if (meta.steamShort) g.steamShort = meta.steamShort;
+            // обложку тоже обновляем, если Steam отдал
+            if (meta.coverUrl) g.coverUrl = meta.coverUrl;
+            if (meta.name && (!g.title || /^https?:/i.test(g.title) || /^\d{3,10}$/.test(g.title))) {
+              g.title = meta.name;
+            }
+            g.updatedAt = new Date().toISOString();
+            ok++;
+          } catch { fail++; }
+        }));
+      }
+      save();
+      render();
+      if (btn) btn.disabled = false;
+      toast('Steam: ' + phraseUpdated(ok) + (fail ? `, ошибок: ${fail}` : ''), ok ? '✓' : '!');
+    }
+
+    function addLinkRow(val = '') {
+      const row = document.createElement('div');
+      row.className = 'link-row';
+      row.innerHTML = `<input type="url" placeholder="https://..." value="${esc(val)}" /><button type="button" class="btn btn-ghost btn-sm" aria-label="Удалить">×</button>`;
+      row.querySelector('button').onclick = () => {
+        if (linksEditor.children.length > 1) row.remove();
+        else row.querySelector('input').value = '';
+      };
+      linksEditor.appendChild(row);
+    }
+
+    function askDelete(id) {
+      const g = games.find(x => x.id === id);
+      if (!g) return;
+      pendingDeleteId = id;
+      pendingClearAll = false;
+      $('confirmTitle').textContent = 'Удалить игру?';
+      $('confirmText').textContent = `«${g.title}» будет удалена без возможности восстановления.`;
+      confirmOverlay.classList.add('open');
+      lockBodyScroll();
+      trapFocus(confirmOverlay);
+    }
+
+    function askClearAll() {
+      if (!games.length) { toast('Список уже пуст', '!'); return; }
+      pendingDeleteId = null;
+      pendingClearAll = true;
+      $('confirmTitle').textContent = 'Удалить все игры?';
+      $('confirmText').textContent = `${phraseDeleteGames(games.length)}. Это нельзя отменить.`;
+      confirmOverlay.classList.add('open');
+      lockBodyScroll();
+      trapFocus(confirmOverlay);
+    }
+
+    function pluralRu(n, one, few, many) {
+      const abs = Math.abs(n) % 100;
+      const n1 = abs % 10;
+      if (abs > 10 && abs < 20) return many;
+      if (n1 > 1 && n1 < 5) return few;
+      if (n1 === 1) return one;
+      return many;
+    }
+    function pluralGames(n) {
+      return pluralRu(n, 'игру', 'игры', 'игр');
+    }
+    function phraseDeleteGames(n) {
+      // «Будет удалена 1 игра» / «Будут удалены 2 игры» / «Будет удалено 5 игр»
+      const abs = Math.abs(n) % 100;
+      const n1 = abs % 10;
+      const noun = pluralRu(n, 'игра', 'игры', 'игр');
+      if (abs > 10 && abs < 20) return `Будет удалено ${n} ${noun}`;
+      if (n1 === 1) return `Будет удалена ${n} ${noun}`;
+      if (n1 > 1 && n1 < 5) return `Будут удалены ${n} ${noun}`;
+      return `Будет удалено ${n} ${noun}`;
+    }
+    function phraseUpdated(n) {
+      const noun = pluralRu(n, 'игра', 'игры', 'игр');
+      const abs = Math.abs(n) % 100;
+      const n1 = abs % 10;
+      if (abs > 10 && abs < 20) return `обновлено ${n} ${noun}`;
+      if (n1 === 1) return `обновлена ${n} ${noun}`;
+      if (n1 > 1 && n1 < 5) return `обновлены ${n} ${noun}`;
+      return `обновлено ${n} ${noun}`;
+    }
+    function dateSortKey(g) {
+      // полное время: lastReplayAt / updatedAt важнее голой даты YYYY-MM-DD
+      if (g.lastReplayAt) return String(g.lastReplayAt);
+      if (g.updatedAt && g.completedAt && String(g.updatedAt).slice(0, 10) === String(g.completedAt).slice(0, 10)) {
+        return String(g.updatedAt);
+      }
+      if (g.completedAt) {
+        const c = String(g.completedAt);
+        return c.length <= 10 ? c + 'T12:00:00.000Z' : c;
+      }
+      return String(g.createdAt || '');
+    }
+
+    function phraseReplays(n) {
+      const k = Math.abs(n) % 100;
+      const k1 = k % 10;
+      if (k > 10 && k < 20) return 'перепрохождений';
+      if (k1 === 1) return 'перепрохождение';
+      if (k1 >= 2 && k1 <= 4) return 'перепрохождения';
+      return 'перепрохождений';
+    }
+
+    function phraseImported(n) {
+      return pluralRu(n, 'игра', 'игры', 'игр');
+    }
+
+    function doDelete() {
+      const resetConfirm = () => {
+        $('confirmOk').textContent = 'Удалить';
+        $('confirmOk').className = 'btn btn-danger';
+        pendingImport = null;
+      };
+      if (pendingClearAll) {
+        games = [];
+        save();
+        render();
+        toast('Все игры удалены', '✕');
+        pendingClearAll = false;
+        confirmOverlay.classList.remove('open');
+        releaseBodyScroll();
+        restoreFocus();
+        resetConfirm();
+        return;
+      }
+      if (!pendingDeleteId) return;
+      games = games.filter(g => g.id !== pendingDeleteId);
+      save();
+      render();
+      toast('Игра удалена', '✕');
+      pendingDeleteId = null;
+      confirmOverlay.classList.remove('open');
+        releaseBodyScroll();
+        restoreFocus();
+      resetConfirm();
+    }
+
+    function toggleFavorite(id) {
+      const i = games.findIndex(g => g.id === id);
+      if (i === -1) return;
+      games[i].favorite = !games[i].favorite;
+      save();
+      render();
+      toast(games[i].favorite ? 'В избранном' : 'Убрано', games[i].favorite ? '♥' : '♡');
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      if (titleInput.disabled) {
+        toast('Подождите, данные загружаются…', '…');
+        return;
+      }
+      const title = titleInput.value.trim();
+      if (!title || title === 'Загрузка…') {
+        toast(title === 'Загрузка…' ? 'Подождите, данные загружаются…' : 'Введите название', '!');
+        if (title !== 'Загрузка…') titleInput.focus();
+        return;
+      }
+      // Если в названии всё ещё ссылка/AppID — сначала подтянуть Steam, не сохранять сырой URL
+      const detected = parseSteamInput(title);
+      if (detected && (isSteamUrl(title) || /^\d{3,10}$/.test(title))) {
+        toast('Подождите, данные из Steam…', '…');
+        applySteamGame(detected, null);
+        return;
+      }
+      const ratingNum = Math.round(+ratingInput.value);
+      if (ratingNum < 1 || ratingNum > 10) { toast('Оценка 1–10', '!'); return; }
+
+      const dup = findDuplicate(title, editId);
+      if (dup) {
+        toast(`Уже есть: «${dup.title}»`, '!');
+        return;
+      }
+
+      const links = [...linksEditor.querySelectorAll('input')].map(i => i.value.trim()).filter(Boolean);
+      const coverUrl = coverInput.value.trim() || null;
+      const ryRaw = titleInput.dataset.releaseYear;
+      const ry = ryRaw ? (+ryRaw || null) : null;
+      const data = {
+        title: titleInput.value.trim(),
+        rating: ratingNum,
+        completedAt: $('fieldDate').value || null,
+        coverUrl,
+        review: $('fieldReview').value.trim(),
+        platforms: [...selectedPlatforms],
+        links,
+        updatedAt: new Date().toISOString()
+      };
+
+      const isNew = !editId;
+      const finish = (accentColor) => {
+        if (accentColor) data.accentColor = accentColor;
+        const steam = pendingSteamMeta || {};
+        if (editId) {
+          const i = games.findIndex(g => g.id === editId);
+          if (i !== -1) {
+            const prev = games[i];
+            games[i] = {
+              ...prev,
+              ...data,
+              releaseYear: ry || steam.releaseYear || prev.releaseYear || null,
+              developers: steam.developers || prev.developers || null,
+              publishers: steam.publishers || prev.publishers || null,
+              genres: steam.genres || cleanTags(prev.genres) || null,
+              metacritic: steam.metacritic || prev.metacritic || null,
+              steamShort: steam.steamShort || prev.steamShort || null,
+              accentColor: data.accentColor || prev.accentColor || null
+            };
+          }
+        } else {
+          games.push({
+            id: uid(),
+            ...data,
+            releaseYear: ry || steam.releaseYear || null,
+            developers: steam.developers || null,
+            publishers: steam.publishers || null,
+            genres: steam.genres || null,
+            metacritic: steam.metacritic || null,
+            steamShort: steam.steamShort || null,
+            accentColor: data.accentColor || null,
+            favorite: false,
+            createdAt: new Date().toISOString()
+          });
+        }
+        titleInput.dataset.releaseYear = '';
+        pendingSteamMeta = null;
+        if (!save()) return;
+        if (isNew) { resetFiltersUI(); searchEl.value = ''; }
+        closeModal();
+        render();
+        toast(isNew ? 'Игра добавлена' : 'Сохранено');
+      };
+
+      if (coverUrl) {
+        extractAccentFromUrl(coverUrl).then(c => finish(c));
+      } else {
+        finish(null);
+      }
+    });
+
+    $('themeBtn').onclick = cycleTheme;
+
+    function markExported() {
+      const p = loadPrefs();
+      p.lastExport = Date.now();
+      savePrefs(p);
+    }
+
+
+    function openStats() {
+      const body = $('statsBody');
+      if (!games.length) {
+        body.innerHTML = '<div class="stats-empty">Пока нет игр</div>';
+        $('statsOverlay').classList.add('open');
+        lockBodyScroll();
+        trapFocus($('statsOverlay'));
+        return;
+      }
+      let sum = 0, rated = 0, fav = 0;
+      const byPlat = {}, byRating = { high: 0, mid: 0, low: 0 };
+      games.forEach(g => {
+        if (g.rating >= 1) { sum += g.rating; rated++; }
+        if (g.favorite) fav++;
+        if (g.rating >= 8) byRating.high++;
+        else if (g.rating >= 5) byRating.mid++;
+        else if (g.rating >= 1) byRating.low++;
+        (g.platforms || []).forEach(p => { byPlat[p] = (byPlat[p] || 0) + 1; });
+      });
+      const avg = rated ? (Math.round((sum / rated) * 10) / 10) : '—';
+      const maxPlat = Math.max(1, ...Object.values(byPlat), 1);
+      const total = games.length || 1;
+      const platRows = Object.entries(byPlat).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([p, n]) =>
+        `<div class="bar-row"><span class="bar-label">${esc(p)}</span><div class="bar-track"><div class="bar-fill" style="width:${(n / maxPlat) * 100}%"></div></div><span class="bar-val">${n}</span></div>`
+      ).join('') || '<div class="stats-empty" style="padding:8px">—</div>';
+
+      body.innerHTML = `
+        <div class="stats-hero">
+          <div class="stats-hero-item"><strong>${games.length}</strong><span>Игр</span></div>
+          <div class="stats-hero-item"><strong>${avg}</strong><span>Средняя</span></div>
+          <div class="stats-hero-item"><strong>${fav}</strong><span>Избранное</span></div>
+        </div>
+        <div class="stats-section">
+          <h4>Оценки</h4>
+          <div class="bar-row"><span class="bar-label">8–10</span><div class="bar-track"><div class="bar-fill" style="width:${(byRating.high / total) * 100}%;background:var(--green)"></div></div><span class="bar-val">${byRating.high}</span></div>
+          <div class="bar-row"><span class="bar-label">5–7</span><div class="bar-track"><div class="bar-fill" style="width:${(byRating.mid / total) * 100}%;background:var(--yellow)"></div></div><span class="bar-val">${byRating.mid}</span></div>
+          <div class="bar-row"><span class="bar-label">1–4</span><div class="bar-track"><div class="bar-fill" style="width:${(byRating.low / total) * 100}%;background:var(--red)"></div></div><span class="bar-val">${byRating.low}</span></div>
+        </div>
+        <div class="stats-section">
+          <h4>Платформы</h4>
+          ${platRows}
+        </div>`;
+      $('statsOverlay').classList.add('open');
+      lockBodyScroll();
+      trapFocus($('statsOverlay'));
+    }
+
+    function closeStats() {
+      $('statsOverlay').classList.remove('open');
+      releaseBodyScroll();
+      restoreFocus();
+    }
+
+    $('exportBtn').onclick = () => {
+      const payload = {
+        app: 'SolGames',
+        version: 6,
+        exportedAt: new Date().toISOString(),
+        count: games.length,
+        games: games.map(g => ({ ...g }))
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      const d = new Date();
+      const stamp = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      a.download = 'solgames-backup-' + stamp + '.json';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2500);
+      markExported();
+      toast('Экспорт: ' + games.length + ' ' + phraseImported(games.length), '✓');
+    };
+    $('statsBtn').onclick = openStats;
+    $('statsClose').onclick = closeStats;
+    $('statsOverlay').addEventListener('click', e => { if (e.target === $('statsOverlay')) closeStats(); });
+
+    sortPills.addEventListener('click', e => {
+      const btn = e.target.closest('.sort-pill');
+      if (!btn) return;
+      const key = btn.dataset.sort;
+      if (key === 'date') {
+        sortMode = sortMode === 'date-desc' ? 'date-asc' : 'date-desc';
+      } else if (key === 'rating') {
+        sortMode = sortMode === 'rating-desc' ? 'rating-asc' : 'rating-desc';
+      } else if (key === 'year') {
+        sortMode = sortMode === 'year-desc' ? 'year-asc' : 'year-desc';
+      }
+      syncSortPills();
+      persistUI();
+      render();
+    });
+
+    let pendingImport = null;
+    let pendingReplayId = null;
+
+    $('importBtn').onclick = () => $('importFile').click();
+    $('importFile').onchange = e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          const imported = Array.isArray(data) ? data : (data.games || []);
+          if (!Array.isArray(imported) || !imported.length) throw 0;
+
+          const byId = new Map(games.map(g => [g.id, g]));
+          const byTitle = new Map(games.map(g => [normTitle(g.title), g]));
+          const toAdd = [];
+          const toMerge = [];
+          let skipped = 0, invalid = 0;
+
+          const fillPatch = (local, remote) => {
+            const patch = {};
+            if (!local.releaseYear && remote.releaseYear) patch.releaseYear = remote.releaseYear;
+            if ((!local.genres || !local.genres.length) && remote.genres && remote.genres.length) patch.genres = remote.genres;
+            if (!local.coverUrl && remote.coverUrl) patch.coverUrl = remote.coverUrl;
+            if (!local.steamShort && remote.steamShort) patch.steamShort = remote.steamShort;
+            if ((!local.links || !local.links.length) && remote.links && remote.links.length) patch.links = remote.links;
+            if ((local.replays == null || local.replays === 0) && remote.replays) patch.replays = remote.replays;
+            if (!local.lastReplayAt && remote.lastReplayAt) patch.lastReplayAt = remote.lastReplayAt;
+            return Object.keys(patch).length ? patch : null;
+          };
+
+          imported.forEach(g => {
+            if (!g || !g.title) { invalid++; return; }
+            const ng = normalizeGame(g);
+            const hit = byId.get(ng.id) || byTitle.get(normTitle(ng.title));
+            if (hit) {
+              const patch = fillPatch(hit, ng);
+              if (patch) toMerge.push({ id: hit.id, patch });
+              else skipped++;
+              return;
+            }
+            byId.set(ng.id, ng);
+            byTitle.set(normTitle(ng.title), ng);
+            toAdd.push(ng);
+          });
+
+          if (!toAdd.length && !toMerge.length) {
+            toast(skipped ? ('Нет изменений (без изменений: ' + skipped + ')') : 'Пустой файл', '!');
+            e.target.value = '';
+            return;
+          }
+
+          pendingImport = { toAdd, toMerge };
+          pendingDeleteId = null;
+          pendingClearAll = false;
+          $('confirmTitle').textContent = 'Импорт библиотеки';
+          const parts = [];
+          if (toAdd.length) parts.push('новых: ' + toAdd.length);
+          if (toMerge.length) parts.push('дополнить данные: ' + toMerge.length);
+          if (skipped) parts.push('без изменений: ' + skipped);
+          if (invalid) parts.push('без названия: ' + invalid);
+          $('confirmText').textContent = parts.join(' · ') + '. Оценка и отзывы не перезаписываются.';
+          $('confirmOk').textContent = 'Импорт';
+          $('confirmOk').className = 'btn btn-primary';
+          confirmOverlay.classList.add('open');
+          lockBodyScroll();
+          trapFocus(confirmOverlay);
+        } catch { toast('Не удалось прочитать файл. Нужен JSON экспорта SolGames.', '!'); }
+        e.target.value = '';
+      };
+      reader.readAsText(file);
+    };
+
+    $('addBtn').onclick = () => openModal();
+    $('clearAllBtn').onclick = askClearAll;
+    $('closeModal').onclick = closeModal;
+    $('cancelBtn').onclick = closeModal;
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    $('confirmCancel').onclick = () => {
+      confirmOverlay.classList.remove('open');
+        releaseBodyScroll();
+        restoreFocus();
+      pendingDeleteId = null;
+      pendingClearAll = false;
+      pendingImport = null;
+      $('confirmOk').textContent = 'Удалить';
+      $('confirmOk').className = 'btn btn-danger';
+    };
+    $('confirmOk').onclick = () => {
+      if (pendingReplayId) {
+        const rid = pendingReplayId;
+        pendingReplayId = null;
+        const gi = games.findIndex(x => x.id === rid);
+        confirmOverlay.classList.remove('open');
+        releaseBodyScroll();
+        restoreFocus();
+        $('confirmOk').textContent = 'Удалить';
+        $('confirmOk').className = 'btn btn-danger';
+        if (gi >= 0) {
+          const cur = games[gi];
+          const now = new Date();
+          cur.replays = (cur.replays || 0) + 1;
+          cur.lastReplayAt = now.toISOString();
+          cur.completedAt = now.toISOString().slice(0, 10);
+          cur.updatedAt = now.toISOString();
+          save();
+          fillDetail(cur, rid);
+          render();
+          toast('Перепрохождение #' + cur.replays, '↻');
+        }
+        return;
+      }
+      if (pendingImport) {
+        const pack = pendingImport;
+        pendingImport = null;
+        let added = 0, merged = 0;
+        if (Array.isArray(pack)) {
+          games.push(...pack);
+          added = pack.length;
+        } else {
+          (pack.toMerge || []).forEach(({ id, patch }) => {
+            const g = games.find(x => x.id === id);
+            if (!g) return;
+            Object.assign(g, patch);
+            g.updatedAt = new Date().toISOString();
+            merged++;
+          });
+          if (pack.toAdd && pack.toAdd.length) {
+            games.push(...pack.toAdd);
+            added = pack.toAdd.length;
+          }
+        }
+        confirmOverlay.classList.remove('open');
+        releaseBodyScroll();
+        restoreFocus();
+        $('confirmOk').textContent = 'Удалить';
+        $('confirmOk').className = 'btn btn-danger';
+        save(); render();
+        const bits = [];
+        if (added) bits.push('+' + added);
+        if (merged) bits.push('дополнено ' + merged);
+        toast(bits.length ? ('Импорт: ' + bits.join(', ')) : 'Импорт выполнен', '✓');
+        return;
+      }
+      doDelete();
+    };
+    confirmOverlay.addEventListener('click', e => {
+      if (e.target === confirmOverlay) {
+        confirmOverlay.classList.remove('open');
+        releaseBodyScroll();
+        restoreFocus();
+        pendingDeleteId = null;
+        pendingClearAll = false;
+        pendingImport = null;
+        pendingReplayId = null;
+        $('confirmOk').textContent = 'Удалить';
+        $('confirmOk').className = 'btn btn-danger';
+      }
+    });
+    $('addLink').onclick = () => addLinkRow();
+
+    $('platformGrid').addEventListener('click', e => {
+      const chip = e.target.closest('.platform-chip');
+      if (!chip) return;
+      const p = chip.dataset.p;
+      if (selectedPlatforms.includes(p)) {
+        selectedPlatforms = selectedPlatforms.filter(x => x !== p);
+        chip.classList.remove('active');
+      } else {
+        selectedPlatforms.push(p);
+        chip.classList.add('active');
+      }
+    });
+
+    $('filterChips').addEventListener('click', e => {
+      const chip = e.target.closest('.filter-chip');
+      if (!chip) return;
+      if (chip.dataset.fav === '1') {
+        favOnly = !favOnly;
+        chip.classList.toggle('active', favOnly);
+      } else {
+        document.querySelectorAll('#filterChips .filter-chip:not([data-fav])').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        activePlatformFilter = chip.dataset.p;
+      }
+      persistUI();
+      render();
+    });
+
+    grid.addEventListener('click', e => {
+      const editBtn = e.target.closest('[data-edit]');
+      const delBtn = e.target.closest('[data-del]');
+      const favBtn = e.target.closest('[data-fav]');
+      if (editBtn) { openModal(editBtn.dataset.edit); return; }
+      if (delBtn) { askDelete(delBtn.dataset.del); return; }
+      if (favBtn) { toggleFavorite(favBtn.dataset.fav); return; }
+      if (e.target.closest('a, button, input')) return;
+      const card = e.target.closest('.card');
+      if (card) openDetail(card.dataset.id);
+    });
+
+    searchEl.addEventListener('input', () => {
+      syncSearchClear();
+      clearTimeout(renderTimer);
+      renderTimer = setTimeout(render, 120);
+    });
+    
+
+    $('detailClose').onclick = closeDetail;
+    $('detailOverlay').addEventListener('click', e => {
+      if (e.target === $('detailOverlay')) closeDetail();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (confirmOverlay.classList.contains('open')) {
+          confirmOverlay.classList.remove('open');
+        releaseBodyScroll();
+        restoreFocus();
+          pendingDeleteId = null;
+          pendingClearAll = false;
+        } else if ($('statsOverlay').classList.contains('open')) closeStats();
+        else if ($('detailOverlay').classList.contains('open')) closeDetail();
+        else if (overlay.classList.contains('open')) closeModal();
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); searchEl.focus(); }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'n' && !overlay.classList.contains('open')) {
+        e.preventDefault();
+        openModal();
+      }
+    });
+
+    try {
+      localStorage.setItem('__sg_t', '1');
+      localStorage.removeItem('__sg_t');
+    } catch {
+      setTimeout(() => toast('localStorage недоступен', '!'), 300);
+    }
+
+    /* —— Micro-interactions —— */
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = matchMedia('(pointer: fine)').matches;
+
+    // Ripple на кнопках
+    document.addEventListener('pointerdown', e => {
+      const btn = e.target.closest('.btn');
+      if (!btn || reduceMotion) return;
+      const rect = btn.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height) * 1.15;
+      const span = document.createElement('span');
+      span.className = 'ripple';
+      span.style.width = span.style.height = size + 'px';
+      span.style.left = (e.clientX - rect.left - size / 2) + 'px';
+      span.style.top = (e.clientY - rect.top - size / 2) + 'px';
+      btn.appendChild(span);
+      span.addEventListener('animationend', () => span.remove());
+    });
+
+    // Parallax glow за курсором
+    if (!reduceMotion && finePointer) {
+      const glow = document.querySelector('.bg-glow');
+      let gx = 18, gy = 10, tx = 18, ty = 10, raf = 0;
+      const tick = () => {
+        gx += (tx - gx) * 0.08;
+        gy += (ty - gy) * 0.08;
+        glow.style.setProperty('--gx', gx.toFixed(2) + '%');
+        glow.style.setProperty('--gy', gy.toFixed(2) + '%');
+        raf = 0;
+        if (Math.abs(tx - gx) > 0.05 || Math.abs(ty - gy) > 0.05) raf = requestAnimationFrame(tick);
+      };
+      window.addEventListener('pointermove', e => {
+        tx = (e.clientX / innerWidth) * 100;
+        ty = (e.clientY / innerHeight) * 100;
+        if (!raf) raf = requestAnimationFrame(tick);
+      }, { passive: true });
+    }
+
+    // 3D tilt — сглаживание через lerp, без рывков
+    if (!reduceMotion && finePointer) {
+      const tilt = {
+        el: null,
+        cx: 0, cy: 0, cz: 0, cs: 1,
+        tx: 0, ty: 0, tz: 0, ts: 1,
+        raf: 0,
+        max: 6.5,   // угол наклона (было ~14 — слишком резко)
+        lift: 3,    // подъём px
+        scale: 1.012,
+        ease: 0.1   // чем меньше — тем плавнее
+      };
+      const applyTilt = () => {
+        if (!tilt.el) return;
+        tilt.el.style.setProperty('--tilt-x', tilt.cx.toFixed(2) + 'deg');
+        tilt.el.style.setProperty('--tilt-y', tilt.cy.toFixed(2) + 'deg');
+        tilt.el.style.setProperty('--tilt-z', (-tilt.cz).toFixed(2) + 'px');
+        tilt.el.style.setProperty('--tilt-s', tilt.cs.toFixed(4));
+      };
+      const tickTilt = () => {
+        const k = tilt.ease;
+        tilt.cx += (tilt.tx - tilt.cx) * k;
+        tilt.cy += (tilt.ty - tilt.cy) * k;
+        tilt.cz += (tilt.tz - tilt.cz) * k;
+        tilt.cs += (tilt.ts - tilt.cs) * k;
+        applyTilt();
+        const done =
+          Math.abs(tilt.tx - tilt.cx) < 0.02 &&
+          Math.abs(tilt.ty - tilt.cy) < 0.02 &&
+          Math.abs(tilt.tz - tilt.cz) < 0.02 &&
+          Math.abs(tilt.ts - tilt.cs) < 0.0005;
+        if (!done) tilt.raf = requestAnimationFrame(tickTilt);
+        else tilt.raf = 0;
+      };
+      const requestTilt = () => {
+        if (!tilt.raf) tilt.raf = requestAnimationFrame(tickTilt);
+      };
+      const setTarget = (card, x, y, z, s) => {
+        if (tilt.el && tilt.el !== card) {
+          const prev = tilt.el;
+          prev.style.setProperty('--tilt-x', '0deg');
+          prev.style.setProperty('--tilt-y', '0deg');
+          prev.style.setProperty('--tilt-z', '0px');
+          prev.style.setProperty('--tilt-s', '1');
+          // не обнуляем cx мгновенно — иначе рывок; стартуем от 0 для новой
+          tilt.cx = tilt.cy = tilt.cz = 0;
+          tilt.cs = 1;
+        }
+        tilt.el = card;
+        tilt.tx = x; tilt.ty = y; tilt.tz = z; tilt.ts = s;
+        requestTilt();
+      };
+      const releaseTilt = () => {
+        if (!tilt.el) return;
+        tilt.tx = tilt.ty = tilt.tz = 0;
+        tilt.ts = 1;
+        requestTilt();
+        const el = tilt.el;
+        // после доезжания до нуля — отпустить ссылку
+        const wait = () => {
+          if (Math.abs(tilt.cx) < 0.03 && Math.abs(tilt.cy) < 0.03) {
+            if (tilt.el === el) tilt.el = null;
+            return;
+          }
+          requestAnimationFrame(wait);
+        };
+        requestAnimationFrame(wait);
+      };
+      grid.addEventListener('pointermove', e => {
+        const card = e.target.closest('.card');
+        if (!card) { releaseTilt(); return; }
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        setTarget(card, -py * tilt.max * 2, px * tilt.max * 2, tilt.lift, tilt.scale);
+      }, { passive: true });
+      grid.addEventListener('pointerleave', releaseTilt);
+    }
+
+    const steamSyncBtn = $('steamSyncBtn');
+    if (steamSyncBtn) steamSyncBtn.onclick = () => batchSteamEnrich();
+
+
+    // Загрузка: IndexedDB → localStorage fallback
+    setScore(Number(ratingInput.value) || 8);
+    syncSearchClear();
+    loadGamesAsync().then(list => {
+      games = list;
+      render();
+const ric = window.requestIdleCallback || (cb => setTimeout(() => cb(), 600));
+      ric(() => {
+        const need = games.filter(g => g.coverUrl && !g.accentColor).slice(0, 12);
+        let pending = need.length;
+        if (!pending) return;
+        need.forEach(g => {
+          extractAccentFromUrl(g.coverUrl).then(c => {
+            if (c) {
+              g.accentColor = c;
+              const el = grid.querySelector(`.card[data-id="${CSS.escape(g.id)}"]`);
+              if (el) {
+                el.style.setProperty('--card-accent', c);
+                el.classList.add('has-accent');
+              }
+            }
+            pending--;
+            if (pending === 0) save();
+          });
+        });
+      });
+    });
+  })();
+  </script>
+
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
+  </script>
+</body>
+</html>
