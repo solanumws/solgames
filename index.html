@@ -8,13 +8,14 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="SolGames — личный трекер оценок и отзывов на видеоигры" />
   <title>SolGames</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2032%2032%22%3E%20%20%3Cdefs%3E%20%20%20%20%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%20%20%20%20%20%20%3Cstop%20offset=%220%%22%20stop-color=%22%238b5cf6%22/%3E%20%20%20%20%20%20%3Cstop%20offset=%22100%%22%20stop-color=%22%236d28d9%22/%3E%20%20%20%20%3C/linearGradient%3E%20%20%3C/defs%3E%20%20%3Crect%20width=%2232%22%20height=%2232%22%20rx=%228%22%20fill=%22url(%23g)%22/%3E%20%20%3Crect%20x=%226%22%20y=%2212%22%20width=%2220%22%20height=%2212%22%20rx=%224%22%20fill=%22white%22%20fill-opacity=%22.92%22/%3E%20%20%3Cpath%20d=%22M11%2015v6M8%2018h6%22%20stroke=%22%236d28d9%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22/%3E%20%20%3Ccircle%20cx=%2221%22%20cy=%2216.5%22%20r=%221.4%22%20fill=%22%236d28d9%22/%3E%20%20%3Ccircle%20cx=%2223.5%22%20cy=%2218.5%22%20r=%221.4%22%20fill=%22%236d28d9%22/%3E%20%20%3Ccircle%20cx=%2218.5%22%20cy=%2218.5%22%20r=%221.4%22%20fill=%22%236d28d9%22/%3E%20%20%3Ccircle%20cx=%2221%22%20cy=%2220.5%22%20r=%221.4%22%20fill=%22%236d28d9%22/%3E%3C/svg%3E" type="image/svg+xml" />
+  <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABLElEQVR42u2XTQrCMBCFk1JPYHoFwbUgvYLiETyDG7FLrW7deRaR3kRwI3Vr3LoROq5SdeiktT9JQQOBNoR5Xzsv0w7fTu8sYwBrZnC84EICJoRxfJ4F0LQ4BuHvACbFPyBcABvanx6wSQDYhBbeQAtS8OsAJVOw3HclXttMbuLr0hiOrrkEq4OQZZ9wPZZaKAcSYLpZRVzB6+I7AMCoGUaerCPPYeRJSqN2E876p4e63h17nbTiEDqFAajA1B51r/ZSOg4AY9TUBc4Tx+uUhrE6UDkFTQFoTwGV8ywPUL5IPVD1FFACeE9jp6DooEBLpSDwL6IOqMC/CEojtxQvhnEliMUwFrr4fD44W/0e//+IXEiAW+oLWGv6AtWrmSbh2AMmIV7NKZLkptvzJ9I4j6faqqA3AAAAAElFTkSuQmCC" type="image/png" sizes="32x32" />
+  <link rel="icon" href="./icon-192.png" sizes="192x192" type="image/png" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
   <link rel="manifest" href="./manifest.webmanifest" />
-  <link rel="icon" href="./icons/icon-192.png" sizes="192x192" />
-  <link rel="icon" href="./icons/icon-512.png" sizes="512x512" />
-  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
   <meta name="mobile-web-app-capable" content="yes" />
 
-  <link rel="apple-touch-icon" href="data:image/png;base64,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" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
@@ -1036,6 +1037,23 @@
     const $ = id => document.getElementById(id);
     const grid = $('grid');
     const searchEl = $('search');
+
+    // Телефон: не открывать клавиатуру при входе на сайт
+    if (matchMedia('(pointer: coarse)').matches) {
+      window.addEventListener('load', () => {
+        const a = document.activeElement;
+        if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.tagName === 'SELECT')) {
+          a.blur();
+        }
+      });
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          const a = document.activeElement;
+          if (a && a.id === 'search') a.blur();
+        }
+      });
+    }
+
     const searchBox = $('searchBox');
     const searchClear = $('searchClear');
     function syncSearchClear() {
@@ -1046,7 +1064,9 @@
         searchEl.value = '';
         syncSearchClear();
         render();
-        try { searchEl.focus(); } catch {}
+        if (!matchMedia('(pointer: coarse)').matches) {
+          try { searchEl.focus(); } catch {}
+        }
       });
     }
 
@@ -2298,7 +2318,9 @@
         searchEl.value = text;
         syncSearchClear();
         render();
-        try { searchEl.focus(); } catch {}
+        if (!matchMedia('(pointer: coarse)').matches) {
+          try { searchEl.focus(); } catch {}
+        }
       });
     }
 
