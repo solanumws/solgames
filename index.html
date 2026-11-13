@@ -21,7 +21,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <style>
     :root, [data-theme="dark"] {
-      /* нейтрали с лёгким холодным подтоном — спокойнее, чем чистый zinc */
+      
       --bg: #0b0b0f;
       --surface: #121218;
       --surface-2: #1a1a22;
@@ -31,12 +31,12 @@
       --text: #f4f4f5;
       --text-2: #a0a0ab;
       --text-3: #6f6f7b;
-      /* акцент: чуть мягче, меньше «кислоты» */
+      
       --accent: #8b5cf6;
       --accent-2: #a78bfa;
       --accent-soft: rgba(139,92,246,.14);
       --accent-glow: rgba(139,92,246,.22);
-      /* рейтинги — приглушённые, в одной тональности с UI */
+      
       --green: #4ade80;
       --green-soft: rgba(74,222,128,.12);
       --yellow: #fbbf24;
@@ -121,7 +121,7 @@
       transition:background-position .4s ease-out;
       will-change:background;
     }
-    /* едва заметный шум поверх UI — убирает «пластик» */
+    
     body::after{
       content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.022;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -132,7 +132,6 @@
       html[data-theme="system"] body::after{opacity:.018}
     }
 
-    /* Custom scrollbar */
     *{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--text-3) 55%,transparent) transparent}
     ::-webkit-scrollbar{width:8px;height:8px}
     ::-webkit-scrollbar-track{background:transparent}
@@ -177,7 +176,6 @@
       width:1px;height:22px;background:var(--border);margin:0 2px;
     }
 
-    /* Buttons + ripple */
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:6px;
       padding:9px 14px;border-radius:11px;font-family:inherit;font-size:.84rem;font-weight:600;
@@ -223,7 +221,7 @@
     .theme-btn{position:relative}
     html[data-theme="light"] .theme-btn .ic-sun,
     html[data-theme="dark"] .theme-btn .ic-moon{opacity:1;transform:scale(1) rotate(0)}
-    /* system: показываем иконку фактической темы */
+    
     html[data-theme="system"] .theme-btn .ic-auto{opacity:1;transform:scale(1) rotate(0)}
     @media (prefers-color-scheme: dark){
       html[data-theme="system"] .theme-btn .ic-auto{opacity:0}
@@ -308,7 +306,7 @@
       border-color:color-mix(in srgb,var(--card-accent) 40%,var(--border));
       box-shadow:var(--shadow),0 0 0 1px color-mix(in srgb,var(--card-accent) 20%,transparent),0 10px 32px color-mix(in srgb,var(--card-accent) 22%,transparent);
     }
-    /* появление через отдельные свойства — transform остаётся свободным для tilt */
+    
     @keyframes cardIn{
       from{opacity:0;transform:perspective(900px) translateY(14px) scale(.97)}
       to{opacity:1;transform:perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(var(--tilt-z)) scale(var(--tilt-s))}
@@ -614,7 +612,7 @@
     .to-top:hover svg{transform:translateY(-2px)}
     @media (max-width:480px){.to-top{right:14px;bottom:18px;width:42px;height:42px;border-radius:12px}}
 
-    /* Stats panel — чистый, воздушный */
+    /* Stats */
     .stats-panel .modal{max-width:420px}
     .stats-body{padding:8px 20px 22px}
     .stats-hero{
@@ -759,7 +757,7 @@
       .score-pill{min-width:40px;min-height:40px}
     }
 
-    /* Мобилка / тач: только лёгкие анимации (opacity + короткий translate), без 3D и blur */
+    /* Mobile / touch */
     @media (max-width:768px), (pointer:coarse){
       .bg-glow{opacity:.45;animation:none!important}
       .card{
@@ -781,7 +779,7 @@
       .detail-body > *{animation:none!important;opacity:1!important;transform:none!important}
       .toast{transition:transform .22s ease, opacity .22s ease}
       .btn{transition:background .15s ease, color .15s ease, opacity .15s ease}
-      .btn::after{display:none!important} /* без ripple-слоя на таче, если вдруг есть */
+      .btn::after{display:none!important} 
       *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
     }
     @keyframes cardInMobile{
@@ -1038,7 +1036,7 @@
     const grid = $('grid');
     const searchEl = $('search');
 
-    // Телефон: не открывать клавиатуру при входе на сайт
+    // mobile: avoid keyboard on load
     if (matchMedia('(pointer: coarse)').matches) {
       window.addEventListener('load', () => {
         const a = document.activeElement;
@@ -1150,7 +1148,6 @@
     let sortMode = 'rating-desc'; // date-desc | rating-desc | rating-asc | year-desc | year-asc
     let pendingSteamMeta = null;
 
-
     const IDB_NAME = 'solgames-db';
     const IDB_STORE = 'kv';
     let _idb = null;
@@ -1220,7 +1217,7 @@
       try {
         const fromIdb = await idbGet('games');
         if (Array.isArray(fromIdb) && fromIdb.length) {
-          // если в LS свежее/больше — не затираем молча
+          
           if (fromLs.length > fromIdb.length) {
             idbSet('games', fromLs).catch(() => {});
             return fromLs;
@@ -1236,10 +1233,8 @@
       return loadGamesFromLS();
     }
 
-
     
-    
-    /** Перевод частых EN-тегов Steam (SteamSpy / EN fallback) на русский */
+    /** EN → RU tags */
     function translateTag(s) {
       const map = {
         'action': 'Экшен', 'adventure': 'Приключения', 'rpg': 'RPG', 'strategy': 'Стратегия',
@@ -1284,7 +1279,7 @@
 
     function tagDedupeKey(s) {
       s = String(s || '').toLowerCase().trim();
-      // сводим синонимы к одному ключу, чтобы «Экшен» + «Action» / «Экшены» не дублились
+      
       const syn = {
         'action': 'action', 'экшен': 'action', 'экшены': 'action', 'экшеные': 'action',
         'adventure': 'adventure', 'приключения': 'adventure', 'приключенческие игры': 'adventure',
@@ -1376,7 +1371,7 @@
       return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
     }
 
-    /* Theme — default system */
+    /* Theme */
     function systemDark() {
       return matchMedia('(prefers-color-scheme: dark)').matches;
     }
@@ -1390,7 +1385,7 @@
       $('themeBtn').title = 'Тема: ' + labels[mode];
     }
     function cycleTheme() {
-      // Один клик: светлая ↔ тёмная (системная только как стартовый дефолт)
+      
       const mode = document.documentElement.getAttribute('data-theme') || 'system';
       const effective = mode === 'system' ? (systemDark() ? 'dark' : 'light') : mode;
       const next = effective === 'dark' ? 'light' : 'dark';
@@ -1472,7 +1467,7 @@
     toTopBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    // клик по логотипу — тоже наверх
+    
     document.querySelector('.brand')?.addEventListener('click', e => {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1500,7 +1495,7 @@
       } catch { return str; }
     }
 
-    /** Цвет оценки 1–10: плавный HSL от красного → жёлтого → зелёного (без «грязной» середины RGB) */
+    /** Rating color 1–10 */
     function ratingStyle(r) {
       const n = Math.max(1, Math.min(10, Math.round(Number(r) || 0)));
       // hue: 1→8° (red), 5→48° (amber), 10→142° (green)
@@ -1548,7 +1543,6 @@
       return null;
     }
 
-    /** Имя из slug в URL Steam — мгновенно, без сети */
     function nameFromSteamUrl(str) {
       if (!str) return null;
       const m = String(str).match(/store\.steampowered\.com\/app\/\d+\/([^/?#]+)/i);
@@ -1562,9 +1556,9 @@
 
     const steamMetaCache = new Map();
 
-    /** CORS-прокси: несколько источников параллельно */
+    /** JSON via CORS proxy */
     async function fetchJsonProxied(targetUrl, ms = 7000) {
-      // Быстрый путь: cors.dev (обычно <400ms). Остальные — только fallback.
+      
       const tryOne = async (fn, timeout) => {
         const ac = new AbortController();
         const timer = setTimeout(() => ac.abort(), timeout);
@@ -1611,7 +1605,6 @@
       }
     }
 
-    
     async function fetchJsonDirect(url, ms = 4000) {
       const ac = new AbortController();
       const timer = setTimeout(() => ac.abort(), ms);
@@ -1648,8 +1641,76 @@
       return (y >= 1970 && y <= maxY) ? y : null;
     }
 
-    // Оригинальный год: Wikidata (P577) + EN Wikipedia. Напрямую (у API есть CORS), прокси — запасной.
-    async function fetchOriginalReleaseYear(name) {
+    function pickYearNearSteam(steamYear, candidates) {
+      const years = [...new Set((candidates || []).filter(y => y >= 1970 && y <= new Date().getFullYear() + 1))];
+      if (!years.length) return null;
+      if (!steamYear) return Math.min(...years);
+      let best = years[0];
+      let bestDist = Math.abs(best - steamYear);
+      for (const y of years) {
+        const d = Math.abs(y - steamYear);
+        if (d < bestDist) { best = y; bestDist = d; }
+      }
+      return best;
+    }
+
+    // true when Steam date is likely a store relist (e.g. EA 2020), not the original release
+    function looksLikeStoreRelist(steamYear) {
+      return steamYear === 2020 || steamYear === 2019;
+    }
+
+    async function fetchYearsFromWikidata(title) {
+      const searchUrl =
+        'https://www.wikidata.org/w/api.php?action=wbsearchentities&search=' +
+        encodeURIComponent(title) +
+        '&language=en&type=item&limit=8&format=json&origin=*';
+      let data;
+      try { data = await fetchJsonDirect(searchUrl, 3500); }
+      catch { data = await fetchJsonProxied(searchUrl.replace('&origin=*', ''), 3500); }
+      const hits = (data && data.search) || [];
+      if (!hits.length) return [];
+
+      // Prefer video-game hits; keep several for classic vs reboot (DOOM 1993 / 2016)
+      const ranked = hits.slice().sort((a, b) => {
+        const da = String(a.description || '').toLowerCase();
+        const db = String(b.description || '').toLowerCase();
+        const sa = /video ?game|videogame/.test(da) ? 0 : 1;
+        const sb = /video ?game|videogame/.test(db) ? 0 : 1;
+        return sa - sb;
+      });
+
+      const ids = [];
+      for (const h of ranked) {
+        if (ids.length >= 5) break;
+        if (h && h.id && !ids.includes(h.id)) ids.push(h.id);
+      }
+      if (!ids.length) return [];
+
+      const entUrl =
+        'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=' + ids.join('|') +
+        '&props=claims|labels&languages=en&format=json&origin=*';
+      let ent;
+      try { ent = await fetchJsonDirect(entUrl, 4000); }
+      catch { ent = await fetchJsonProxied(entUrl.replace('&origin=*', ''), 4000); }
+      if (!ent || !ent.entities) return [];
+
+      const years = [];
+      for (const id of ids) {
+        const claims = ent.entities[id] && ent.entities[id].claims;
+        const p577 = claims && claims.P577;
+        if (!p577) continue;
+        // description often embeds year: "2016 video game"
+        const descYear = String((ranked.find(h => h.id === id) || {}).description || '').match(/\b((?:19|20)\d{2})\b/);
+        if (descYear) years.push(+descYear[1]);
+        for (const c of p577) {
+          const time = c && c.mainsnak && c.mainsnak.datavalue && c.mainsnak.datavalue.value && c.mainsnak.datavalue.value.time;
+          if (time && /^\+[0-9]{4}/.test(time)) years.push(+time.slice(1, 5));
+        }
+      }
+      return years;
+    }
+
+    async function fetchOriginalReleaseYear(name, steamYear) {
       const clean = normalizeGameTitle(name);
       if (!clean || clean.length < 2) return null;
 
@@ -1667,42 +1728,30 @@
         titles.push(v);
       }
 
-      // 1) Wikidata — структурированная дата публикации
+      const allYears = [];
       for (const title of titles) {
         try {
-          const searchUrl =
-            'https://www.wikidata.org/w/api.php?action=wbsearchentities&search=' +
-            encodeURIComponent(title) +
-            '&language=en&type=item&limit=5&format=json&origin=*';
-          let data;
-          try { data = await fetchJsonDirect(searchUrl, 3500); }
-          catch { data = await fetchJsonProxied(searchUrl.replace('&origin=*', ''), 3500); }
-          const hits = (data && data.search) || [];
-          if (!hits.length) continue;
-          let id = hits[0].id;
-          for (const h of hits) {
-            const desc = String(h.description || '').toLowerCase();
-            if (desc.includes('video game') || desc.includes('videogame')) { id = h.id; break; }
-          }
-          const entUrl =
-            'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=' + id +
-            '&props=claims&format=json&origin=*';
-          let ent;
-          try { ent = await fetchJsonDirect(entUrl, 3500); }
-          catch { ent = await fetchJsonProxied(entUrl.replace('&origin=*', ''), 3500); }
-          const claims = ent && ent.entities && ent.entities[id] && ent.entities[id].claims;
-          const p577 = claims && claims.P577;
-          if (!p577 || !p577.length) continue;
-          const years = [];
-          for (const c of p577) {
-            const time = c && c.mainsnak && c.mainsnak.datavalue && c.mainsnak.datavalue.value && c.mainsnak.datavalue.value.time;
-            if (time && /^\+[0-9]{4}/.test(time)) years.push(+time.slice(1, 5));
-          }
-          if (years.length) return Math.min(...years);
+          const ys = await fetchYearsFromWikidata(title);
+          allYears.push(...ys);
+          if (allYears.length >= 3) break;
         } catch { /* next */ }
       }
 
-      // 2) Wikipedia EN summary
+      if (allYears.length) {
+        const picked = pickYearNearSteam(steamYear, allYears);
+        if (picked) {
+          // Reboot/remake: Steam 2016, wiki also has 1993 → keep near Steam (2016)
+          // Store relist: Steam 2020, wiki 2014 → closest is 2014 (only candidate) OK
+          if (!steamYear) return picked;
+          if (Math.abs(picked - steamYear) <= 2) return picked;
+          if (picked < steamYear && looksLikeStoreRelist(steamYear)) return picked;
+          if (picked === steamYear) return picked;
+          // Otherwise do not jump to a much older namesake (DOOM 1993 vs 2016)
+          return steamYear;
+        }
+      }
+
+      // Wikipedia only as weak fallback
       for (const title of titles) {
         try {
           const path = encodeURIComponent(title.replace(/ /g, '_'));
@@ -1712,7 +1761,10 @@
           catch { data = await fetchJsonProxied(url, 3500); }
           if (!data || data.type === 'disambiguation') continue;
           const y = yearFromWikiExtract(data.extract || data.description || '');
-          if (y) return y;
+          if (!y) continue;
+          if (!steamYear) return y;
+          if (Math.abs(y - steamYear) <= 2) return y;
+          if (y < steamYear && looksLikeStoreRelist(steamYear)) return y;
         } catch { /* next */ }
       }
       return null;
@@ -1761,7 +1813,7 @@
         if (!out.releaseYear && data.release_date && /^\d{4}/.test(String(data.release_date))) {
           out.releaseYear = parseInt(String(data.release_date).slice(0, 4), 10) || null;
         }
-        // RU — предпочтительно; EN — если игра недоступна в РФ (нет года/тегов/имени)
+        // Prefer RU tags/description
         if (lang === 'russian') {
           const tags = takeTagsFromStore(data);
           if (tags) out.genres = tags;
@@ -1773,7 +1825,7 @@
               .slice(0, 280);
           }
         } else {
-          // EN: добираем только пробелы
+          // EN: fill gaps only
           if (!out.genres && Array.isArray(data.genres)) {
             const tags = data.genres
               .map(g => translateTag(typeof g === 'string' ? g : (g && g.description)))
@@ -1792,10 +1844,7 @@
         return !!(out.name || out.releaseYear || out.genres);
       };
 
-      // Важно: полный appdetails БЕЗ filters на 18+ часто даёт 403.
-      // С filters=basic,genres — данные есть (~300ms), в т.ч. adult (Subverse и т.д.).
-      // Как делают трекеры/Playnite: storefront API + узкий filters, не HTML store page.
-      // Параллельно RU store + SteamSpy (без cc=RU — с ним ломаются год/жанры).
+      // Steam appdetails (filters) + SteamSpy in parallel
       const FILTERS = 'basic,genres,release_date';
       const storeUrl =
         'https://store.steampowered.com/api/appdetails?appids=' + id +
@@ -1816,7 +1865,7 @@
         }
       }
 
-      // US только если RU не дал критичное
+      // EN fallback if RU incomplete
       if (!out.name || !out.releaseYear || !out.genres) {
         try {
           const json = await fetchJsonProxied(
@@ -1831,7 +1880,7 @@
         } catch { /* ignore */ }
       }
 
-      // SteamSpy: имя, год, добор тегов до 3
+      // SteamSpy fallback
       if (spyRes.status === 'fulfilled' && spyRes.value && typeof spyRes.value === 'object') {
         const spy = spyRes.value;
         if (!out.name && spy.name) out.name = spy.name;
@@ -1866,21 +1915,14 @@
         gotDetails = true;
       }
 
-      // Cover always from CDN if API didn't give header_image
       if (!out.coverUrl) out.coverUrl = coverUrlFor(id);
       if (out.genres) out.genres = cleanTags(out.genres) || out.genres.slice(0, 3);
 
-      // Уточнение года: Steam у переизданий (EA и др.) часто пишет дату выхода *в Steam* (2020),
-      // а не оригинальный релиз. Wikipedia summary даёт реальный год (DA2→2011, DAI→2014).
+      // Adjust year: fix store relists, but keep remakes/reboots (DOOM 2016 ≠ 1993)
       if (out.name) {
         try {
-          const wikiYear = await fetchOriginalReleaseYear(out.name);
-          if (wikiYear) {
-            // Всегда берём более ранний год (оригинал), а не дату переиздания в Steam
-            if (!out.releaseYear || wikiYear < out.releaseYear) {
-              out.releaseYear = wikiYear;
-            }
-          }
+          const adjusted = await fetchOriginalReleaseYear(out.name, out.releaseYear);
+          if (adjusted) out.releaseYear = adjusted;
         } catch { /* keep steam year */ }
       }
 
@@ -1937,7 +1979,7 @@
     async function applySteamGame(appid, name) {
       const source = titleInput.value;
       const id = String(appid);
-      // Instant optimistic cover (Akamai CDN — CORS-friendly when image exists)
+      
       coverInput.value = coverUrlFor(id);
       if (!selectedPlatforms.includes('PC')) {
         selectedPlatforms.push('PC');
@@ -2127,7 +2169,6 @@
         }
       });
 
-      // Фильтры: показываем только платформы, которые реально есть в библиотеке
       const usedPlats = new Set();
       games.forEach(g => (g.platforms || []).forEach(p => usedPlats.add(p)));
       document.querySelectorAll('#filterChips .filter-chip[data-p]').forEach(c => {
@@ -2198,7 +2239,7 @@
             </div>
           </article>`;
       }).join('');
-      // кэш: если картинка уже в памяти — сразу убираем скелетон
+      
       grid.querySelectorAll('.card-cover').forEach(img => {
         if (img.complete && img.naturalWidth) {
           img.classList.add('loaded');
@@ -2207,8 +2248,6 @@
       });
     }
 
-
-    /* Focus trap + scroll lock for modals */
     let _focusBack = null;
     let _trapHandler = null;
 
@@ -2377,7 +2416,7 @@
         rev.classList.add('empty');
       }
       $('detailLinks').innerHTML = (g.links || []).filter(Boolean).map(linkChipHtml).join('');
-      // перезапуск плавного появления блоков
+      
       const body = document.querySelector('#detailOverlay .detail-body');
       if (body) {
         body.querySelectorAll(':scope > *').forEach((el, i) => {
@@ -2427,7 +2466,6 @@
       trapFocus(ov);
     }
 
-    
     const detailTagsEl = $('detailTags');
     if (detailTagsEl) {
       detailTagsEl.addEventListener('click', e => {
@@ -2470,7 +2508,7 @@
         if (i === -1) return;
         const g = games[i];
         if (meta.releaseYear) g.releaseYear = meta.releaseYear;
-        // Полная замена тегов, без склейки со старыми дублями
+        
         if (meta.genres && meta.genres.length) g.genres = cleanTags(meta.genres) || meta.genres.slice(0, 3);
         else g.genres = cleanTags(g.genres);
         if (meta.steamShort) g.steamShort = meta.steamShort;
@@ -2494,7 +2532,7 @@
       if (!g.coverUrl) return true;
       const tags = g.genres || [];
       if (!tags.length) return true;
-      // английские / дубли / мусор после старых версий
+      
       const joined = tags.join(' | ');
       if (/[A-Za-z]{4,}/.test(joined) && !/(RPG|JRPG|FPS|MMO|MOBA|PvP|PvE)/i.test(joined)) return true;
       if (tags.length !== new Set(tags.map(x => String(x).toLowerCase())).size) return true;
@@ -2520,11 +2558,11 @@
           try {
             const meta = await resolveSteamApp(appid, null, true);
             if (meta.releaseYear) g.releaseYear = meta.releaseYear;
-            // теги всегда перезаписываем свежими (без склейки со старыми)
+            
             if (meta.genres && meta.genres.length) g.genres = cleanTags(meta.genres) || meta.genres.slice(0, 3);
             else g.genres = cleanTags(g.genres);
             if (meta.steamShort) g.steamShort = meta.steamShort;
-            // обложку тоже обновляем, если Steam отдал
+            
             if (meta.coverUrl) g.coverUrl = meta.coverUrl;
             if (meta.name && (!g.title || /^https?:/i.test(g.title) || /^\d{3,10}$/.test(g.title))) {
               g.title = meta.name;
@@ -2586,7 +2624,7 @@
       return pluralRu(n, 'игру', 'игры', 'игр');
     }
     function phraseDeleteGames(n) {
-      // «Будет удалена 1 игра» / «Будут удалены 2 игры» / «Будет удалено 5 игр»
+      
       const abs = Math.abs(n) % 100;
       const n1 = abs % 10;
       const noun = pluralRu(n, 'игра', 'игры', 'игр');
@@ -2605,7 +2643,7 @@
       return `обновлено ${n} ${noun}`;
     }
     function dateSortKey(g) {
-      // полное время: lastReplayAt / updatedAt важнее голой даты YYYY-MM-DD
+      
       if (g.lastReplayAt) return String(g.lastReplayAt);
       if (g.updatedAt && g.completedAt && String(g.updatedAt).slice(0, 10) === String(g.completedAt).slice(0, 10)) {
         return String(g.updatedAt);
@@ -2681,7 +2719,7 @@
         if (title !== 'Загрузка…') titleInput.focus();
         return;
       }
-      // Если в названии всё ещё ссылка/AppID — сначала подтянуть Steam, не сохранять сырой URL
+      // resolve Steam URL/AppID before save
       const detected = parseSteamInput(title);
       if (detected && (isSteamUrl(title) || /^\d{3,10}$/.test(title))) {
         toast('Подождите, данные из Steam…', '…');
@@ -2770,7 +2808,6 @@
       p.lastExport = Date.now();
       savePrefs(p);
     }
-
 
     function openStats() {
       const body = $('statsBody');
@@ -3071,7 +3108,6 @@
       clearTimeout(renderTimer);
       renderTimer = setTimeout(render, 120);
     });
-    
 
     $('detailClose').onclick = closeDetail;
     $('detailOverlay').addEventListener('click', e => {
@@ -3104,11 +3140,11 @@
       setTimeout(() => toast('localStorage недоступен', '!'), 300);
     }
 
-    /* —— Micro-interactions —— */
+    /* Interactions */
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const finePointer = matchMedia('(pointer: fine)').matches;
 
-    // Ripple на кнопках
+    
     document.addEventListener('pointerdown', e => {
       const btn = e.target.closest('.btn');
       if (!btn || reduceMotion) return;
@@ -3123,7 +3159,6 @@
       span.addEventListener('animationend', () => span.remove());
     });
 
-    // Parallax glow за курсором
     if (!reduceMotion && finePointer) {
       const glow = document.querySelector('.bg-glow');
       let gx = 18, gy = 10, tx = 18, ty = 10, raf = 0;
@@ -3142,17 +3177,17 @@
       }, { passive: true });
     }
 
-    // 3D tilt — сглаживание через lerp, без рывков
+    // 3D tilt
     if (!reduceMotion && finePointer) {
       const tilt = {
         el: null,
         cx: 0, cy: 0, cz: 0, cs: 1,
         tx: 0, ty: 0, tz: 0, ts: 1,
         raf: 0,
-        max: 6.5,   // угол наклона (было ~14 — слишком резко)
-        lift: 3,    // подъём px
+        max: 6.5,   
+        lift: 3,    
         scale: 1.012,
-        ease: 0.1   // чем меньше — тем плавнее
+        ease: 0.1   
       };
       const applyTilt = () => {
         if (!tilt.el) return;
@@ -3186,7 +3221,7 @@
           prev.style.setProperty('--tilt-y', '0deg');
           prev.style.setProperty('--tilt-z', '0px');
           prev.style.setProperty('--tilt-s', '1');
-          // не обнуляем cx мгновенно — иначе рывок; стартуем от 0 для новой
+          
           tilt.cx = tilt.cy = tilt.cz = 0;
           tilt.cs = 1;
         }
@@ -3200,7 +3235,7 @@
         tilt.ts = 1;
         requestTilt();
         const el = tilt.el;
-        // после доезжания до нуля — отпустить ссылку
+        
         const wait = () => {
           if (Math.abs(tilt.cx) < 0.03 && Math.abs(tilt.cy) < 0.03) {
             if (tilt.el === el) tilt.el = null;
@@ -3224,8 +3259,7 @@
     const steamSyncBtn = $('steamSyncBtn');
     if (steamSyncBtn) steamSyncBtn.onclick = () => batchSteamEnrich();
 
-
-    // Загрузка: IndexedDB → localStorage fallback
+    // load library
     setScore(Number(ratingInput.value) || 8);
     syncSearchClear();
     loadGamesAsync().then(list => {
