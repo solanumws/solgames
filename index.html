@@ -2650,46 +2650,27 @@
       return Number.isFinite(t) ? t : 0;
     }
 
-    function activityDay(g) {
-      const raw = g.lastReplayAt || g.completedAt || g.createdAt || '';
-      const s = String(raw);
-      if (!s) return '';
-      if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
-      const ms = parseTime(s);
-      if (!ms) return '';
-      const d = new Date(ms);
-      const y = d.getFullYear();
-      const mo = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      return y + '-' + mo + '-' + day;
-    }
-
-    function activityTime(g) {
-      return Math.max(
-        parseTime(g.lastReplayAt),
-        parseTime(g.updatedAt),
-        parseTime(g.createdAt),
-        parseTime(g.completedAt)
-      );
+    // «Новые / Старые» = порядок добавления в библиотеку (createdAt), НЕ дата прохождения
+    function addedTime(g) {
+      return parseTime(g.createdAt) || parseTime(g.updatedAt) || 0;
     }
 
     function cmpDateDesc(a, b) {
-      const da = activityDay(a);
-      const db = activityDay(b);
-      if (da !== db) return db.localeCompare(da);
-      const ta = activityTime(a);
-      const tb = activityTime(b);
-      if (tb !== ta) return tb - ta;
+      const ta = addedTime(a);
+      const tb = addedTime(b);
+      if (tb !== ta) return tb - ta; // позже добавил — выше
       return String(b.id || '').localeCompare(String(a.id || ''));
     }
 
     function cmpDateAsc(a, b) {
-      const r = cmpDateDesc(a, b);
-      return r === 0 ? String(a.id || '').localeCompare(String(b.id || '')) : -r;
+      const ta = addedTime(a);
+      const tb = addedTime(b);
+      if (ta !== tb) return ta - tb;
+      return String(a.id || '').localeCompare(String(b.id || ''));
     }
 
     function dateSortKey(g) {
-      return activityDay(g) + '\t' + String(activityTime(g)).padStart(15, '0');
+      return String(addedTime(g)).padStart(15, '0');
     }
 
     function phraseReplays(n) {
