@@ -1612,7 +1612,46 @@
     }
 
     
+    async function fetchWikiReleaseYear(name) {
+      if (!name || name.length < 2) return null;
+      const clean = String(name)
+        .replace(/™|®|©/g, '')
+        .replace(/\s*[-–—:]\s*(Ultimate|GOTY|Game of the Year|Definitive|Complete|Enhanced|Remastered|Legendary|Standard)?\s*Edition\b.*$/i, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (!clean) return null;
+      const tryTitles = [
+        clean,
+        clean.replace(/\s+II\b/i, ' 2').replace(/\s+III\b/i, ' 3').replace(/\s+IV\b/i, ' 4'),
+        clean.replace(/\s+2\b/, ' II').replace(/\s+3\b/, ' III')
+      ];
+      const seen = new Set();
+      for (const title of tryTitles) {
+        const key = title.toLowerCase();
+        if (seen.has(key)) continue;
+        seen.add(key);
+        try {
+          const url = 'https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(title.replace(/ /g, '_'));
+          const data = await fetchJsonProxied(url, 3500);
+          if (!data || data.type === 'disambiguation') continue;
+          if (data.title && /may refer to/i.test(String(data.extract || ''))) continue;
+          const extract = String(data.extract || data.description || '');
+          if (!extract) continue;
+          let m = extract.match(/\b(?:is|was)\s+(?:an?\s+)?((?:19|20)\d{2})\b/i);
+          if (!m) m = extract.match(/\breleased\s+in\s+((?:19|20)\d{2})\b/i);
+          if (!m) m = extract.match(/\b((?:19|20)\d{2})\s+(?:action|adventure|role-playing|RPG|shooter|video game|open-world)/i);
+          if (m) {
+            const y = +m[1];
+            const maxY = new Date().getFullYear() + 1;
+            if (y >= 1970 && y <= maxY) return y;
+          }
+        } catch { /* try next */ }
+      }
+      return null;
+    }
+
     async function resolveSteamApp(appid, sourceStr, force = false) {
+
       const id = String(appid);
       if (!force && steamMetaCache.has(id)) {
         const c = steamMetaCache.get(id);
@@ -1648,8 +1687,8 @@
         if (data.header_image) out.coverUrl = data.header_image;
         const rd = data.release_date && data.release_date.date;
         if (rd) {
-          const ym = String(rd).match(/(20\d{2}|19\d{2})/);
-          if (ym) out.releaseYear = +ym[1];
+          const years = String(rd).match(/(?:19|20)\d{2}/g);
+          if (years && years.length) out.releaseYear = +years[years.length - 1];
         }
         if (!out.releaseYear && data.release_date && /^\d{4}/.test(String(data.release_date))) {
           out.releaseYear = parseInt(String(data.release_date).slice(0, 4), 10) || null;
@@ -1762,6 +1801,19 @@
       // Cover always from CDN if API didn't give header_image
       if (!out.coverUrl) out.coverUrl = coverUrlFor(id);
       if (out.genres) out.genres = cleanTags(out.genres) || out.genres.slice(0, 3);
+
+      // Уточнение года: Steam у переизданий (EA и др.) часто пишет дату выхода *в Steam* (2020),
+      // а не оригинальный релиз. Wikipedia summary даёт реальный год (DA2→2011, DAI→2014).
+      if (out.name) {
+        try {
+          const wikiYear = await fetchWikiReleaseYear(out.name);
+          if (wikiYear) {
+            if (!out.releaseYear || wikiYear < out.releaseYear) {
+              out.releaseYear = wikiYear;
+            }
+          }
+        } catch { /* keep steam year */ }
+      }
 
       if (steamMetaCache.size > 200) {
         const oldest = steamMetaCache.keys().next().value;
