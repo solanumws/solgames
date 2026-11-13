@@ -1612,40 +1612,108 @@
     }
 
     
-    async function fetchWikiReleaseYear(name) {
-      if (!name || name.length < 2) return null;
-      const clean = String(name)
+    async function fetchJsonDirect(url, ms = 4000) {
+      const ac = new AbortController();
+      const timer = setTimeout(() => ac.abort(), ms);
+      try {
+        const r = await fetch(url, {
+          signal: ac.signal,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!r.ok) throw new Error('direct ' + r.status);
+        return await r.json();
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    function normalizeGameTitle(name) {
+      return String(name || '')
         .replace(/™|®|©/g, '')
-        .replace(/\s*[-–—:]\s*(Ultimate|GOTY|Game of the Year|Definitive|Complete|Enhanced|Remastered|Legendary|Standard)?\s*Edition\b.*$/i, '')
+        .replace(/\s*[-–—:]\s*(Ultimate|GOTY|Game of the Year|Definitive|Complete|Enhanced|Remastered|Legendary|Standard|Deluxe|Gold|Premium)?\s*Edition\b.*$/i, '')
+        .replace(/\s*\(.*?\)\s*$/g, '')
         .replace(/\s+/g, ' ')
         .trim();
-      if (!clean) return null;
-      const tryTitles = [
+    }
+
+    function yearFromWikiExtract(extract) {
+      if (!extract) return null;
+      const text = String(extract);
+      let m = text.match(/\b(?:is|was)\s+(?:an?\s+)?((?:19|20)\d{2})\b/i);
+      if (!m) m = text.match(/\breleased\s+in\s+((?:19|20)\d{2})\b/i);
+      if (!m) m = text.match(/\b((?:19|20)\d{2})\s+(?:action|adventure|role-playing|RPG|shooter|video game|open-world)/i);
+      if (!m) return null;
+      const y = +m[1];
+      const maxY = new Date().getFullYear() + 1;
+      return (y >= 1970 && y <= maxY) ? y : null;
+    }
+
+    // Оригинальный год: Wikidata (P577) + EN Wikipedia. Напрямую (у API есть CORS), прокси — запасной.
+    async function fetchOriginalReleaseYear(name) {
+      const clean = normalizeGameTitle(name);
+      if (!clean || clean.length < 2) return null;
+
+      const variants = [
         clean,
         clean.replace(/\s+II\b/i, ' 2').replace(/\s+III\b/i, ' 3').replace(/\s+IV\b/i, ' 4'),
         clean.replace(/\s+2\b/, ' II').replace(/\s+3\b/, ' III')
       ];
       const seen = new Set();
-      for (const title of tryTitles) {
-        const key = title.toLowerCase();
-        if (seen.has(key)) continue;
-        seen.add(key);
+      const titles = [];
+      for (const v of variants) {
+        const k = v.toLowerCase();
+        if (seen.has(k)) continue;
+        seen.add(k);
+        titles.push(v);
+      }
+
+      // 1) Wikidata — структурированная дата публикации
+      for (const title of titles) {
         try {
-          const url = 'https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(title.replace(/ /g, '_'));
-          const data = await fetchJsonProxied(url, 3500);
-          if (!data || data.type === 'disambiguation') continue;
-          if (data.title && /may refer to/i.test(String(data.extract || ''))) continue;
-          const extract = String(data.extract || data.description || '');
-          if (!extract) continue;
-          let m = extract.match(/\b(?:is|was)\s+(?:an?\s+)?((?:19|20)\d{2})\b/i);
-          if (!m) m = extract.match(/\breleased\s+in\s+((?:19|20)\d{2})\b/i);
-          if (!m) m = extract.match(/\b((?:19|20)\d{2})\s+(?:action|adventure|role-playing|RPG|shooter|video game|open-world)/i);
-          if (m) {
-            const y = +m[1];
-            const maxY = new Date().getFullYear() + 1;
-            if (y >= 1970 && y <= maxY) return y;
+          const searchUrl =
+            'https://www.wikidata.org/w/api.php?action=wbsearchentities&search=' +
+            encodeURIComponent(title) +
+            '&language=en&type=item&limit=5&format=json&origin=*';
+          let data;
+          try { data = await fetchJsonDirect(searchUrl, 3500); }
+          catch { data = await fetchJsonProxied(searchUrl.replace('&origin=*', ''), 3500); }
+          const hits = (data && data.search) || [];
+          if (!hits.length) continue;
+          let id = hits[0].id;
+          for (const h of hits) {
+            const desc = String(h.description || '').toLowerCase();
+            if (desc.includes('video game') || desc.includes('videogame')) { id = h.id; break; }
           }
-        } catch { /* try next */ }
+          const entUrl =
+            'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=' + id +
+            '&props=claims&format=json&origin=*';
+          let ent;
+          try { ent = await fetchJsonDirect(entUrl, 3500); }
+          catch { ent = await fetchJsonProxied(entUrl.replace('&origin=*', ''), 3500); }
+          const claims = ent && ent.entities && ent.entities[id] && ent.entities[id].claims;
+          const p577 = claims && claims.P577;
+          if (!p577 || !p577.length) continue;
+          const years = [];
+          for (const c of p577) {
+            const time = c && c.mainsnak && c.mainsnak.datavalue && c.mainsnak.datavalue.value && c.mainsnak.datavalue.value.time;
+            if (time && /^\+[0-9]{4}/.test(time)) years.push(+time.slice(1, 5));
+          }
+          if (years.length) return Math.min(...years);
+        } catch { /* next */ }
+      }
+
+      // 2) Wikipedia EN summary
+      for (const title of titles) {
+        try {
+          const path = encodeURIComponent(title.replace(/ /g, '_'));
+          const url = 'https://en.wikipedia.org/api/rest_v1/page/summary/' + path;
+          let data;
+          try { data = await fetchJsonDirect(url, 3500); }
+          catch { data = await fetchJsonProxied(url, 3500); }
+          if (!data || data.type === 'disambiguation') continue;
+          const y = yearFromWikiExtract(data.extract || data.description || '');
+          if (y) return y;
+        } catch { /* next */ }
       }
       return null;
     }
@@ -1806,8 +1874,9 @@
       // а не оригинальный релиз. Wikipedia summary даёт реальный год (DA2→2011, DAI→2014).
       if (out.name) {
         try {
-          const wikiYear = await fetchWikiReleaseYear(out.name);
+          const wikiYear = await fetchOriginalReleaseYear(out.name);
           if (wikiYear) {
+            // Всегда берём более ранний год (оригинал), а не дату переиздания в Steam
             if (!out.releaseYear || wikiYear < out.releaseYear) {
               out.releaseYear = wikiYear;
             }
@@ -1890,7 +1959,7 @@
 
       titleInput.disabled = true;
       try {
-        const meta = await resolveSteamApp(id, source, false);
+        const meta = await resolveSteamApp(id, source, true);
         if (meta.name) titleInput.value = meta.name;
         else if (!slugName) titleInput.value = `Steam App ${id}`;
 
