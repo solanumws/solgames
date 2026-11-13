@@ -1145,7 +1145,7 @@
         let searchTimer = null;
     let suggestIndex = -1;
     let renderTimer = null;
-    let sortMode = 'rating-desc'; // date-desc | rating-desc | rating-asc | year-desc | year-asc
+    let sortMode = 'date-desc'; // date-desc | date-asc | rating-desc | rating-asc | year-desc | year-asc
     let pendingSteamMeta = null;
 
     const IDB_NAME = 'solgames-db';
@@ -2147,25 +2147,27 @@
       const numOr = (v, fb = -1) => (v == null || v === '' || Number.isNaN(+v) ? fb : +v);
       list.sort((a, b) => {
         switch (sortMode) {
-          case 'rating-desc':
-            return (numOr(b.rating) - numOr(a.rating)) || String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
-          case 'rating-asc':
-            return (numOr(a.rating, 99) - numOr(b.rating, 99)) || String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
-          case 'year-desc':
-            return (numOr(b.releaseYear, 0) - numOr(a.releaseYear, 0)) || String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
-          case 'year-asc':
-            return (numOr(a.releaseYear, 9999) - numOr(b.releaseYear, 9999)) || String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
-          case 'date-asc': {
-            const ka = dateSortKey(a);
-            const kb = dateSortKey(b);
-            return ka.localeCompare(kb);
+          case 'rating-desc': {
+            const d = numOr(b.rating) - numOr(a.rating);
+            return d !== 0 ? d : cmpDateDesc(a, b);
           }
+          case 'rating-asc': {
+            const d = numOr(a.rating, 99) - numOr(b.rating, 99);
+            return d !== 0 ? d : cmpDateDesc(a, b);
+          }
+          case 'year-desc': {
+            const d = numOr(b.releaseYear, 0) - numOr(a.releaseYear, 0);
+            return d !== 0 ? d : cmpDateDesc(a, b);
+          }
+          case 'year-asc': {
+            const d = numOr(a.releaseYear, 9999) - numOr(b.releaseYear, 9999);
+            return d !== 0 ? d : cmpDateDesc(a, b);
+          }
+          case 'date-asc':
+            return cmpDateAsc(a, b);
           case 'date-desc':
-          default: {
-            const ka = dateSortKey(a);
-            const kb = dateSortKey(b);
-            return kb.localeCompare(ka);
-          }
+          default:
+            return cmpDateDesc(a, b);
         }
       });
 
@@ -2642,17 +2644,52 @@
       if (n1 > 1 && n1 < 5) return `обновлены ${n} ${noun}`;
       return `обновлено ${n} ${noun}`;
     }
+    function parseTime(v) {
+      if (v == null || v === '') return 0;
+      const t = Date.parse(String(v));
+      return Number.isFinite(t) ? t : 0;
+    }
+
+    function activityDay(g) {
+      const raw = g.lastReplayAt || g.completedAt || g.createdAt || '';
+      const s = String(raw);
+      if (!s) return '';
+      if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+      const ms = parseTime(s);
+      if (!ms) return '';
+      const d = new Date(ms);
+      const y = d.getFullYear();
+      const mo = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return y + '-' + mo + '-' + day;
+    }
+
+    function activityTime(g) {
+      return Math.max(
+        parseTime(g.lastReplayAt),
+        parseTime(g.updatedAt),
+        parseTime(g.createdAt),
+        parseTime(g.completedAt)
+      );
+    }
+
+    function cmpDateDesc(a, b) {
+      const da = activityDay(a);
+      const db = activityDay(b);
+      if (da !== db) return db.localeCompare(da);
+      const ta = activityTime(a);
+      const tb = activityTime(b);
+      if (tb !== ta) return tb - ta;
+      return String(b.id || '').localeCompare(String(a.id || ''));
+    }
+
+    function cmpDateAsc(a, b) {
+      const r = cmpDateDesc(a, b);
+      return r === 0 ? String(a.id || '').localeCompare(String(b.id || '')) : -r;
+    }
+
     function dateSortKey(g) {
-      
-      if (g.lastReplayAt) return String(g.lastReplayAt);
-      if (g.updatedAt && g.completedAt && String(g.updatedAt).slice(0, 10) === String(g.completedAt).slice(0, 10)) {
-        return String(g.updatedAt);
-      }
-      if (g.completedAt) {
-        const c = String(g.completedAt);
-        return c.length <= 10 ? c + 'T12:00:00.000Z' : c;
-      }
-      return String(g.createdAt || '');
+      return activityDay(g) + '\t' + String(activityTime(g)).padStart(15, '0');
     }
 
     function phraseReplays(n) {
@@ -2782,7 +2819,8 @@
             steamShort: steam.steamShort || null,
             accentColor: data.accentColor || null,
             favorite: false,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
           });
         }
         titleInput.dataset.releaseYear = '';
@@ -2890,11 +2928,17 @@
       if (!btn) return;
       const key = btn.dataset.sort;
       if (key === 'date') {
-        sortMode = sortMode === 'date-desc' ? 'date-asc' : 'date-desc';
+        if (sortMode === 'date-desc') sortMode = 'date-asc';
+        else if (sortMode === 'date-asc') sortMode = 'date-desc';
+        else sortMode = 'date-desc';
       } else if (key === 'rating') {
-        sortMode = sortMode === 'rating-desc' ? 'rating-asc' : 'rating-desc';
+        if (sortMode === 'rating-desc') sortMode = 'rating-asc';
+        else if (sortMode === 'rating-asc') sortMode = 'rating-desc';
+        else sortMode = 'rating-desc';
       } else if (key === 'year') {
-        sortMode = sortMode === 'year-desc' ? 'year-asc' : 'year-desc';
+        if (sortMode === 'year-desc') sortMode = 'year-asc';
+        else if (sortMode === 'year-asc') sortMode = 'year-desc';
+        else sortMode = 'year-desc';
       }
       syncSortPills();
       persistUI();
