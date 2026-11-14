@@ -1521,17 +1521,15 @@
 
     function cleanTags(list) {
       if (!Array.isArray(list)) return null;
-      const skip = /steam|cloud|achievements|trading|workshop|leaderboard|controller|remote|stats|vr support|family|captions|includes level|mods|single-?player|single player|для одного|один игрок|local multiplayer|full controller|partial controller|remote play|local co-op|online co-op|одиночная/i;
-      const allowAbbrev = /^(RPG|JRPG|FPS|TPS|MMO|MOBA|2D|3D|VR|AR|PvP|PvE)$/i;
+      const skip = /steam|cloud|achievements|trading|workshop|leaderboard|controller|remote play|remote|stats|vr support|family sharing|captions|includes level|mods?|single-?player|single player|для одного|один игрок|local multiplayer|full controller|partial controller|local co-op|online co-op|одиночная|multi-?player|кооператив|совместная игра|in-app purchases|valve anti-cheat|\bvac\b|tracked controller|steam input|steam deck|steam timeline/i;
       const out = [];
       const seen = new Set();
       list.forEach(raw => {
         let s = String(raw || '').trim();
-        if (!s || skip.test(s)) return;
+        if (!s || s.length < 2 || skip.test(s)) return;
         if (typeof translateTag === 'function') s = translateTag(s);
         if (!s || skip.test(s)) return;
-        const hasCyr = /[а-яё]/i.test(s);
-        if (!hasCyr && !allowAbbrev.test(s)) return;
+        // keep RU, abbreviations, and meaningful EN tags (Steam user tags)
         const key = tagDedupeKey(s);
         if (!key || seen.has(key)) return;
         seen.add(key);
@@ -2268,6 +2266,56 @@
       }
     }
 
+    async function fetchTextProxied(targetUrl, ms = 8000) {
+      const ac = new AbortController();
+      const timer = setTimeout(() => ac.abort(), ms);
+      try {
+        const r = await fetch('https://proxy.cors.dev/' + targetUrl, { signal: ac.signal });
+        if (!r.ok) throw new Error('http ' + r.status);
+        return await r.text();
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    async function fetchSteamUserTags(appid) {
+      const id = String(appid);
+      const urls = [
+        'https://store.steampowered.com/app/' + id + '/?l=russian',
+        'https://store.steampowered.com/apphoverpublic/' + id + '?l=russian'
+      ];
+      const tags = [];
+      const push = (s) => {
+        s = String(s || '').replace(/\s+/g, ' ').trim();
+        if (!s || s.length < 2 || s.length > 48) return;
+        if (tags.some(x => x.toLowerCase() === s.toLowerCase())) return;
+        tags.push(s);
+      };
+      for (let u = 0; u < urls.length && tags.length < 8; u++) {
+        try {
+          const html = await fetchTextProxied(urls[u], 7000);
+          if (!html) continue;
+          // class="app_tag">Tag Name</a>
+          const re = /class=["'][^"']*app_tag[^"']*["'][^>]*>([^<]+)</gi;
+          let m;
+          while ((m = re.exec(html)) && tags.length < 24) {
+            push(m[1]);
+          }
+          // JSON-ish: "name":"Хоррор"
+          if (tags.length < 5) {
+            const re2 = /"name"\s*:\s*"([^"]{2,40})"/g;
+            while ((m = re2.exec(html)) && tags.length < 24) {
+              // only likely tag context — skip if looks like game title dump
+              const s = m[1];
+              if (/[а-яё]/i.test(s) || /^(Action|Adventure|RPG|Horror|Indie|Strategy)/i.test(s)) push(s);
+            }
+          }
+        } catch (e) { /* try next */ }
+      }
+      return tags.length ? tags : null;
+    }
+
+
     async function fetchJsonDirect(url, ms = 4000) {
       const ac = new AbortController();
       const timer = setTimeout(() => ac.abort(), ms);
@@ -2554,7 +2602,7 @@
         } catch { /* ignore */ }
       }
 
-      // SteamSpy: full tag list for genresAll
+      // SteamSpy tags
       if (spyRes.status === 'fulfilled' && spyRes.value && typeof spyRes.value === 'object') {
         const spy = spyRes.value;
         if (!out.name && spy.name) out.name = spy.name;
@@ -2574,7 +2622,6 @@
           if (pool.some(x => x.toLowerCase() === tag.toLowerCase())) return;
           pool.push(tag);
         };
-        // existing store tags first
         (out.genresAll || out.genres || []).forEach(pushRaw);
         if (spy.tags && typeof spy.tags === 'object') {
           Object.keys(spy.tags)
@@ -2591,13 +2638,38 @@
         gotDetails = true;
       }
 
+      // User tags from Steam store page (the real tags on the store)
+      try {
+        const userTags = await fetchSteamUserTags(id);
+        if (userTags && userTags.length) {
+          const pool = [];
+          const pushRaw = (raw) => {
+            const cleaned = cleanTags([raw]);
+            if (!cleaned || !cleaned.length) return;
+            const tag = cleaned[0];
+            if (pool.some(x => x.toLowerCase() === tag.toLowerCase())) return;
+            pool.push(tag);
+          };
+          // Prefer store user tags first (as on Steam page)
+          userTags.forEach(pushRaw);
+          (out.genresAll || out.genres || []).forEach(pushRaw);
+          if (pool.length) {
+            out.genresAll = pool;
+            out.genres = pool.slice(0, 3);
+          }
+        }
+      } catch (e) { /* ignore */ }
+
       if (out.genresAll && out.genresAll.length) {
-        out.genres = out.genresAll.slice(0, 3);
+        const all = cleanTags(out.genresAll) || out.genresAll;
+        out.genresAll = all;
+        out.genres = all.slice(0, 3);
       } else if (out.genres && out.genres.length) {
-        out.genresAll = out.genres.slice();
+        const all = cleanTags(out.genres) || out.genres;
+        out.genresAll = all;
+        out.genres = all.slice(0, 3);
       }
       if (!out.coverUrl) out.coverUrl = coverUrlFor(id);
-      if (out.genres) out.genres = cleanTags(out.genres) || out.genres.slice(0, 3);
 
       // Adjust year: fix store relists, but keep remakes/reboots (DOOM 2016 ≠ 1993)
       if (out.name) {
