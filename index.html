@@ -434,15 +434,24 @@
       transition:background .15s,color .15s,border-color .15s;
     }
     .card-tags-more:hover{color:var(--text);border-color:var(--border-hover)}
-    .card-tag.is-extra{display:none}
-    .card-tags.is-open .card-tag.is-extra{display:inline-flex}
-    .detail-tags{margin:8px 0 4px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
-    .detail-tags .card-tags-more{
-      cursor:pointer;border:1px solid var(--border);background:var(--surface-2);
-      color:var(--accent);border-radius:999px;padding:3px 9px;
-      font:inherit;font-size:.72rem;font-weight:700;
+    .detail-tags-wrap{margin:6px 0 2px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+    .detail-tags-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+    .detail-tags-extra{display:none;flex-wrap:wrap;gap:5px;align-items:center}
+    .detail-tags-wrap.is-open .detail-tags-extra{display:flex}
+    .tags-expand-btn{
+      display:inline-flex !important;align-items:center;justify-content:center;
+      margin-top:2px;padding:7px 14px;border-radius:999px;
+      border:1px solid color-mix(in srgb,var(--accent) 45%,var(--border));
+      background:color-mix(in srgb,var(--accent) 14%,var(--surface-2));
+      color:var(--accent);font:inherit;font-size:.8rem;font-weight:700;
+      letter-spacing:-.01em;cursor:pointer;line-height:1.2;
+      transition:background .15s,border-color .15s,transform .12s;
     }
-    .detail-tags .card-tags-more:hover{background:var(--surface)}
+    .tags-expand-btn:hover{
+      background:color-mix(in srgb,var(--accent) 22%,var(--surface-2));
+      border-color:color-mix(in srgb,var(--accent) 60%,var(--border));
+    }
+    .tags-expand-btn:active{transform:scale(.97)}
     .card-review.is-empty{color:var(--text-3);font-style:italic;font-weight:400}
     .card-links{display:flex;flex-wrap:wrap;gap:5px}
     .link-chip{
@@ -3170,22 +3179,40 @@
       $('detailTitle').textContent = g.title || '';
       const detailTags = $('detailTags');
       if (detailTags) {
-        const all = (g.genresAll && g.genresAll.length) ? g.genresAll : (g.genres || []);
-        if (!all.length) { detailTags.innerHTML = ''; detailTags.hidden = true; }
-        else {
+        // merge genresAll + genres, unique, preserve order
+        const seen = new Set();
+        const all = [];
+        const pushTag = (tg) => {
+          const s = String(tg || '').trim();
+          if (!s) return;
+          const k = s.toLowerCase();
+          if (seen.has(k)) return;
+          seen.add(k);
+          all.push(s);
+        };
+        (Array.isArray(g.genresAll) ? g.genresAll : []).forEach(pushTag);
+        (Array.isArray(g.genres) ? g.genres : []).forEach(pushTag);
+
+        if (!all.length) {
+          detailTags.innerHTML = '';
+          detailTags.hidden = true;
+        } else {
           detailTags.hidden = false;
+          detailTags.className = 'detail-tags-wrap';
           const head = all.slice(0, 3).map(tg => '<span class="card-tag">' + esc(tg) + '</span>').join('');
-          const extra = all.slice(3).map(tg => '<span class="card-tag is-extra">' + esc(tg) + '</span>').join('');
-          const more = all.length > 3 ? '<button type="button" class="card-tags-more" id="detailTagsMore" aria-expanded="false">+' + (all.length - 3) + '</button>' : '';
-          detailTags.className = 'card-tags detail-tags';
-          detailTags.innerHTML = head + extra + more;
-          const btn = $('detailTagsMore');
-          if (btn) btn.onclick = (ev) => {
-            ev.stopPropagation();
-            const open = detailTags.classList.toggle('is-open');
-            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-            btn.textContent = open ? 'Скрыть' : ('+' + (all.length - 3));
-          };
+          const rest = all.slice(3);
+          let extra = '';
+          let more = '';
+          if (rest.length) {
+            extra = '<span class="detail-tags-extra">' +
+              rest.map(tg => '<span class="card-tag">' + esc(tg) + '</span>').join('') +
+              '</span>';
+            more = '<button type="button" class="tags-expand-btn" data-tags-expand="1" aria-expanded="false">' +
+              'Ещё ' + rest.length + '</button>';
+          }
+          detailTags.innerHTML =
+            '<div class="detail-tags-row">' + head + '</div>' +
+            extra + more;
         }
       }
       const hasR = g.status !== 'plan' && g.rating != null && g.rating >= 1;
@@ -3272,7 +3299,18 @@
     const detailTagsEl = $('detailTags');
     if (detailTagsEl) {
       detailTagsEl.addEventListener('click', e => {
-        const tag = e.target.closest('.tag');
+        const exp = e.target.closest('[data-tags-expand]');
+        if (exp) {
+          e.preventDefault();
+          e.stopPropagation();
+          const wrap = exp.closest('.detail-tags-wrap') || detailTagsEl;
+          const open = wrap.classList.toggle('is-open');
+          exp.setAttribute('aria-expanded', open ? 'true' : 'false');
+          const n = wrap.querySelectorAll('.detail-tags-extra .card-tag').length;
+          exp.textContent = open ? 'Скрыть метки' : ('Ещё ' + n);
+          return;
+        }
+        const tag = e.target.closest('.card-tag, .tag');
         if (!tag) return;
         const text = (tag.textContent || '').trim();
         if (!text) return;
