@@ -423,11 +423,9 @@
     }
     .card-tags{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:2px}
     .card-tag{
-      font-size:.72rem;font-weight:650;color:var(--text);
-      padding:4px 10px;border-radius:999px;
-      border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border));
-      background:color-mix(in srgb,var(--accent) 12%,var(--surface-2));
-      letter-spacing:-.01em;
+      font-size:.68rem;font-weight:600;color:var(--text-3);
+      padding:3px 8px;border-radius:999px;border:1px solid var(--border);
+      background:var(--surface-2);letter-spacing:-.01em;
     }
     .card-tags-more{
       border:1px solid var(--border);background:var(--surface-2);color:var(--text-2);
@@ -436,25 +434,24 @@
       transition:background .15s,color .15s,border-color .15s;
     }
     .card-tags-more:hover{color:var(--text);border-color:var(--border-hover)}
-    .detail-tags-wrap{margin:6px 0 2px}
-    .detail-tags-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-    .detail-tags-extra{display:none;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+    .detail-tags-wrap{margin:6px 0 2px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+    .detail-tags-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+    .detail-tags-extra{display:none;flex-wrap:wrap;gap:5px;align-items:center}
     .detail-tags-wrap.is-open .detail-tags-extra{display:flex}
     .tags-expand-btn{
       display:inline-flex !important;align-items:center;justify-content:center;
-      width:28px;height:28px;padding:0;border-radius:999px;
-      border:1px solid color-mix(in srgb,var(--accent) 40%,var(--border));
+      margin-top:2px;padding:7px 14px;border-radius:999px;
+      border:1px solid color-mix(in srgb,var(--accent) 45%,var(--border));
       background:color-mix(in srgb,var(--accent) 14%,var(--surface-2));
-      color:var(--accent);font:inherit;font-size:1.05rem;font-weight:700;
-      line-height:1;cursor:pointer;
-      transition:background .15s,border-color .15s,transform .12s,color .15s;
+      color:var(--accent);font:inherit;font-size:.8rem;font-weight:700;
+      letter-spacing:-.01em;cursor:pointer;line-height:1.2;
+      transition:background .15s,border-color .15s,transform .12s;
     }
     .tags-expand-btn:hover{
-      background:color-mix(in srgb,var(--accent) 24%,var(--surface-2));
-      border-color:color-mix(in srgb,var(--accent) 65%,var(--border));
+      background:color-mix(in srgb,var(--accent) 22%,var(--surface-2));
+      border-color:color-mix(in srgb,var(--accent) 60%,var(--border));
     }
-    .tags-expand-btn:active{transform:scale(.95)}
-    .tags-expand-btn[aria-expanded="true"]{color:var(--text);background:var(--surface-2)}
+    .tags-expand-btn:active{transform:scale(.97)}
     .card-review.is-empty{color:var(--text-3);font-style:italic;font-weight:400}
     .card-links{display:flex;flex-wrap:wrap;gap:5px}
     .link-chip{
@@ -865,13 +862,87 @@
       color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border));
     }
     .card.is-plan{border-style:dashed}
+    .recs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;padding:8px 0 16px}
+    .rec-card{
+      position:relative;
+      background:var(--surface-2);border:1px solid var(--border);border-radius:14px;overflow:hidden;
+      display:flex;flex-direction:column;
+      transition:border-color .2s,transform .25s var(--spring),opacity .28s ease,max-height .3s ease;
+      animation:recIn .4s both;
+    }
+    .rec-card:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+    .rec-card.is-leaving{opacity:0;transform:scale(.92);pointer-events:none}
     @keyframes recIn{
       from{opacity:0;transform:translateY(10px) scale(.96)}
       to{opacity:1;transform:none}
     }
+    .rec-cover{aspect-ratio:460/215;background:var(--surface-3);object-fit:cover;width:100%;display:block}
     .rec-body{padding:10px;display:flex;flex-direction:column;gap:8px;flex:1}
     .rec-title{font-size:.8rem;font-weight:600;line-height:1.25;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .rec-meta{font-size:.72rem;color:var(--text-3)}
+    .rec-actions{display:flex;gap:6px;margin-top:auto}
+    .rec-actions .btn{flex:1}
+    .rec-dismiss{
+      position:absolute;top:8px;right:8px;z-index:2;
+      width:28px;height:28px;border-radius:50%;
+      border:1px solid color-mix(in srgb,var(--border) 80%,transparent);
+      background:color-mix(in srgb,var(--surface) 82%,transparent);
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      color:var(--text-2);cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:.85rem;line-height:1;
+      transition:background .15s,color .15s,transform .15s,border-color .15s;
+    }
+    .rec-dismiss:hover{background:color-mix(in srgb,#ef4444 18%,var(--surface));color:#ef4444;border-color:color-mix(in srgb,#ef4444 40%,var(--border));transform:scale(1.06)}
+    .recs-empty{text-align:center;padding:28px 16px;color:var(--text-3);font-size:.9rem}
+    .recs-hint{font-size:.8rem;color:var(--text-3);margin:0 0 8px;line-height:1.45}
+    #recsBtn{font-weight:700;gap:8px;padding:9px 14px}
+    #recsBtn svg{flex-shrink:0}
+    .recs-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 12px}
+    .recs-toolbar .btn{font-size:.78rem;padding:7px 11px}
+    .recs-grid:has(.recs-loading){
+      display:block;
+    }
+    .recs-loading{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:14px;padding:28px 12px 20px;min-height:200px;width:100%;
+      box-sizing:border-box;text-align:center;
+      grid-column:1/-1;
+    }
+    .recs-spinner{
+      width:42px;height:42px;border-radius:50%;
+      border:3px solid color-mix(in srgb,var(--accent) 18%,var(--border));
+      border-top-color:var(--accent);
+      animation:recsSpin .75s linear infinite;
+    }
     @keyframes recsSpin{to{transform:rotate(360deg)}}
+    .recs-loading-text{
+      font-size:.86rem;font-weight:600;color:var(--text-2);
+      letter-spacing:-.01em;
+    }
+    .recs-loading-sub{font-size:.75rem;color:var(--text-3)}
+    .recs-skel-grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+      gap:12px;width:100%;max-width:100%;margin-top:12px;
+      text-align:left;
+    }
+    .recs-skel{
+      border-radius:14px;overflow:hidden;border:1px solid var(--border);
+      background:var(--surface-2);
+    }
+    .recs-skel-cover{
+      aspect-ratio:460/215;
+      background:linear-gradient(90deg,var(--surface-2) 0%,var(--surface-3) 45%,var(--surface-2) 90%);
+      background-size:200% 100%;
+      animation:recsShimmer 1.15s ease-in-out infinite;
+    }
+    .recs-skel-line{
+      height:10px;margin:10px 10px 0;border-radius:6px;
+      background:linear-gradient(90deg,var(--surface-2) 0%,var(--surface-3) 45%,var(--surface-2) 90%);
+      background-size:200% 100%;
+      animation:recsShimmer 1.15s ease-in-out infinite;
+    }
+    .recs-skel-line.short{width:45%;margin-bottom:12px}
     @keyframes recsShimmer{
       0%{background-position:100% 0}
       100%{background-position:-100% 0}
@@ -937,6 +1008,10 @@
             <span>Добавить</span>
           </button>
           
+          <button class="btn btn-secondary" id="recsBtn" title="Рекомендации" aria-label="Рекомендации">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.6 4.8L18.5 9l-4.9 1.6L12 15.5l-1.6-4.9L5.5 9l4.9-1.2L12 3z"/><path d="M19 14.5l.7 2.1 2.1.7-2.1.7-.7 2.1-.7-2.1-2.1-.7 2.1-.7.7-2.1z"/></svg>
+            <span>Идеи</span>
+          </button>
           <button class="btn btn-secondary btn-icon" id="statsBtn" title="Статистика" aria-label="Статистика">
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19V9M12 19V5M20 19v-7"/></svg>
           </button>
@@ -1119,6 +1194,32 @@
   </div>
 
   
+  <div class="overlay" id="recsOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="recsTitle" style="max-width:560px">
+      <div class="modal-head">
+        <h2 id="recsTitle">Рекомендации</h2>
+        <button type="button" class="btn btn-ghost btn-icon" id="recsClose" aria-label="Закрыть">✕</button>
+      </div>
+      <div class="modal-body" style="padding-top:0">
+        <p class="recs-hint" id="recsHint">Подбираем игры…</p>
+        <div class="recs-toolbar">
+          <button type="button" class="btn btn-secondary btn-sm" id="recsResetDismiss" title="Снова показывать скрытые">Сброс скрытых</button>
+        </div>
+        <div class="recs-grid" id="recsGrid"></div>
+      </div>
+    </div>
+  </div>
+
+<div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-box">
+      <h3 id="confirmTitle">Удалить игру?</h3>
+      <p id="confirmText">Это действие нельзя отменить.</p>
+      <div class="confirm-actions">
+        <button class="btn btn-secondary" id="confirmCancel">Отмена</button>
+        <button class="btn btn-danger" id="confirmOk">Удалить</button>
+      </div>
+    </div>
+  </div>
 
   <input type="file" id="importFile" accept=".json,application/json" hidden />
   <button type="button" class="to-top" id="toTop" aria-label="Наверх" title="Наверх">
@@ -1275,6 +1376,7 @@
     let sortMode = 'date-desc';
     let formStatus = 'done';
     let statusFilter = 'all';
+    let recExtraPool = [];
     let pendingSteamMeta = null;
 
     const IDB_NAME = 'solgames-db';
@@ -1432,8 +1534,7 @@
 
     function cleanTags(list) {
       if (!Array.isArray(list)) return null;
-      // Only meaningful Steam user tags — strip utility/store noise
-      const skip = /steam|cloud|achievements?|достижен|trading|workshop|мастерская|leaderboard|лидерборд|controller|контроллер|remote play|remote|stats|статистик|vr support|family sharing|семейный доступ|captions|субтитры|скрытые субтитры|includes level|level editor|mods?|моды?|single-?player|single player|для одного|один игрок|local multiplayer|full controller|partial controller|local co-op|online co-op|одиночная|multi-?player|multiplayer|кооператив|совместная игра|in-app purchases|valve anti-cheat|\bvac\b|tracked controller|steam input|steam deck|steam timeline|steam achievements|steam cloud|steam trading|steam workshop|steam leaderboards|shared\/?split screen|cross-?platform|online pvp|online co-op|remote play on (phone|tablet|tv)|family sharing|commentary available|includes source sdk|stats|camera comfort|custom volume controls|stereo sound|surround sound|hdr|ray tracing|ранний доступ|early access|бесплатная|free to play|free-to-play|демо|demo|soundtrack|ost\b/i;
+      const skip = /steam|cloud|achievements|trading|workshop|leaderboard|controller|remote play|remote|stats|vr support|family sharing|captions|includes level|mods?|single-?player|single player|для одного|один игрок|local multiplayer|full controller|partial controller|local co-op|online co-op|одиночная|multi-?player|кооператив|совместная игра|in-app purchases|valve anti-cheat|\bvac\b|tracked controller|steam input|steam deck|steam timeline/i;
       const out = [];
       const seen = new Set();
       list.forEach(raw => {
@@ -1644,6 +1745,20 @@
       });
     }
 
+    const FALLBACK_RECS = [
+      { appid: '1145360', name: 'Hades' },
+      { appid: '1245620', name: 'ELDEN RING' },
+      { appid: '1086940', name: "Baldur's Gate 3" },
+      { appid: '892970', name: 'Valheim' },
+      { appid: '105600', name: 'Terraria' },
+      { appid: '413150', name: 'Stardew Valley' },
+      { appid: '367520', name: 'Hollow Knight' },
+      { appid: '524220', name: 'NieR:Automata' },
+      { appid: '814380', name: 'Sekiro' },
+      { appid: '1091500', name: 'Cyberpunk 2077' },
+      { appid: '1174180', name: 'Red Dead Redemption 2' },
+      { appid: '292030', name: 'The Witcher 3' }
+    ];
 
     function libraryKeys() {
       const keys = new Set();
@@ -1657,19 +1772,296 @@
       return keys;
     }
 
-    
+    const DISMISS_KEY = 'solgames-recs-dismissed';
+    function loadDismissedRecs() {
+      try {
+        const arr = JSON.parse(localStorage.getItem(DISMISS_KEY) || '[]');
+        return new Set(Array.isArray(arr) ? arr.map(String) : []);
+      } catch (e) {
+        return new Set();
+      }
+    }
+    function saveDismissedRecs(set) {
+      try {
+        localStorage.setItem(DISMISS_KEY, JSON.stringify([...set].slice(-200)));
+      } catch (e) {}
+    }
+    function dismissRecApp(appid) {
+      const id = String(appid || '');
+      if (!id) return;
+      const set = loadDismissedRecs();
+      set.add(id);
+      saveDismissedRecs(set);
+    }
+    function clearDismissedRecs() {
+      try { localStorage.removeItem(DISMISS_KEY); } catch (e) {}
+    }
 
 
+    function topGenresFromLibrary(limit) {
+      // Вес жанра = сумма оценок игр (любимые сильнее), а не просто «сколько раз встретился»
+      const score = new Map();
+      games.forEach(g => {
+        if (g.status === 'plan') return;
+        const r = Number(g.rating) || 0;
+        const w = r >= 9 ? 3 : r >= 7 ? 2 : r >= 5 ? 1 : 0.5;
+        const tags = (g.genresAll && g.genresAll.length) ? g.genresAll : (g.genres || []);
+        tags.forEach(tag => {
+          const k = String(tag).trim();
+          if (!k) return;
+          score.set(k, (score.get(k) || 0) + w);
+        });
+      });
+      return [...score.entries()].sort((a, b) => b[1] - a[1]).slice(0, limit || 4).map(x => x[0]);
+    }
 
+    function topRatedSeeds(limit) {
+      return games
+        .filter(g => g.status !== 'plan' && Number(g.rating) >= 8)
+        .sort((a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0))
+        .slice(0, limit || 4);
+    }
 
+    const GENRE_QUERY = {
+      'экшен': ['action game', 'action'],
+      'action': ['action game', 'action'],
+      'приключения': ['adventure game', 'adventure'],
+      'adventure': ['adventure game'],
+      'rpg': ['rpg', 'role playing'],
+      'стратегия': ['strategy game', 'strategy'],
+      'strategy': ['strategy game'],
+      'симулятор': ['simulation', 'simulator'],
+      'simulation': ['simulation'],
+      'инди': ['indie game', 'indie'],
+      'indie': ['indie game'],
+      'казуальная': ['casual game'],
+      'casual': ['casual game'],
+      'гонки': ['racing game', 'racing'],
+      'racing': ['racing'],
+      'спорт': ['sports game', 'sports'],
+      'sports': ['sports'],
+      'шутер': ['shooter', 'fps'],
+      'horror': ['horror game', 'horror'],
+      'хоррор': ['horror game'],
+      'открытый мир': ['open world'],
+      'open world': ['open world'],
+      'выживание': ['survival game', 'survival'],
+      'survival': ['survival'],
+      'метроидвания': ['metroidvania'],
+      'metroidvania': ['metroidvania'],
+      'рогалик': ['roguelike', 'roguelite'],
+      'roguelike': ['roguelike'],
+      'roguelite': ['roguelite'],
+      'платформер': ['platformer'],
+      'platformer': ['platformer'],
+      'головоломка': ['puzzle game', 'puzzle'],
+      'puzzle': ['puzzle'],
+      'ммо': ['mmo'],
+      'mmo': ['mmo']
+    };
 
+    function queriesForGenre(tag) {
+      const k = String(tag || '').trim().toLowerCase();
+      if (!k) return [];
+      if (GENRE_QUERY[k]) return GENRE_QUERY[k].slice();
+      // partial match
+      for (const key of Object.keys(GENRE_QUERY)) {
+        if (k.includes(key) || key.includes(k)) return GENRE_QUERY[key].slice();
+      }
+      // use tag itself + english-ish
+      return [tag, k];
+    }
 
+    async function searchPopularByQuery(term, limit) {
+      const lim = limit || 12;
+      // Top sellers in genre — not obscure storesearch noise
+      const urls = [
+        'https://store.steampowered.com/search/results/?term=' + encodeURIComponent(term) +
+          '&category1=998&filter=globaltopsellers&cc=US&l=english&json=1',
+        'https://store.steampowered.com/search/results/?term=' + encodeURIComponent(term) +
+          '&category1=998&filter=topsellers&cc=US&l=english&json=1'
+      ];
+      for (let u = 0; u < urls.length; u++) {
+        try {
+          const data = await fetchJsonProxied(urls[u], 5500);
+          const raw = (data && data.items) || [];
+          const items = [];
+          for (let i = 0; i < raw.length; i++) {
+            const it = raw[i];
+            let appid = it.id != null ? String(it.id) : '';
+            if (!appid && it.logo) {
+              const m = String(it.logo).match(/\/apps\/(\d+)\//);
+              if (m) appid = m[1];
+            }
+            if (!appid || !it.name) continue;
+            items.push({
+              appid: appid,
+              name: it.name,
+              tiny: it.logo || null,
+              rank: i
+            });
+          }
+          if (items.length) return items.slice(0, lim);
+        } catch (e) { /* next */ }
+      }
+      return [];
+    }
 
+    async function fetchTopSellersGlobal() {
+      try {
+        const data = await fetchJsonProxied(
+          'https://store.steampowered.com/api/featuredcategories?cc=US&l=english',
+          5000
+        );
+        const items = (data && data.top_sellers && data.top_sellers.items) || [];
+        return items.map((it, i) => ({
+          appid: String(it.id),
+          name: it.name,
+          tiny: it.small_capsule_image || it.header_image || null,
+          rank: i
+        })).filter(x => x.appid && x.name);
+      } catch (e) {
+        return [];
+      }
+    }
 
     // Quality gate: enough reviews on Steam = not a 5-owner nobody
+    async function filterByPopularity(candidates, minReviews) {
+      const minR = minReviews == null ? 800 : minReviews;
+      const out = [];
+      // check in small parallel batches
+      for (let i = 0; i < candidates.length && out.length < 14; i += 4) {
+        const batch = candidates.slice(i, i + 4);
+        const results = await Promise.all(batch.map(async (c) => {
+          try {
+            const url = 'https://store.steampowered.com/api/appdetails?appids=' + c.appid +
+              '&filters=basic,recommendations&cc=US&l=english';
+            const data = await fetchJsonProxied(url, 4000);
+            const entry = data && data[c.appid];
+            if (!entry || !entry.success || !entry.data) return null;
+            const d = entry.data;
+            if (d.type && d.type !== 'game') return null;
+            if (!d.header_image) return null;
+            const rec = d.recommendations && d.recommendations.total;
+            const total = typeof rec === 'number' ? rec : 0;
+            if (total < minR) return null;
+            return {
+              appid: c.appid,
+              name: d.name || c.name,
+              tiny: d.header_image,
+              cover: d.header_image,
+              reviews: total,
+              reason: c.reason || '',
+              rank: c.rank != null ? c.rank : 99
+            };
+          } catch (e) {
+            return null;
+          }
+        }));
+        for (let j = 0; j < results.length; j++) {
+          if (results[j]) out.push(results[j]);
+        }
+      }
+      // prefer more reviews, then better topseller rank
+      out.sort((a, b) => (b.reviews - a.reviews) || (a.rank - b.rank));
+      return out;
+    }
 
+    async function buildRecommendations() {
+      const owned = libraryKeys();
+      const pool = [];
+      const seen = new Set();
+      const dismissed = loadDismissedRecs();
+      const addPool = (item, reason) => {
+        if (!item || !item.appid) return;
+        const k1 = 'app:' + item.appid;
+        const k2 = normTitle(item.name);
+        if (dismissed.has(String(item.appid))) return;
+        if (owned.has(k1) || owned.has(k2) || seen.has(k1)) return;
+        seen.add(k1);
+        pool.push({
+          appid: item.appid,
+          name: item.name,
+          tiny: item.tiny || null,
+          rank: item.rank != null ? item.rank : 50,
+          reason: reason
+        });
+      };
 
-    async
+      const genres = topGenresFromLibrary(4);
+      const seeds = topRatedSeeds(4);
+      const queries = [];
+      // 1) Жанры с весом по вашим оценкам
+      genres.forEach(g => {
+        queriesForGenre(g).forEach(q => {
+          if (q && !queries.includes(q)) queries.push(q);
+        });
+      });
+      // 2) Поиск «рядом» с любимыми играми (оценка 8+)
+      seeds.forEach(g => {
+        const title = String(g.title || '').trim();
+        if (title && title.length > 2 && !queries.includes(title)) queries.push(title);
+      });
+      const shortQ = queries.map(q => String(q).replace(/\s+game$/i, '').trim()).filter(Boolean);
+      const uniqQ = [];
+      shortQ.forEach(q => { if (!uniqQ.includes(q)) uniqQ.push(q); });
+
+      for (let i = 0; i < Math.min(uniqQ.length, 6); i++) {
+        const found = await searchPopularByQuery(uniqQ[i], 12);
+        const label = genres[i] || (seeds[i] && seeds[i].title) || uniqQ[i];
+        for (let j = 0; j < found.length; j++) addPool(found[j], label);
+      }
+
+      // Blend global top sellers as quality anchors
+      const globalTop = await fetchTopSellersGlobal();
+      for (let i = 0; i < globalTop.length; i++) {
+        addPool(globalTop[i], 'топ продаж');
+      }
+
+      if (!pool.length) {
+        FALLBACK_RECS.forEach(it => addPool(it, 'подборка'));
+      }
+
+      // Hard filter: min ~800 Steam reviews → cut no-name junk
+      let quality = await filterByPopularity(pool.slice(0, 36), 800);
+      if (quality.length < 6) {
+        const more = await filterByPopularity(pool.slice(0, 48), 300);
+        const have = new Set(quality.map(x => x.appid));
+        more.forEach(x => { if (!have.has(x.appid)) quality.push(x); });
+      }
+
+      // If still thin, curated known-good list
+      if (quality.length < 4) {
+        FALLBACK_RECS.forEach(it => {
+          if (quality.length >= 12) return;
+          if (dismissed.has(String(it.appid))) return;
+          if (owned.has('app:' + it.appid) || owned.has(normTitle(it.name))) return;
+          if (quality.some(x => x.appid === it.appid)) return;
+          quality.push({
+            appid: it.appid,
+            name: it.name,
+            tiny: null,
+            reviews: 999999,
+            reason: 'подборка',
+            rank: 0
+          });
+        });
+      }
+
+      return quality.slice(0, 18).map(x => ({
+        appid: x.appid,
+        name: x.name,
+        tiny: x.tiny || x.cover || null,
+        cover: x.cover || x.tiny || null,
+        reason: x.reason || ''
+      }));
+    }
+
+    async function buildRecommendationsPacked(limit, excludeIds) {
+      const list = await buildRecommendations();
+      const ex = excludeIds || new Set();
+      return (list || []).filter(it => !ex.has(String(it.appid))).slice(0, limit || 18);
+    }
 
     function recsLoadingMarkup() {
       let sk = '';
@@ -1686,6 +2078,34 @@
         '<div class="recs-skel-grid">' + sk + '</div></div>';
     }
 
+    async function openRecs() {
+      const overlay = $('recsOverlay');
+      const grid = $('recsGrid');
+      const hint = $('recsHint');
+      if (!overlay || !grid) return;
+      grid.innerHTML = recsLoadingMarkup();
+      const genres = topGenresFromLibrary(3);
+      if (genres.length) {
+        hint.textContent = 'Опираемся на ваши оценки 8+ и жанры: ' + genres.slice(0, 3).join(', ') + '. Крестик — скрыть и заменить.';
+      } else {
+        hint.textContent = 'Поставьте высокие оценки — подборка станет точнее. Крестик скрывает и подставляет другую.';
+      }
+      overlay.classList.add('open');
+      lockBodyScroll();
+      trapFocus(overlay);
+      try {
+        const packed = await buildRecommendationsPacked(18);
+        const list = packed.slice(0, 12);
+        recExtraPool = packed.slice(12);
+        if (!list.length) {
+          grid.innerHTML = '<div class="recs-empty">Не удалось подобрать игры. Проверьте сеть.</div>';
+          return;
+        }
+        grid.innerHTML = list.map((it, idx) => recCardHtml(it, idx)).join('');
+      } catch (err) {
+        grid.innerHTML = '<div class="recs-empty">Ошибка загрузки рекомендаций.</div>';
+      }
+    }
 
     function recCoverUrl(appid, n) {
       const id = String(appid);
@@ -1698,6 +2118,19 @@
       return urls[Math.min(n || 0, urls.length - 1)];
     }
 
+    function recCardHtml(it, idx) {
+      const id = esc(it.appid);
+      const cover = it.cover || it.tiny || recCoverUrl(it.appid, 0);
+      return '<article class="rec-card" data-appid="' + id + '" data-name="' + esc(it.name) + '" style="animation-delay:' + ((idx || 0) * 0.04) + 's">' +
+        '<button type="button" class="rec-dismiss" title="Не предлагать" aria-label="Не предлагать">✕</button>' +
+        '<img class="rec-cover" src="' + cover + '" alt="" loading="lazy" decoding="async" data-cdn="0" data-appid="' + id + '" onerror="window.__recCoverFallback&&window.__recCoverFallback(this)"/>' +
+        '<div class="rec-body">' +
+          '<div class="rec-title">' + esc(it.name) + '</div>' +
+          '<div class="rec-meta">' + esc(it.reason || '') + '</div>' +
+          '<div class="rec-actions">' +
+            '<button type="button" class="btn btn-secondary btn-sm rec-add">В планы</button>' +
+          '</div></div></article>';
+    }
 
     window.__recCoverFallback = function(img) {
       const n = Number(img.dataset.cdn || 0) + 1;
@@ -1707,6 +2140,12 @@
       img.src = recCoverUrl(appid, n);
     };
 
+    function closeRecs() {
+      const overlay = $('recsOverlay');
+      if (overlay) overlay.classList.remove('open');
+      releaseBodyScroll();
+      restoreFocus();
+    }
 
     function toast(msg, icon = '✓') {
       toastEl.innerHTML = `<span>${icon}</span> ${msg}`;
@@ -1854,20 +2293,38 @@
 
     async function fetchSteamUserTags(appid) {
       const id = String(appid);
-      try {
-        const html = await fetchTextProxied('https://store.steampowered.com/app/' + id + '/?l=russian', 4500);
-        if (!html) return null;
-        const tags = [];
-        const re = /class=["'][^"']*app_tag[^"']*["'][^>]*>([^<]+)</gi;
-        let m;
-        while ((m = re.exec(html)) && tags.length < 30) {
-          let s = String(m[1] || '').replace(/\s+/g, ' ').trim();
-          if (!s || s.length < 2 || s.length > 48) continue;
-          if (tags.some(x => x.toLowerCase() === s.toLowerCase())) continue;
-          tags.push(s);
-        }
-        return tags.length ? tags : null;
-      } catch { return null; }
+      const urls = [
+        'https://store.steampowered.com/app/' + id + '/?l=russian',
+        'https://store.steampowered.com/apphoverpublic/' + id + '?l=russian'
+      ];
+      const tags = [];
+      const push = (s) => {
+        s = String(s || '').replace(/\s+/g, ' ').trim();
+        if (!s || s.length < 2 || s.length > 48) return;
+        if (tags.some(x => x.toLowerCase() === s.toLowerCase())) return;
+        tags.push(s);
+      };
+      for (let u = 0; u < urls.length && tags.length < 12; u++) {
+        try {
+          const html = await fetchTextProxied(urls[u], 9000);
+          if (!html) continue;
+          const re = /class=["'][^"']*app_tag[^"']*["'][^>]*>([^<]+)</gi;
+          let m;
+          while ((m = re.exec(html)) && tags.length < 30) {
+            push(m[1]);
+          }
+          // JSON-ish: "name":"Хоррор"
+          if (tags.length < 5) {
+            const re2 = /"name"\s*:\s*"([^"]{2,40})"/g;
+            while ((m = re2.exec(html)) && tags.length < 24) {
+              // only likely tag context — skip if looks like game title dump
+              const s = m[1];
+              if (/[а-яё]/i.test(s) || /^(Action|Adventure|RPG|Horror|Indie|Strategy)/i.test(s)) push(s);
+            }
+          }
+        } catch (e) { /* try next */ }
+      }
+      return tags.length ? tags : null;
     }
 
 
@@ -2055,7 +2512,7 @@
 
       const takeTagsFromStore = (data) => {
         if (!data) return null;
-        const skip = /для одного|один игрок|single-?player|single player|multi-?player|multiplayer|кооператив|совместная|контроллер|controller|достижен|achievements?|облако|cloud|мастерская|workshop|лидерборд|leaderboard|статистик|stats|мод|mods?|family sharing|семейный доступ|remote play|captions|субтитры|скрытые субтитры|уровень|level editor|карточки|trading cards|коллекцион|стереозвук|громкост|qte|dualshock|dualsense|сохранение|camera|доступност|in-app purchases|valve anti-cheat|hdr|ray tracing|vr support|tracked controller|steam deck|cross-?platform|online pvp|shared\/?split|commentary|source sdk|бесплатн|free to play|ранний доступ|early access|демо|demo|soundtrack/i;
+        const skip = /для одного|один игрок|single-?player|single player|multi-?player|multiplayer|кооператив|совместная|контроллер|controller|достижен|achievements?|облако|cloud|мастерская|workshop|лидерборд|leaderboard|статистик|stats|мод|mods?|family sharing|remote play|captions|уровень|level editor|карточки|trading cards|коллекцион|стереозвук|громкост|qte|dualshock|dualsense|сохранение|camera|доступност|in-app purchases|valve anti-cheat|hdr|ray tracing|vr support|tracked controller/i;
         const tags = [];
         const push = (raw) => {
           let s = (typeof raw === 'string' ? raw : (raw && raw.description)) || '';
@@ -2128,10 +2585,9 @@
         '&l=russian&filters=' + FILTERS;
       const spyUrl = 'https://steamspy.com/api.php?request=appdetails&appid=' + id;
 
-      const [storeRes, spyRes, userTagsRes] = await Promise.allSettled([
-        fetchJsonProxied(storeUrl, 3500),
-        fetchJsonProxied(spyUrl, 3000),
-        fetchSteamUserTags(id)
+      const [storeRes, spyRes] = await Promise.allSettled([
+        fetchJsonProxied(storeUrl, 4000),
+        fetchJsonProxied(spyUrl, 4000)
       ]);
 
       let gotDetails = false;
@@ -2143,22 +2599,13 @@
         }
       }
 
-      // User tags preferred (parallel). Keep API genres as fallback if scrape thin.
-      if (userTagsRes.status === 'fulfilled' && Array.isArray(userTagsRes.value) && userTagsRes.value.length) {
-        const cleaned = cleanTags(userTagsRes.value);
-        if (cleaned && cleaned.length >= 2) {
-          out.genresAll = cleaned;
-          out.genres = cleaned.slice(0, 3);
-        }
-      }
-
-      // EN only for missing name/year
-      if (!out.name || !out.releaseYear) {
+      // EN fallback if RU incomplete
+      if (!out.name || !out.releaseYear || !out.genres || !(out.genresAll && out.genresAll.length >= 3)) {
         try {
           const json = await fetchJsonProxied(
             'https://store.steampowered.com/api/appdetails?appids=' + id +
               '&l=english&filters=' + FILTERS,
-            3000
+            3500
           );
           const entry = json && json[id];
           if (entry && entry.success && entry.data) {
@@ -2203,7 +2650,28 @@
         gotDetails = true;
       }
 
-      
+      // User tags from Steam store page (the real tags on the store)
+      try {
+        const userTags = await fetchSteamUserTags(id);
+        if (userTags && userTags.length) {
+          const pool = [];
+          const pushRaw = (raw) => {
+            const cleaned = cleanTags([raw]);
+            if (!cleaned || !cleaned.length) return;
+            const tag = cleaned[0];
+            if (pool.some(x => x.toLowerCase() === tag.toLowerCase())) return;
+            pool.push(tag);
+          };
+          // Prefer store user tags first (as on Steam page)
+          userTags.forEach(pushRaw);
+          (out.genresAll || out.genres || []).forEach(pushRaw);
+          if (pool.length) {
+            out.genresAll = pool;
+            out.genres = pool.slice(0, 3);
+          }
+        }
+      } catch (e) { /* ignore */ }
+
       if (out.genresAll && out.genresAll.length) {
         const all = cleanTags(out.genresAll) || out.genresAll;
         out.genresAll = all;
@@ -2215,8 +2683,8 @@
       }
       if (!out.coverUrl) out.coverUrl = coverUrlFor(id);
 
-      // Year correction only on manual refresh (faster add)
-      if (force && out.name) {
+      // Adjust year: fix store relists, but keep remakes/reboots (DOOM 2016 ≠ 1993)
+      if (out.name) {
         try {
           const adjusted = await fetchOriginalReleaseYear(out.name, out.releaseYear);
           if (adjusted) out.releaseYear = adjusted;
@@ -2733,17 +3201,18 @@
           detailTags.className = 'detail-tags-wrap';
           const head = all.slice(0, 3).map(tg => '<span class="card-tag">' + esc(tg) + '</span>').join('');
           const rest = all.slice(3);
-          let more = '';
           let extra = '';
+          let more = '';
           if (rest.length) {
-            more = '<button type="button" class="tags-expand-btn" data-tags-expand="1" aria-expanded="false" title="Показать все метки">+</button>';
-            extra = '<div class="detail-tags-extra">' +
+            extra = '<span class="detail-tags-extra">' +
               rest.map(tg => '<span class="card-tag">' + esc(tg) + '</span>').join('') +
-              '</div>';
+              '</span>';
+            more = '<button type="button" class="tags-expand-btn" data-tags-expand="1" aria-expanded="false">' +
+              'Ещё ' + rest.length + '</button>';
           }
           detailTags.innerHTML =
-            '<div class="detail-tags-row">' + head + more + '</div>' +
-            extra;
+            '<div class="detail-tags-row">' + head + '</div>' +
+            extra + more;
         }
       }
       const hasR = g.status !== 'plan' && g.rating != null && g.rating >= 1;
@@ -2837,8 +3306,8 @@
           const wrap = exp.closest('.detail-tags-wrap') || detailTagsEl;
           const open = wrap.classList.toggle('is-open');
           exp.setAttribute('aria-expanded', open ? 'true' : 'false');
-          exp.textContent = open ? '−' : '+';
-          exp.title = open ? 'Свернуть' : 'Показать все метки';
+          const n = wrap.querySelectorAll('.detail-tags-extra .card-tag').length;
+          exp.textContent = open ? 'Скрыть метки' : ('Ещё ' + n);
           return;
         }
         const tag = e.target.closest('.card-tag, .tag');
@@ -3257,6 +3726,83 @@
       toast('Экспорт: ' + games.length + ' ' + phraseImported(games.length), '✓');
     };
     $('statsBtn').onclick = openStats;
+    if ($('recsBtn')) $('recsBtn').onclick = openRecs;
+    if ($('recsClose')) $('recsClose').onclick = closeRecs;
+    if ($('recsOverlay')) $('recsOverlay').addEventListener('click', e => { if (e.target === $('recsOverlay')) closeRecs(); });
+    if ($('recsResetDismiss')) {
+      $('recsResetDismiss').onclick = () => {
+        clearDismissedRecs();
+        toast('Скрытые рекомендации сброшены', '✓');
+        openRecs();
+      };
+    }
+    if ($('recsGrid')) $('recsGrid').addEventListener('click', e => {
+      const dismissBtn = e.target.closest('.rec-dismiss');
+      if (dismissBtn) {
+        const card = dismissBtn.closest('.rec-card');
+        if (!card) return;
+        const appid = card.dataset.appid;
+        dismissRecApp(appid);
+        card.classList.add('is-leaving');
+        (async () => {
+          await new Promise(r => setTimeout(r, 260));
+          const gridEl = $('recsGrid');
+          let next = null;
+          while (recExtraPool.length && !next) {
+            const cand = recExtraPool.shift();
+            if (!cand) break;
+            if (String(cand.appid) === String(appid)) continue;
+            if (loadDismissedRecs().has(String(cand.appid))) continue;
+            next = cand;
+          }
+          if (!next) {
+            try {
+              const shown = new Set(
+                [...(gridEl ? gridEl.querySelectorAll('.rec-card') : [])]
+                  .map(el => el.dataset.appid)
+                  .filter(Boolean)
+              );
+              shown.add(String(appid));
+              const more = await buildRecommendationsPacked(12, shown);
+              recExtraPool = more.slice();
+              while (recExtraPool.length && !next) {
+                const cand = recExtraPool.shift();
+                if (!cand) break;
+                if (shown.has(String(cand.appid))) continue;
+                if (loadDismissedRecs().has(String(cand.appid))) continue;
+                next = cand;
+              }
+            } catch (err) {}
+          }
+          if (next && gridEl) {
+            const wrap = document.createElement('div');
+            wrap.innerHTML = recCardHtml(next, 0);
+            const neu = wrap.firstElementChild;
+            if (neu) card.replaceWith(neu);
+            else card.remove();
+          } else {
+            card.remove();
+            if (gridEl && !gridEl.querySelector('.rec-card')) {
+              gridEl.innerHTML = '<div class="recs-empty">Больше нет кандидатов. Откройте рекомендации снова.</div>';
+            }
+          }
+        })();
+        toast('Скрыто · ищем замену', '✕');
+        return;
+      }
+      const btn = e.target.closest('.rec-add');
+      if (!btn) return;
+      const card = btn.closest('.rec-card');
+      if (!card) return;
+      const appid = card.dataset.appid;
+      const name = card.dataset.name || '';
+      closeRecs();
+      openModal();
+      formStatus = 'plan';
+      syncStatusUI();
+      if (appid) applySteamGame(appid, name);
+      else if (name) titleInput.value = name;
+    });
     $('statsClose').onclick = closeStats;
     $('statsOverlay').addEventListener('click', e => { if (e.target === $('statsOverlay')) closeStats(); });
 
