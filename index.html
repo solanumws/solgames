@@ -435,10 +435,15 @@
       transition:background .15s,color .15s,border-color .15s;
     }
     .card-tags-more:hover{color:var(--text);border-color:var(--border-hover)}
-    .card-tags.is-open .card-tag.is-extra{display:inline-flex}
     .card-tag.is-extra{display:none}
+    .card-tags.is-open .card-tag.is-extra{display:inline-flex}
     .detail-tags{margin:8px 0 4px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
-    .detail-tags .card-tags-more{cursor:pointer}
+    .detail-tags .card-tags-more{
+      cursor:pointer;border:1px solid var(--border);background:var(--surface-2);
+      color:var(--accent);border-radius:999px;padding:3px 9px;
+      font:inherit;font-size:.72rem;font-weight:700;
+    }
+    .detail-tags .card-tags-more:hover{background:var(--surface)}
     .card-review.is-empty{color:var(--text-3);font-style:italic;font-weight:400}
     .card-links{display:flex;flex-wrap:wrap;gap:5px}
     .link-chip{
@@ -1535,7 +1540,7 @@
         seen.add(key);
         out.push(s);
       });
-      return out.length ? out.slice(0, 3) : null;
+      return out.length ? out : null;
     }
 
     function normalizeGame(g) {
@@ -2291,14 +2296,13 @@
         if (tags.some(x => x.toLowerCase() === s.toLowerCase())) return;
         tags.push(s);
       };
-      for (let u = 0; u < urls.length && tags.length < 8; u++) {
+      for (let u = 0; u < urls.length && tags.length < 12; u++) {
         try {
-          const html = await fetchTextProxied(urls[u], 7000);
+          const html = await fetchTextProxied(urls[u], 9000);
           if (!html) continue;
-          // class="app_tag">Tag Name</a>
           const re = /class=["'][^"']*app_tag[^"']*["'][^>]*>([^<]+)</gi;
           let m;
-          while ((m = re.exec(html)) && tags.length < 24) {
+          while ((m = re.exec(html)) && tags.length < 30) {
             push(m[1]);
           }
           // JSON-ish: "name":"Хоррор"
@@ -3342,7 +3346,8 @@
         save();
         fillDetail(g, id);
         render();
-        toast('Обновлено из Steam · отзыв и оценка сохранены', '✓');
+        const n = (g.genresAll && g.genresAll.length) || (g.genres && g.genres.length) || 0;
+        toast('Обновлено из Steam · меток: ' + n, '✓');
       } catch (err) {
         console.warn(err);
         toast('Не удалось обновить из Steam', '!');
