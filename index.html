@@ -423,9 +423,11 @@
     }
     .card-tags{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:2px}
     .card-tag{
-      font-size:.68rem;font-weight:600;color:var(--text-3);
-      padding:3px 8px;border-radius:999px;border:1px solid var(--border);
-      background:var(--surface-2);letter-spacing:-.01em;
+      font-size:.72rem;font-weight:650;color:var(--text);
+      padding:4px 10px;border-radius:999px;
+      border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border));
+      background:color-mix(in srgb,var(--accent) 12%,var(--surface-2));
+      letter-spacing:-.01em;
     }
     .card-tags-more{
       border:1px solid var(--border);background:var(--surface-2);color:var(--text-2);
@@ -434,24 +436,25 @@
       transition:background .15s,color .15s,border-color .15s;
     }
     .card-tags-more:hover{color:var(--text);border-color:var(--border-hover)}
-    .detail-tags-wrap{margin:6px 0 2px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-    .detail-tags-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
-    .detail-tags-extra{display:none;flex-wrap:wrap;gap:5px;align-items:center}
+    .detail-tags-wrap{margin:6px 0 2px}
+    .detail-tags-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    .detail-tags-extra{display:none;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
     .detail-tags-wrap.is-open .detail-tags-extra{display:flex}
     .tags-expand-btn{
       display:inline-flex !important;align-items:center;justify-content:center;
-      margin-top:2px;padding:7px 14px;border-radius:999px;
-      border:1px solid color-mix(in srgb,var(--accent) 45%,var(--border));
+      width:28px;height:28px;padding:0;border-radius:999px;
+      border:1px solid color-mix(in srgb,var(--accent) 40%,var(--border));
       background:color-mix(in srgb,var(--accent) 14%,var(--surface-2));
-      color:var(--accent);font:inherit;font-size:.8rem;font-weight:700;
-      letter-spacing:-.01em;cursor:pointer;line-height:1.2;
-      transition:background .15s,border-color .15s,transform .12s;
+      color:var(--accent);font:inherit;font-size:1.05rem;font-weight:700;
+      line-height:1;cursor:pointer;
+      transition:background .15s,border-color .15s,transform .12s,color .15s;
     }
     .tags-expand-btn:hover{
-      background:color-mix(in srgb,var(--accent) 22%,var(--surface-2));
-      border-color:color-mix(in srgb,var(--accent) 60%,var(--border));
+      background:color-mix(in srgb,var(--accent) 24%,var(--surface-2));
+      border-color:color-mix(in srgb,var(--accent) 65%,var(--border));
     }
-    .tags-expand-btn:active{transform:scale(.97)}
+    .tags-expand-btn:active{transform:scale(.95)}
+    .tags-expand-btn[aria-expanded="true"]{color:var(--text);background:var(--surface-2)}
     .card-review.is-empty{color:var(--text-3);font-style:italic;font-weight:400}
     .card-links{display:flex;flex-wrap:wrap;gap:5px}
     .link-chip{
@@ -1534,7 +1537,8 @@
 
     function cleanTags(list) {
       if (!Array.isArray(list)) return null;
-      const skip = /steam|cloud|achievements|trading|workshop|leaderboard|controller|remote play|remote|stats|vr support|family sharing|captions|includes level|mods?|single-?player|single player|для одного|один игрок|local multiplayer|full controller|partial controller|local co-op|online co-op|одиночная|multi-?player|кооператив|совместная игра|in-app purchases|valve anti-cheat|\bvac\b|tracked controller|steam input|steam deck|steam timeline/i;
+      // Only meaningful Steam user tags — strip utility/store noise
+      const skip = /steam|cloud|achievements?|достижен|trading|workshop|мастерская|leaderboard|лидерборд|controller|контроллер|remote play|remote|stats|статистик|vr support|family sharing|семейный доступ|captions|субтитры|скрытые субтитры|includes level|level editor|mods?|моды?|single-?player|single player|для одного|один игрок|local multiplayer|full controller|partial controller|local co-op|online co-op|одиночная|multi-?player|multiplayer|кооператив|совместная игра|in-app purchases|valve anti-cheat|\bvac\b|tracked controller|steam input|steam deck|steam timeline|steam achievements|steam cloud|steam trading|steam workshop|steam leaderboards|shared\/?split screen|cross-?platform|online pvp|online co-op|remote play on (phone|tablet|tv)|family sharing|commentary available|includes source sdk|stats|camera comfort|custom volume controls|stereo sound|surround sound|hdr|ray tracing|ранний доступ|early access|бесплатная|free to play|free-to-play|демо|demo|soundtrack|ost\b/i;
       const out = [];
       const seen = new Set();
       list.forEach(raw => {
@@ -1799,12 +1803,13 @@
 
 
     function topGenresFromLibrary(limit) {
-      // Вес жанра = сумма оценок игр (любимые сильнее), а не просто «сколько раз встретился»
+      // Вес метки из игр с оценкой ≥ 5 (высокие оценки сильнее)
       const score = new Map();
       games.forEach(g => {
         if (g.status === 'plan') return;
         const r = Number(g.rating) || 0;
-        const w = r >= 9 ? 3 : r >= 7 ? 2 : r >= 5 ? 1 : 0.5;
+        if (r < 5) return;
+        const w = r >= 9 ? 4 : r >= 8 ? 3 : r >= 7 ? 2 : 1;
         const tags = (g.genresAll && g.genresAll.length) ? g.genresAll : (g.genres || []);
         tags.forEach(tag => {
           const k = String(tag).trim();
@@ -1817,9 +1822,9 @@
 
     function topRatedSeeds(limit) {
       return games
-        .filter(g => g.status !== 'plan' && Number(g.rating) >= 8)
+        .filter(g => g.status !== 'plan' && Number(g.rating) >= 5)
         .sort((a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0))
-        .slice(0, limit || 4);
+        .slice(0, limit || 6);
     }
 
     const GENRE_QUERY = {
@@ -1988,16 +1993,18 @@
         });
       };
 
-      const genres = topGenresFromLibrary(4);
-      const seeds = topRatedSeeds(4);
+      // Метки из ваших игр (оценка ≥ 5) — главный сигнал
+      const genres = topGenresFromLibrary(8);
+      const seeds = topRatedSeeds(6);
       const queries = [];
-      // 1) Жанры с весом по вашим оценкам
       genres.forEach(g => {
+        // сначала сама метка как на Steam (RU), потом EN-запросы
+        if (g && !queries.includes(g)) queries.push(g);
         queriesForGenre(g).forEach(q => {
           if (q && !queries.includes(q)) queries.push(q);
         });
       });
-      // 2) Поиск «рядом» с любимыми играми (оценка 8+)
+      // Любимые игры как доп. сиды (оценка ≥ 5)
       seeds.forEach(g => {
         const title = String(g.title || '').trim();
         if (title && title.length > 2 && !queries.includes(title)) queries.push(title);
@@ -2006,16 +2013,23 @@
       const uniqQ = [];
       shortQ.forEach(q => { if (!uniqQ.includes(q)) uniqQ.push(q); });
 
-      for (let i = 0; i < Math.min(uniqQ.length, 6); i++) {
-        const found = await searchPopularByQuery(uniqQ[i], 12);
+      // Больше запросов по вашим меткам, меньше «случайного топа»
+      for (let i = 0; i < Math.min(uniqQ.length, 10); i++) {
+        const found = await searchPopularByQuery(uniqQ[i], 14);
         const label = genres[i] || (seeds[i] && seeds[i].title) || uniqQ[i];
-        for (let j = 0; j < found.length; j++) addPool(found[j], label);
+        for (let j = 0; j < found.length; j++) {
+          // rank: выше = популярнее в выдаче Steam topsellers
+          const it = found[j];
+          if (it && (it.rank == null || it.rank <= 80)) addPool(it, label);
+        }
       }
 
-      // Blend global top sellers as quality anchors
-      const globalTop = await fetchTopSellersGlobal();
-      for (let i = 0; i < globalTop.length; i++) {
-        addPool(globalTop[i], 'топ продаж');
+      // Глобальный топ — только если по меткам мало результатов
+      if (pool.length < 8) {
+        const globalTop = await fetchTopSellersGlobal();
+        for (let i = 0; i < globalTop.length; i++) {
+          addPool(globalTop[i], 'топ продаж');
+        }
       }
 
       if (!pool.length) {
@@ -2512,7 +2526,7 @@
 
       const takeTagsFromStore = (data) => {
         if (!data) return null;
-        const skip = /для одного|один игрок|single-?player|single player|multi-?player|multiplayer|кооператив|совместная|контроллер|controller|достижен|achievements?|облако|cloud|мастерская|workshop|лидерборд|leaderboard|статистик|stats|мод|mods?|family sharing|remote play|captions|уровень|level editor|карточки|trading cards|коллекцион|стереозвук|громкост|qte|dualshock|dualsense|сохранение|camera|доступност|in-app purchases|valve anti-cheat|hdr|ray tracing|vr support|tracked controller/i;
+        const skip = /для одного|один игрок|single-?player|single player|multi-?player|multiplayer|кооператив|совместная|контроллер|controller|достижен|achievements?|облако|cloud|мастерская|workshop|лидерборд|leaderboard|статистик|stats|мод|mods?|family sharing|семейный доступ|remote play|captions|субтитры|скрытые субтитры|уровень|level editor|карточки|trading cards|коллекцион|стереозвук|громкост|qte|dualshock|dualsense|сохранение|camera|доступност|in-app purchases|valve anti-cheat|hdr|ray tracing|vr support|tracked controller|steam deck|cross-?platform|online pvp|shared\/?split|commentary|source sdk|бесплатн|free to play|ранний доступ|early access|демо|demo|soundtrack/i;
         const tags = [];
         const push = (raw) => {
           let s = (typeof raw === 'string' ? raw : (raw && raw.description)) || '';
@@ -2650,24 +2664,14 @@
         gotDetails = true;
       }
 
-      // User tags from Steam store page (the real tags on the store)
+      // ONLY Steam store user tags (app_tag) — ignore API genres/categories noise
       try {
         const userTags = await fetchSteamUserTags(id);
         if (userTags && userTags.length) {
-          const pool = [];
-          const pushRaw = (raw) => {
-            const cleaned = cleanTags([raw]);
-            if (!cleaned || !cleaned.length) return;
-            const tag = cleaned[0];
-            if (pool.some(x => x.toLowerCase() === tag.toLowerCase())) return;
-            pool.push(tag);
-          };
-          // Prefer store user tags first (as on Steam page)
-          userTags.forEach(pushRaw);
-          (out.genresAll || out.genres || []).forEach(pushRaw);
-          if (pool.length) {
-            out.genresAll = pool;
-            out.genres = pool.slice(0, 3);
+          const cleaned = cleanTags(userTags);
+          if (cleaned && cleaned.length) {
+            out.genresAll = cleaned;
+            out.genres = cleaned.slice(0, 3);
           }
         }
       } catch (e) { /* ignore */ }
@@ -3201,18 +3205,17 @@
           detailTags.className = 'detail-tags-wrap';
           const head = all.slice(0, 3).map(tg => '<span class="card-tag">' + esc(tg) + '</span>').join('');
           const rest = all.slice(3);
-          let extra = '';
           let more = '';
+          let extra = '';
           if (rest.length) {
-            extra = '<span class="detail-tags-extra">' +
+            more = '<button type="button" class="tags-expand-btn" data-tags-expand="1" aria-expanded="false" title="Показать все метки">+</button>';
+            extra = '<div class="detail-tags-extra">' +
               rest.map(tg => '<span class="card-tag">' + esc(tg) + '</span>').join('') +
-              '</span>';
-            more = '<button type="button" class="tags-expand-btn" data-tags-expand="1" aria-expanded="false">' +
-              'Ещё ' + rest.length + '</button>';
+              '</div>';
           }
           detailTags.innerHTML =
-            '<div class="detail-tags-row">' + head + '</div>' +
-            extra + more;
+            '<div class="detail-tags-row">' + head + more + '</div>' +
+            extra;
         }
       }
       const hasR = g.status !== 'plan' && g.rating != null && g.rating >= 1;
@@ -3306,8 +3309,8 @@
           const wrap = exp.closest('.detail-tags-wrap') || detailTagsEl;
           const open = wrap.classList.toggle('is-open');
           exp.setAttribute('aria-expanded', open ? 'true' : 'false');
-          const n = wrap.querySelectorAll('.detail-tags-extra .card-tag').length;
-          exp.textContent = open ? 'Скрыть метки' : ('Ещё ' + n);
+          exp.textContent = open ? '−' : '+';
+          exp.title = open ? 'Свернуть' : 'Показать все метки';
           return;
         }
         const tag = e.target.closest('.card-tag, .tag');
