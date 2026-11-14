@@ -13,7 +13,6 @@
   <link rel="icon" href="./icon-192.png" sizes="192x192" type="image/png" />
   <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
   <link rel="manifest" href="./manifest.webmanifest" />
-  <meta name="mobile-web-app-capable" content="yes" />
 
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -3207,9 +3206,7 @@
       if (g.replays > 0) meta.push(`<span>↻ ${g.replays} ${phraseReplays(g.replays)}</span>`);
       if (g.favorite) meta.push('<span>♥ Избранное</span>');
       $('detailMeta').innerHTML = meta.join('') || '';
-      const genreTags = (g.genres || []).slice(0, 3).map(p => `<span class="tag">${esc(p)}</span>`).join('');
-      const platTags = (g.platforms || []).slice(0, 2).map(p => `<span class="tag">${esc(p)}</span>`).join('');
-      $('detailTags').innerHTML = genreTags || platTags;
+      // detailTags already filled above with genresAll + expand button — do not overwrite
       const rev = $('detailReview');
       if (g.review) {
         rev.textContent = g.review;
