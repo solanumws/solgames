@@ -288,8 +288,8 @@
       background:var(--surface);color:var(--text);
       box-shadow:0 1px 3px rgba(0,0,0,.16);
     }
-    .filter-right{display:flex;align-items:center;gap:8px;flex-shrink:0;overflow:visible;padding:2px}
-    .filter-bar{overflow:visible}
+    .filter-right{display:flex;align-items:center;gap:10px;flex-shrink:0;overflow:visible;padding:4px 4px 4px 0}
+    .filter-bar{overflow:visible;padding-right:2px}
     .plat-wrap{display:flex;align-items:center;gap:6px}
     .plat-label{font-size:.72rem;font-weight:600;color:var(--text-3)}
     .plat-select{
@@ -304,19 +304,22 @@
     .plat-select:focus{outline:none;border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
     .plat-select option{font-family:var(--font);font-size:.85rem;font-weight:500;background:var(--surface);color:var(--text)}
     .fav-filter-btn{
-      width:40px;height:40px;min-width:40px;border-radius:12px;border:1px solid var(--border);
-      background:var(--surface-2);color:var(--text-3);cursor:pointer;
+      width:42px;height:42px;min-width:42px;border-radius:14px;border:1px solid var(--border);
+      background:var(--surface-2);color:var(--text-2);cursor:pointer;
       display:inline-flex;align-items:center;justify-content:center;
-      flex-shrink:0;overflow:visible;
-      transition:background .18s,color .18s,border-color .18s,transform .15s,box-shadow .18s;
+      flex-shrink:0;box-sizing:border-box;
+      transition:background .18s,color .18s,border-color .18s,box-shadow .18s;
     }
-    .fav-filter-btn svg{width:20px;height:20px;display:block;overflow:visible}
-    .fav-filter-btn:hover{color:#f43f5e;border-color:color-mix(in srgb,#f43f5e 35%,var(--border));transform:scale(1.05)}
-    .fav-filter-btn:active{transform:scale(.96)}
+    .fav-filter-btn svg{
+      width:22px;height:22px;display:block;
+      fill:none;stroke:currentColor;stroke-width:2.15;stroke-linecap:round;stroke-linejoin:round;
+    }
+    .fav-filter-btn:hover{color:#f43f5e;border-color:color-mix(in srgb,#f43f5e 40%,var(--border));background:color-mix(in srgb,#f43f5e 8%,var(--surface-2))}
+    .fav-filter-btn:active{transform:scale(.97)}
     .fav-filter-btn.active{
       color:#fff;border-color:transparent;
       background:linear-gradient(145deg,#fb7185,#e11d48);
-      box-shadow:0 4px 14px color-mix(in srgb,#e11d48 35%,transparent);
+      box-shadow:0 4px 16px color-mix(in srgb,#e11d48 32%,transparent);
     }
     .fav-filter-btn.active svg{fill:currentColor;stroke:currentColor}
     @media (max-width:560px){
@@ -428,6 +431,21 @@
       font-size:.84rem;color:var(--text-2);line-height:1.5;font-weight:450;
       display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1;
     }
+    .card-tags{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:2px}
+    .card-tag{
+      font-size:.68rem;font-weight:600;color:var(--text-3);
+      padding:3px 8px;border-radius:999px;border:1px solid var(--border);
+      background:var(--surface-2);letter-spacing:-.01em;
+    }
+    .card-tags-more{
+      border:1px solid var(--border);background:var(--surface-2);color:var(--text-2);
+      border-radius:999px;padding:3px 8px;font:inherit;font-size:.68rem;font-weight:700;
+      cursor:pointer;line-height:1.2;
+      transition:background .15s,color .15s,border-color .15s;
+    }
+    .card-tags-more:hover{color:var(--text);border-color:var(--border-hover)}
+    .card-tags.is-open .card-tag.is-extra{display:inline-flex}
+    .card-tag.is-extra{display:none}
     .card-review.is-empty{color:var(--text-3);font-style:italic;font-weight:400}
     .card-links{display:flex;flex-wrap:wrap;gap:5px}
     .link-chip{
@@ -815,19 +833,20 @@
 
 
     .status-toggle{
-      display:inline-flex;padding:3px;gap:2px;border-radius:11px;
+      display:flex;width:100%;padding:4px;gap:4px;border-radius:14px;
       background:var(--surface-2);border:1px solid var(--border);
+      box-sizing:border-box;
     }
     .status-btn{
-      border:none;background:transparent;color:var(--text-3);
-      border-radius:8px;padding:7px 14px;font:inherit;font-size:.82rem;font-weight:600;
+      flex:1;border:none;background:transparent;color:var(--text-2);
+      border-radius:10px;padding:10px 12px;font:inherit;font-size:.86rem;font-weight:600;
       cursor:pointer;transition:background .15s,color .15s,box-shadow .15s;
-      line-height:1.2;
+      line-height:1.2;text-align:center;
     }
-    .status-btn:hover{color:var(--text-2)}
+    .status-btn:hover{color:var(--text);background:color-mix(in srgb,var(--surface) 55%,transparent)}
     .status-btn.active{
       background:var(--surface);color:var(--text);
-      box-shadow:0 1px 3px rgba(0,0,0,.18);
+      box-shadow:0 1px 4px rgba(0,0,0,.2),0 0 0 1px color-mix(in srgb,var(--accent) 22%,transparent);
     }
     .field.is-disabled{opacity:.42;pointer-events:none}
     .plan-badge{
@@ -1038,7 +1057,7 @@
             </select>
           </label>
           <button type="button" class="fav-filter-btn" id="favFilterBtn" data-fav="1" title="Только избранное" aria-label="Избранное" aria-pressed="false">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 5.6a5.1 5.1 0 0 0-7.2 0L12 7.2l-1.6-1.6a5.1 5.1 0 0 0-7.2 7.2l1.6 1.6L12 21l6.4-6.6 1.6-1.6a5.1 5.1 0 0 0 0-7.2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.7-4.35-9.33-7.4C.8 11.5 1.24 7.9 4.05 6.3c2.1-1.2 4.6-.7 5.95 1.2 1.35-1.9 3.85-2.4 5.95-1.2 2.81 1.6 3.25 5.2 1.38 7.3C18.7 16.65 12 21 12 21z"/></svg>
           </button>
         </div>
       </div>
@@ -2031,9 +2050,10 @@
       }));
     }
 
-    async function buildRecommendationsPacked(limit) {
+    async function buildRecommendationsPacked(limit, excludeIds) {
       const list = await buildRecommendations();
-      return (list || []).slice(0, limit || 18);
+      const ex = excludeIds || new Set();
+      return (list || []).filter(it => !ex.has(String(it.appid))).slice(0, limit || 18);
     }
 
     function recsLoadingMarkup() {
@@ -2080,12 +2100,23 @@
       }
     }
 
+    function recCoverUrl(appid, n) {
+      const id = String(appid);
+      const urls = [
+        'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/' + id + '/header.jpg',
+        'https://cdn.cloudflare.steamstatic.com/steam/apps/' + id + '/header.jpg',
+        'https://steamcdn-a.akamaihd.net/steam/apps/' + id + '/header.jpg',
+        'https://cdn.akamai.steamstatic.com/steam/apps/' + id + '/header.jpg'
+      ];
+      return urls[Math.min(n || 0, urls.length - 1)];
+    }
+
     function recCardHtml(it, idx) {
       const id = esc(it.appid);
-      const cover = 'https://cdn.cloudflare.steamstatic.com/steam/apps/' + it.appid + '/header.jpg';
+      const cover = recCoverUrl(it.appid, 0);
       return '<article class="rec-card" data-appid="' + id + '" data-name="' + esc(it.name) + '" style="animation-delay:' + ((idx || 0) * 0.04) + 's">' +
         '<button type="button" class="rec-dismiss" title="Не предлагать" aria-label="Не предлагать">✕</button>' +
-        '<img class="rec-cover" src="' + cover + '" alt="" loading="lazy" decoding="async" onerror="this.style.opacity=.35"/>' +
+        '<img class="rec-cover" src="' + cover + '" alt="" loading="lazy" decoding="async" data-cdn="0" data-appid="' + id + '" onerror="window.__recCoverFallback&&window.__recCoverFallback(this)"/>' +
         '<div class="rec-body">' +
           '<div class="rec-title">' + esc(it.name) + '</div>' +
           '<div class="rec-meta">' + esc(it.reason || '') + '</div>' +
@@ -2093,6 +2124,14 @@
             '<button type="button" class="btn btn-secondary btn-sm rec-add">В планы</button>' +
           '</div></div></article>';
     }
+
+    window.__recCoverFallback = function(img) {
+      const n = Number(img.dataset.cdn || 0) + 1;
+      const appid = img.dataset.appid;
+      if (!appid || n > 3) { img.style.opacity = '.35'; return; }
+      img.dataset.cdn = String(n);
+      img.src = recCoverUrl(appid, n);
+    };
 
     function closeRecs() {
       const overlay = $('recsOverlay');
@@ -2848,6 +2887,16 @@
         const links = (g.links || []).filter(Boolean).map(linkChipHtml).join('');
         const hasRating = g.rating != null && g.rating >= 1;
         const isPlan = g.status === 'plan';
+        const allTags = (g.genresAll && g.genresAll.length) ? g.genresAll : (g.genres || []);
+        let tagsHtml = '';
+        if (allTags.length) {
+          const head = allTags.slice(0, 3).map(tg => '<span class="card-tag">' + esc(tg) + '</span>').join('');
+          const extra = allTags.slice(3).map(tg => '<span class="card-tag is-extra">' + esc(tg) + '</span>').join('');
+          const moreBtn = allTags.length > 3
+            ? '<button type="button" class="card-tags-more" data-tags-toggle="1" aria-expanded="false">+' + (allTags.length - 3) + '</button>'
+            : '';
+          tagsHtml = '<div class="card-tags">' + head + extra + moreBtn + '</div>';
+        }
         const ratingHtml = isPlan
           ? `<span class="plan-badge">В планах</span>`
           : (hasRating
@@ -2873,6 +2922,7 @@
                 ${g.releaseYear ? `<span class="meta-year">${g.releaseYear}</span>` : ''}
                 ${!isPlan && g.completedAt ? `<span>📅 ${fmtDate(g.completedAt)}</span>` : ''}
               </div>
+              ${tagsHtml}
               <p class="card-review ${g.review ? '' : 'is-empty'}">${g.review ? esc(g.review) : (isPlan ? 'Запланирована' : 'Без отзыва')}</p>
               ${links ? `<div class="card-links">${links}</div>` : ''}
               <div class="card-footer">
@@ -3591,8 +3641,9 @@
         const appid = card.dataset.appid;
         dismissRecApp(appid);
         card.classList.add('is-leaving');
-        setTimeout(() => {
-          const grid = $('recsGrid');
+        (async () => {
+          await new Promise(r => setTimeout(r, 260));
+          const gridEl = $('recsGrid');
           let next = null;
           while (recExtraPool.length && !next) {
             const cand = recExtraPool.shift();
@@ -3601,7 +3652,26 @@
             if (loadDismissedRecs().has(String(cand.appid))) continue;
             next = cand;
           }
-          if (next && grid) {
+          if (!next) {
+            try {
+              const shown = new Set(
+                [...(gridEl ? gridEl.querySelectorAll('.rec-card') : [])]
+                  .map(el => el.dataset.appid)
+                  .filter(Boolean)
+              );
+              shown.add(String(appid));
+              const more = await buildRecommendationsPacked(12, shown);
+              recExtraPool = more.slice();
+              while (recExtraPool.length && !next) {
+                const cand = recExtraPool.shift();
+                if (!cand) break;
+                if (shown.has(String(cand.appid))) continue;
+                if (loadDismissedRecs().has(String(cand.appid))) continue;
+                next = cand;
+              }
+            } catch (err) {}
+          }
+          if (next && gridEl) {
             const wrap = document.createElement('div');
             wrap.innerHTML = recCardHtml(next, 0);
             const neu = wrap.firstElementChild;
@@ -3609,12 +3679,12 @@
             else card.remove();
           } else {
             card.remove();
-            if (grid && !grid.querySelector('.rec-card')) {
-              grid.innerHTML = '<div class="recs-empty">Больше нет кандидатов. Откройте рекомендации снова.</div>';
+            if (gridEl && !gridEl.querySelector('.rec-card')) {
+              gridEl.innerHTML = '<div class="recs-empty">Больше нет кандидатов. Откройте рекомендации снова.</div>';
             }
           }
-        }, 280);
-        toast('Скрыто · другая игра', '✕');
+        })();
+        toast('Скрыто · ищем замену', '✕');
         return;
       }
       const btn = e.target.closest('.rec-add');
@@ -3862,6 +3932,17 @@
     }
 
     grid.addEventListener('click', e => {
+      const tagsBtn = e.target.closest('[data-tags-toggle]');
+      if (tagsBtn) {
+        e.stopPropagation();
+        const wrap = tagsBtn.closest('.card-tags');
+        if (!wrap) return;
+        const open = wrap.classList.toggle('is-open');
+        tagsBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        const n = wrap.querySelectorAll('.card-tag.is-extra').length;
+        tagsBtn.textContent = open ? 'Скрыть' : ('+' + n);
+        return;
+      }
       const editBtn = e.target.closest('[data-edit]');
       const delBtn = e.target.closest('[data-del]');
       const favBtn = e.target.closest('[data-fav]');
