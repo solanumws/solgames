@@ -301,13 +301,20 @@
     }
     .plat-select:focus{outline:none;border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
     .fav-filter-btn{
-      width:34px;height:34px;border-radius:10px;border:1px solid var(--border);
+      width:40px;height:40px;border-radius:12px;border:1px solid var(--border);
       background:var(--surface-2);color:var(--text-3);cursor:pointer;
-      font-size:1rem;line-height:1;display:inline-flex;align-items:center;justify-content:center;
-      transition:background .15s,color .15s,border-color .15s;
+      display:inline-flex;align-items:center;justify-content:center;
+      transition:background .18s,color .18s,border-color .18s,transform .15s,box-shadow .18s;
     }
-    .fav-filter-btn:hover{color:var(--text)}
-    .fav-filter-btn.active{color:#f43f5e;border-color:color-mix(in srgb,#f43f5e 40%,var(--border));background:color-mix(in srgb,#f43f5e 10%,var(--surface-2))}
+    .fav-filter-btn svg{width:22px;height:22px;display:block}
+    .fav-filter-btn:hover{color:#f43f5e;border-color:color-mix(in srgb,#f43f5e 35%,var(--border));transform:scale(1.04)}
+    .fav-filter-btn:active{transform:scale(.96)}
+    .fav-filter-btn.active{
+      color:#fff;border-color:transparent;
+      background:linear-gradient(145deg,#fb7185,#e11d48);
+      box-shadow:0 4px 14px color-mix(in srgb,#e11d48 35%,transparent);
+    }
+    .fav-filter-btn.active svg{fill:currentColor;stroke:currentColor}
     @media (max-width:560px){
       .filter-bar{flex-direction:column;align-items:stretch}
       .filter-bar .seg{width:100%;display:flex}
@@ -827,14 +834,80 @@
     }
     .card.is-plan{border-style:dashed}
     .recs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;padding:8px 0 16px}
-    .rec-card{background:var(--surface-2);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .2s,transform .2s}
+    .rec-card{
+      position:relative;
+      background:var(--surface-2);border:1px solid var(--border);border-radius:14px;overflow:hidden;
+      display:flex;flex-direction:column;
+      transition:border-color .2s,transform .25s var(--spring),opacity .28s ease,max-height .3s ease;
+      animation:recIn .4s both;
+    }
     .rec-card:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+    .rec-card.is-leaving{opacity:0;transform:scale(.92);pointer-events:none}
+    @keyframes recIn{
+      from{opacity:0;transform:translateY(10px) scale(.96)}
+      to{opacity:1;transform:none}
+    }
     .rec-cover{aspect-ratio:460/215;background:var(--surface-3);object-fit:cover;width:100%;display:block}
     .rec-body{padding:10px;display:flex;flex-direction:column;gap:8px;flex:1}
     .rec-title{font-size:.8rem;font-weight:600;line-height:1.25;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     .rec-meta{font-size:.72rem;color:var(--text-3)}
+    .rec-actions{display:flex;gap:6px;margin-top:auto}
+    .rec-actions .btn{flex:1}
+    .rec-dismiss{
+      position:absolute;top:8px;right:8px;z-index:2;
+      width:28px;height:28px;border-radius:50%;
+      border:1px solid color-mix(in srgb,var(--border) 80%,transparent);
+      background:color-mix(in srgb,var(--surface) 82%,transparent);
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      color:var(--text-2);cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:.85rem;line-height:1;
+      transition:background .15s,color .15s,transform .15s,border-color .15s;
+    }
+    .rec-dismiss:hover{background:color-mix(in srgb,#ef4444 18%,var(--surface));color:#ef4444;border-color:color-mix(in srgb,#ef4444 40%,var(--border));transform:scale(1.06)}
     .recs-empty{text-align:center;padding:28px 16px;color:var(--text-3);font-size:.9rem}
     .recs-hint{font-size:.8rem;color:var(--text-3);margin:0 0 8px;line-height:1.45}
+    .recs-loading{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:14px;padding:36px 16px 28px;min-height:180px;
+    }
+    .recs-spinner{
+      width:42px;height:42px;border-radius:50%;
+      border:3px solid color-mix(in srgb,var(--accent) 18%,var(--border));
+      border-top-color:var(--accent);
+      animation:recsSpin .75s linear infinite;
+    }
+    @keyframes recsSpin{to{transform:rotate(360deg)}}
+    .recs-loading-text{
+      font-size:.86rem;font-weight:600;color:var(--text-2);
+      letter-spacing:-.01em;
+    }
+    .recs-loading-sub{font-size:.75rem;color:var(--text-3)}
+    .recs-skel-grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+      gap:12px;width:100%;margin-top:8px;
+    }
+    .recs-skel{
+      border-radius:14px;overflow:hidden;border:1px solid var(--border);
+      background:var(--surface-2);
+    }
+    .recs-skel-cover{
+      aspect-ratio:460/215;
+      background:linear-gradient(90deg,var(--surface-2) 0%,var(--surface-3) 45%,var(--surface-2) 90%);
+      background-size:200% 100%;
+      animation:recsShimmer 1.15s ease-in-out infinite;
+    }
+    .recs-skel-line{
+      height:10px;margin:10px 10px 0;border-radius:6px;
+      background:linear-gradient(90deg,var(--surface-2) 0%,var(--surface-3) 45%,var(--surface-2) 90%);
+      background-size:200% 100%;
+      animation:recsShimmer 1.15s ease-in-out infinite;
+    }
+    .recs-skel-line.short{width:45%;margin-bottom:12px}
+    @keyframes recsShimmer{
+      0%{background-position:100% 0}
+      100%{background-position:-100% 0}
+    }
 
     /* Mobile / touch */
     @media (max-width:768px), (pointer:coarse){
@@ -952,7 +1025,9 @@
               <option value="PSP">PSP</option>
             </select>
           </label>
-          <button type="button" class="fav-filter-btn" id="favFilterBtn" data-fav="1" title="Только избранное" aria-label="Избранное" aria-pressed="false">♥</button>
+          <button type="button" class="fav-filter-btn" id="favFilterBtn" data-fav="1" title="Только избранное" aria-label="Избранное" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 5.6a5.1 5.1 0 0 0-7.2 0L12 7.2l-1.6-1.6a5.1 5.1 0 0 0-7.2 7.2l1.6 1.6L12 21l6.4-6.6 1.6-1.6a5.1 5.1 0 0 0 0-7.2z"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -1655,6 +1730,28 @@
       return keys;
     }
 
+    const DISMISS_KEY = 'solgames-recs-dismissed';
+    function loadDismissedRecs() {
+      try {
+        const arr = JSON.parse(localStorage.getItem(DISMISS_KEY) || '[]');
+        return new Set(Array.isArray(arr) ? arr.map(String) : []);
+      } catch (e) {
+        return new Set();
+      }
+    }
+    function saveDismissedRecs(set) {
+      try {
+        localStorage.setItem(DISMISS_KEY, JSON.stringify([...set].slice(-200)));
+      } catch (e) {}
+    }
+    function dismissRecApp(appid) {
+      const id = String(appid || '');
+      if (!id) return;
+      const set = loadDismissedRecs();
+      set.add(id);
+      saveDismissedRecs(set);
+    }
+
     function topGenresFromLibrary(limit) {
       const freq = new Map();
       games.forEach(g => {
@@ -1718,86 +1815,192 @@
       return [tag, k];
     }
 
-    async function searchSteamByTerm(term, limit) {
-      const lim = limit || 8;
+    async function searchPopularByQuery(term, limit) {
+      const lim = limit || 12;
+      // Top sellers in genre — not obscure storesearch noise
       const urls = [
-        'https://store.steampowered.com/api/storesearch/?term=' + encodeURIComponent(term) + '&l=english&cc=US',
-        'https://store.steampowered.com/api/storesearch/?term=' + encodeURIComponent(term) + '&l=russian&cc=US',
-        'https://steamcommunity.com/actions/SearchApps/' + encodeURIComponent(term)
+        'https://store.steampowered.com/search/results/?term=' + encodeURIComponent(term) +
+          '&category1=998&filter=globaltopsellers&cc=US&l=english&json=1',
+        'https://store.steampowered.com/search/results/?term=' + encodeURIComponent(term) +
+          '&category1=998&filter=topsellers&cc=US&l=english&json=1'
       ];
       for (let u = 0; u < urls.length; u++) {
         try {
-          const data = await fetchJsonProxied(urls[u], 5000);
-          let items = [];
-          if (data && Array.isArray(data.items)) {
-            items = data.items.map(it => ({
-              appid: String(it.id),
+          const data = await fetchJsonProxied(urls[u], 5500);
+          const raw = (data && data.items) || [];
+          const items = [];
+          for (let i = 0; i < raw.length; i++) {
+            const it = raw[i];
+            let appid = it.id != null ? String(it.id) : '';
+            if (!appid && it.logo) {
+              const m = String(it.logo).match(/\/apps\/(\d+)\//);
+              if (m) appid = m[1];
+            }
+            if (!appid || !it.name) continue;
+            items.push({
+              appid: appid,
               name: it.name,
-              tiny: it.tiny_image || null
-            }));
-          } else if (Array.isArray(data)) {
-            items = data.map(it => ({
-              appid: String(it.appid || it.id || ''),
-              name: it.name || it.local_name || '',
-              tiny: it.logo || it.icon || null
-            }));
+              tiny: it.logo || null,
+              rank: i
+            });
           }
-          items = items.filter(x => x.appid && x.name && /^\d+$/.test(x.appid));
           if (items.length) return items.slice(0, lim);
-        } catch (e) { /* next source */ }
+        } catch (e) { /* next */ }
       }
       return [];
     }
 
+    async function fetchTopSellersGlobal() {
+      try {
+        const data = await fetchJsonProxied(
+          'https://store.steampowered.com/api/featuredcategories?cc=US&l=english',
+          5000
+        );
+        const items = (data && data.top_sellers && data.top_sellers.items) || [];
+        return items.map((it, i) => ({
+          appid: String(it.id),
+          name: it.name,
+          tiny: it.small_capsule_image || it.header_image || null,
+          rank: i
+        })).filter(x => x.appid && x.name);
+      } catch (e) {
+        return [];
+      }
+    }
+
+    // Quality gate: enough reviews on Steam = not a 5-owner nobody
+    async function filterByPopularity(candidates, minReviews) {
+      const minR = minReviews == null ? 800 : minReviews;
+      const out = [];
+      // check in small parallel batches
+      for (let i = 0; i < candidates.length && out.length < 14; i += 4) {
+        const batch = candidates.slice(i, i + 4);
+        const results = await Promise.all(batch.map(async (c) => {
+          try {
+            const url = 'https://store.steampowered.com/api/appdetails?appids=' + c.appid +
+              '&filters=basic,recommendations&cc=US&l=english';
+            const data = await fetchJsonProxied(url, 4000);
+            const entry = data && data[c.appid];
+            if (!entry || !entry.success || !entry.data) return null;
+            const rec = entry.data.recommendations && entry.data.recommendations.total;
+            const total = typeof rec === 'number' ? rec : 0;
+            if (total < minR) return null;
+            return {
+              appid: c.appid,
+              name: entry.data.name || c.name,
+              tiny: c.tiny || entry.data.header_image || null,
+              reviews: total,
+              reason: c.reason || '',
+              rank: c.rank != null ? c.rank : 99
+            };
+          } catch (e) {
+            return null;
+          }
+        }));
+        for (let j = 0; j < results.length; j++) {
+          if (results[j]) out.push(results[j]);
+        }
+      }
+      // prefer more reviews, then better topseller rank
+      out.sort((a, b) => (b.reviews - a.reviews) || (a.rank - b.rank));
+      return out;
+    }
+
     async function buildRecommendations() {
       const owned = libraryKeys();
-      const out = [];
+      const pool = [];
       const seen = new Set();
-      const push = (item, reason) => {
+      const dismissed = loadDismissedRecs();
+      const addPool = (item, reason) => {
         if (!item || !item.appid) return;
         const k1 = 'app:' + item.appid;
         const k2 = normTitle(item.name);
+        if (dismissed.has(String(item.appid))) return;
         if (owned.has(k1) || owned.has(k2) || seen.has(k1)) return;
         seen.add(k1);
-        out.push({ appid: item.appid, name: item.name, tiny: item.tiny || null, reason: reason });
+        pool.push({
+          appid: item.appid,
+          name: item.name,
+          tiny: item.tiny || null,
+          rank: item.rank != null ? item.rank : 50,
+          reason: reason
+        });
       };
 
-      const genres = topGenresFromLibrary(5);
-      // Also derive queries from highly rated game titles (seed discovery)
-      const seeds = games
-        .filter(g => g.status !== 'plan' && g.rating >= 8)
-        .sort((a, b) => (b.rating || 0) - (a.rating || 0))
-        .slice(0, 3);
-
+      const genres = topGenresFromLibrary(4);
       const queries = [];
       genres.forEach(g => {
         queriesForGenre(g).forEach(q => {
           if (q && !queries.includes(q)) queries.push(q);
         });
       });
-      // If no genres, try broad queries from seed titles' first word? skip — use popular tags from any game
-      if (!queries.length) {
-        games.filter(g => g.status !== 'plan').slice(0, 20).forEach(g => {
-          (g.genres || []).forEach(tag => {
-            queriesForGenre(tag).forEach(q => {
-              if (q && !queries.includes(q)) queries.push(q);
-            });
+      // Prefer English short genre tokens
+      const shortQ = queries.map(q => String(q).replace(/\s+game$/i, '').trim()).filter(Boolean);
+      const uniqQ = [];
+      shortQ.forEach(q => { if (!uniqQ.includes(q)) uniqQ.push(q); });
+
+      for (let i = 0; i < Math.min(uniqQ.length, 4); i++) {
+        const found = await searchPopularByQuery(uniqQ[i], 15);
+        for (let j = 0; j < found.length; j++) addPool(found[j], genres[i] || uniqQ[i]);
+      }
+
+      // Blend global top sellers as quality anchors
+      const globalTop = await fetchTopSellersGlobal();
+      for (let i = 0; i < globalTop.length; i++) {
+        addPool(globalTop[i], 'топ продаж');
+      }
+
+      if (!pool.length) {
+        FALLBACK_RECS.forEach(it => addPool(it, 'подборка'));
+      }
+
+      // Hard filter: min ~800 Steam reviews → cut no-name junk
+      let quality = await filterByPopularity(pool.slice(0, 36), 800);
+      if (quality.length < 6) {
+        const more = await filterByPopularity(pool.slice(0, 48), 300);
+        const have = new Set(quality.map(x => x.appid));
+        more.forEach(x => { if (!have.has(x.appid)) quality.push(x); });
+      }
+
+      // If still thin, curated known-good list
+      if (quality.length < 4) {
+        FALLBACK_RECS.forEach(it => {
+          if (quality.length >= 12) return;
+          if (dismissed.has(String(it.appid))) return;
+          if (owned.has('app:' + it.appid) || owned.has(normTitle(it.name))) return;
+          if (quality.some(x => x.appid === it.appid)) return;
+          quality.push({
+            appid: it.appid,
+            name: it.name,
+            tiny: null,
+            reviews: 999999,
+            reason: 'подборка',
+            rank: 0
           });
         });
       }
 
-      for (let i = 0; i < queries.length && out.length < 12; i++) {
-        const found = await searchSteamByTerm(queries[i], 8);
-        for (let j = 0; j < found.length; j++) push(found[j], queries[i]);
-      }
+      return quality.slice(0, 12).map(x => ({
+        appid: x.appid,
+        name: x.name,
+        tiny: x.tiny,
+        reason: x.reason || ''
+      }));
+    }
 
-      // Only if nothing found at all — curated fallback
-      if (out.length === 0) {
-        for (let i = 0; i < FALLBACK_RECS.length; i++) {
-          push(FALLBACK_RECS[i], 'подборка');
-        }
+    function recsLoadingMarkup() {
+      let sk = '';
+      for (let i = 0; i < 6; i++) {
+        sk += '<div class="recs-skel" style="animation-delay:' + (i * 0.06) + 's">' +
+          '<div class="recs-skel-cover"></div>' +
+          '<div class="recs-skel-line"></div>' +
+          '<div class="recs-skel-line short"></div></div>';
       }
-      return out.slice(0, 12);
+      return '<div class="recs-loading">' +
+        '<div class="recs-spinner" aria-hidden="true"></div>' +
+        '<div class="recs-loading-text">Подбираем рекомендации</div>' +
+        '<div class="recs-loading-sub">Топ продаж Steam · проверка популярности</div>' +
+        '<div class="recs-skel-grid">' + sk + '</div></div>';
     }
 
     async function openRecs() {
@@ -1805,12 +2008,12 @@
       const grid = $('recsGrid');
       const hint = $('recsHint');
       if (!overlay || !grid) return;
-      grid.innerHTML = '<div class="recs-empty">Загрузка…</div>';
+      grid.innerHTML = recsLoadingMarkup();
       const genres = topGenresFromLibrary(3);
       if (genres.length) {
-        hint.textContent = 'На основе ваших жанров: ' + genres.join(', ') + '. Уже добавленные игры скрыты.';
+        hint.textContent = 'Жанры: ' + genres.join(', ') + '. Топ продаж Steam, без малоизвестных. Скрытые вами игры не показываются.';
       } else {
-        hint.textContent = 'Пока мало пройденных игр с тегами — универсальная подборка. Чем больше прохождений, тем точнее рекомендации.';
+        hint.textContent = 'Мало тегов у пройденных — проверенные тайтлы. Крестик на карточке скрывает игру навсегда.';
       }
       overlay.classList.add('open');
       lockBodyScroll();
@@ -1821,14 +2024,17 @@
           grid.innerHTML = '<div class="recs-empty">Не удалось подобрать игры. Проверьте сеть.</div>';
           return;
         }
-        grid.innerHTML = list.map(it => {
+        grid.innerHTML = list.map((it, idx) => {
           const cover = it.tiny || ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + it.appid + '/header.jpg');
-          return '<article class="rec-card" data-appid="' + esc(it.appid) + '" data-name="' + esc(it.name) + '">' +
+          return '<article class="rec-card" data-appid="' + esc(it.appid) + '" data-name="' + esc(it.name) + '" style="animation-delay:' + (idx * 0.04) + 's">' +
+            '<button type="button" class="rec-dismiss" title="Не предлагать" aria-label="Не предлагать">✕</button>' +
             '<img class="rec-cover" src="' + cover + '" alt="" loading="lazy" onerror="this.style.opacity=.3"/>' +
             '<div class="rec-body">' +
               '<div class="rec-title">' + esc(it.name) + '</div>' +
               '<div class="rec-meta">' + esc(it.reason || '') + '</div>' +
-              '<button type="button" class="btn btn-secondary btn-sm rec-add">В планы</button>' +
+              '<div class="rec-actions">' +
+                '<button type="button" class="btn btn-secondary btn-sm rec-add">В планы</button>' +
+              '</div>' +
             '</div></article>';
         }).join('');
       } catch (err) {
@@ -3302,6 +3508,23 @@
     if ($('recsClose')) $('recsClose').onclick = closeRecs;
     if ($('recsOverlay')) $('recsOverlay').addEventListener('click', e => { if (e.target === $('recsOverlay')) closeRecs(); });
     if ($('recsGrid')) $('recsGrid').addEventListener('click', e => {
+      const dismissBtn = e.target.closest('.rec-dismiss');
+      if (dismissBtn) {
+        const card = dismissBtn.closest('.rec-card');
+        if (!card) return;
+        const appid = card.dataset.appid;
+        dismissRecApp(appid);
+        card.classList.add('is-leaving');
+        setTimeout(() => {
+          card.remove();
+          const grid = $('recsGrid');
+          if (grid && !grid.querySelector('.rec-card')) {
+            grid.innerHTML = '<div class="recs-empty">Все предложенные скрыты. Откройте рекомендации снова — подберём другие.</div>';
+          }
+        }, 280);
+        toast('Больше не предложим', '✕');
+        return;
+      }
       const btn = e.target.closest('.rec-add');
       if (!btn) return;
       const card = btn.closest('.rec-card');
