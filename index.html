@@ -870,87 +870,13 @@
       font-size:.72rem;font-weight:700;letter-spacing:.02em;
     }
     #detailMarkDone{color:var(--accent);font-weight:650}
-    .recs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;padding:8px 0 16px}
-    .rec-card{
-      position:relative;
-      background:var(--surface-2);border:1px solid var(--border);border-radius:14px;overflow:hidden;
-      display:flex;flex-direction:column;
-      transition:border-color .2s,transform .25s var(--spring),opacity .28s ease,max-height .3s ease;
-      animation:recIn .4s both;
-    }
-    .rec-card:hover{border-color:var(--border-hover);transform:translateY(-2px)}
-    .rec-card.is-leaving{opacity:0;transform:scale(.92);pointer-events:none}
     @keyframes recIn{
       from{opacity:0;transform:translateY(10px) scale(.96)}
       to{opacity:1;transform:none}
     }
-    .rec-cover{aspect-ratio:460/215;background:var(--surface-3);object-fit:cover;width:100%;display:block}
     .rec-body{padding:10px;display:flex;flex-direction:column;gap:8px;flex:1}
     .rec-title{font-size:.8rem;font-weight:600;line-height:1.25;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    .rec-meta{font-size:.72rem;color:var(--text-3)}
-    .rec-actions{display:flex;gap:6px;margin-top:auto}
-    .rec-actions .btn{flex:1}
-    .rec-dismiss{
-      position:absolute;top:8px;right:8px;z-index:2;
-      width:28px;height:28px;border-radius:50%;
-      border:1px solid color-mix(in srgb,var(--border) 80%,transparent);
-      background:color-mix(in srgb,var(--surface) 82%,transparent);
-      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-      color:var(--text-2);cursor:pointer;
-      display:inline-flex;align-items:center;justify-content:center;
-      font-size:.85rem;line-height:1;
-      transition:background .15s,color .15s,transform .15s,border-color .15s;
-    }
-    .rec-dismiss:hover{background:color-mix(in srgb,#ef4444 18%,var(--surface));color:#ef4444;border-color:color-mix(in srgb,#ef4444 40%,var(--border));transform:scale(1.06)}
-    .recs-empty{text-align:center;padding:28px 16px;color:var(--text-3);font-size:.9rem}
-    .recs-hint{font-size:.8rem;color:var(--text-3);margin:0 0 8px;line-height:1.45}
-    #recsBtn{font-weight:700;gap:8px;padding:9px 14px}
-    #recsBtn svg{flex-shrink:0}
-    .recs-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 12px}
-    .recs-toolbar .btn{font-size:.78rem;padding:7px 11px}
-    .recs-grid:has(.recs-loading){
-      display:block;
-    }
-    .recs-loading{
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      gap:14px;padding:28px 12px 20px;min-height:200px;width:100%;
-      box-sizing:border-box;text-align:center;
-      grid-column:1/-1;
-    }
-    .recs-spinner{
-      width:42px;height:42px;border-radius:50%;
-      border:3px solid color-mix(in srgb,var(--accent) 18%,var(--border));
-      border-top-color:var(--accent);
-      animation:recsSpin .75s linear infinite;
-    }
     @keyframes recsSpin{to{transform:rotate(360deg)}}
-    .recs-loading-text{
-      font-size:.86rem;font-weight:600;color:var(--text-2);
-      letter-spacing:-.01em;
-    }
-    .recs-loading-sub{font-size:.75rem;color:var(--text-3)}
-    .recs-skel-grid{
-      display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
-      gap:12px;width:100%;max-width:100%;margin-top:12px;
-      text-align:left;
-    }
-    .recs-skel{
-      border-radius:14px;overflow:hidden;border:1px solid var(--border);
-      background:var(--surface-2);
-    }
-    .recs-skel-cover{
-      aspect-ratio:460/215;
-      background:linear-gradient(90deg,var(--surface-2) 0%,var(--surface-3) 45%,var(--surface-2) 90%);
-      background-size:200% 100%;
-      animation:recsShimmer 1.15s ease-in-out infinite;
-    }
-    .recs-skel-line{
-      height:10px;margin:10px 10px 0;border-radius:6px;
-      background:linear-gradient(90deg,var(--surface-2) 0%,var(--surface-3) 45%,var(--surface-2) 90%);
-      background-size:200% 100%;
-      animation:recsShimmer 1.15s ease-in-out infinite;
-    }
-    .recs-skel-line.short{width:45%;margin-bottom:12px}
     @keyframes recsShimmer{
       0%{background-position:100% 0}
       100%{background-position:-100% 0}
@@ -1016,12 +942,11 @@
             <span>Добавить</span>
           </button>
           
-          <button class="btn btn-secondary" id="recsBtn" title="Рекомендации" aria-label="Рекомендации">
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.6 4.8L18.5 9l-4.9 1.6L12 15.5l-1.6-4.9L5.5 9l4.9-1.2L12 3z"/><path d="M19 14.5l.7 2.1 2.1.7-2.1.7-.7 2.1-.7-2.1-2.1-.7 2.1-.7.7-2.1z"/></svg>
-            <span>Идеи</span>
-          </button>
           <button class="btn btn-secondary btn-icon" id="statsBtn" title="Статистика" aria-label="Статистика">
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19V9M12 19V5M20 19v-7"/></svg>
+          </button>
+          <button class="btn btn-secondary btn-icon" id="refreshAllBtn" title="Обновить все из Steam" aria-label="Обновить все из Steam">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
           </button>
           <button class="btn btn-secondary btn-icon" id="exportBtn" title="Экспорт" aria-label="Экспорт">
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
@@ -1203,32 +1128,6 @@
   </div>
 
   
-  <div class="overlay" id="recsOverlay">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="recsTitle" style="max-width:560px">
-      <div class="modal-head">
-        <h2 id="recsTitle">Рекомендации</h2>
-        <button type="button" class="btn btn-ghost btn-icon" id="recsClose" aria-label="Закрыть">✕</button>
-      </div>
-      <div class="modal-body" style="padding-top:0">
-        <p class="recs-hint" id="recsHint">Подбираем игры…</p>
-        <div class="recs-toolbar">
-          <button type="button" class="btn btn-secondary btn-sm" id="recsResetDismiss" title="Снова показывать скрытые">Сброс скрытых</button>
-        </div>
-        <div class="recs-grid" id="recsGrid"></div>
-      </div>
-    </div>
-  </div>
-
-<div class="confirm-overlay" id="confirmOverlay">
-    <div class="confirm-box">
-      <h3 id="confirmTitle">Удалить игру?</h3>
-      <p id="confirmText">Это действие нельзя отменить.</p>
-      <div class="confirm-actions">
-        <button class="btn btn-secondary" id="confirmCancel">Отмена</button>
-        <button class="btn btn-danger" id="confirmOk">Удалить</button>
-      </div>
-    </div>
-  </div>
 
   <input type="file" id="importFile" accept=".json,application/json" hidden />
   <button type="button" class="to-top" id="toTop" aria-label="Наверх" title="Наверх">
@@ -1385,7 +1284,6 @@
     let sortMode = 'date-desc';
     let formStatus = 'done';
     let statusFilter = 'all';
-    let recExtraPool = [];
     let pendingSteamMeta = null;
 
     const IDB_NAME = 'solgames-db';
@@ -1476,50 +1374,158 @@
     
     /** EN → RU tags */
     function translateTag(s) {
+      if (!s) return '';
+      const raw = String(s).trim();
+      if (!raw) return '';
+      // already Cyrillic — keep
+      if (/[а-яё]/i.test(raw)) return raw;
       const map = {
+        // core genres
         'action': 'Экшен', 'adventure': 'Приключения', 'rpg': 'RPG', 'strategy': 'Стратегия',
         'simulation': 'Симулятор', 'casual': 'Казуальная', 'indie': 'Инди', 'sports': 'Спорт',
-        'racing': 'Гонки', 'massively multiplayer': 'ММО', 'mmo': 'ММО',
+        'racing': 'Гонки', 'massively multiplayer': 'ММО', 'mmo': 'ММО', 'mmorpg': 'MMORPG',
         'early access': 'Ранний доступ', 'free to play': 'Бесплатная', 'free-to-play': 'Бесплатная',
-        'animation & modeling': 'Анимация и моделирование', 'design & illustration': 'Дизайн',
+        'animation & modeling': 'Анимация', 'design & illustration': 'Дизайн',
         'photo editing': 'Фото', 'utilities': 'Утилиты', 'web publishing': 'Веб',
         'education': 'Обучение', 'video production': 'Видео', 'audio production': 'Аудио',
         'software training': 'Обучение ПО', 'game development': 'Разработка игр',
         'violent': 'Насилие', 'gore': 'Кровь', 'nudity': 'Нагота', 'sexual content': 'Сексуальный контент',
-        'mature': 'Для взрослых',
+        'mature': 'Для взрослых', 'nsfw': '18+',
+        // modes
         'singleplayer': 'Одиночная', 'single-player': 'Одиночная', 'single player': 'Одиночная',
-        'для одного игрока': 'Одиночная', 'одиночная': 'Одиночная',
         'multiplayer': 'Мультиплеер', 'multi-player': 'Мультиплеер', 'multi player': 'Мультиплеер',
-        'co-op': 'Кооператив', 'coop': 'Кооператив', 'local co-op': 'Локальный кооп',
-        'online co-op': 'Онлайн кооп', 'co-operative': 'Кооператив', 'hentai': 'Хентай', 'nsfw': 'NSFW',
-        'horror': 'Хоррор', 'puzzle': 'Головоломка', 'platformer': 'Платформер',
-        'shooter': 'Шутер', 'fps': 'Шутер', 'open world': 'Открытый мир',
-        'story rich': 'Сюжетная', 'atmospheric': 'Атмосферная', '2d': '2D', '3d': '3D',
-        'pixel graphics': 'Пиксельная графика', 'anime': 'Аниме', 'visual novel': 'Визуальная новелла',
-        'roguelike': 'Рогалик', 'roguelite': 'Рогалик', 'metroidvania': 'Метроидвания',
-        'survival': 'Выживание', 'crafting': 'Крафт', 'building': 'Строительство',
-        'co-op': 'Кооператив', 'multiplayer': 'Мультиплеер', 'singleplayer': 'Одиночная',
-        'single-player': 'Одиночная', 'single player': 'Одиночная',
-        'sci-fi': 'Sci-Fi',
-        'cyberpunk': 'Киберпанк',
-        'first-person': 'От первого лица',
-        'third person': 'От третьего лица',
-        'third-person': 'От третьего лица',
-        'dating sim': 'Симулятор свиданий',
-        'action rpg': 'Action RPG',
-        'exploration': 'Исследование',
-        'sandbox': 'Песочница',
-        'great soundtrack': 'Саундтрек',
-        'souls-like': 'Souls-like',
-        'difficult': 'Сложная',
-        'comedy': 'Комедия'
+        'co-op': 'Кооператив', 'coop': 'Кооператив', 'co-operative': 'Кооператив',
+        'local co-op': 'Локальный кооп', 'online co-op': 'Онлайн кооп',
+        'local multiplayer': 'Локальный мультиплеер', 'online multiplayer': 'Онлайн-мультиплеер',
+        'pvp': 'PvP', 'pve': 'PvE', 'moba': 'MOBA',
+        // popular tags (~top steam)
+        'atmospheric': 'Атмосферная', 'story rich': 'Сюжетная', 'story-rich': 'Сюжетная',
+        'great soundtrack': 'Отличный саундтрек', 'soundtrack': 'Саундтрек',
+        'open world': 'Открытый мир', 'open-world': 'Открытый мир',
+        'sandbox': 'Песочница', 'exploration': 'Исследование',
+        'horror': 'Хоррор', 'survival horror': 'Хоррор на выживание',
+        'psychological horror': 'Психологический хоррор', 'survival': 'Выживание',
+        'craft': 'Крафт', 'crafting': 'Крафт', 'building': 'Строительство',
+        'base building': 'Строительство базы', 'resource management': 'Управление ресурсами',
+        'management': 'Менеджмент', 'city builder': 'Градостроительный симулятор',
+        'colony sim': 'Симулятор колонии', 'life sim': 'Симулятор жизни',
+        'dating sim': 'Симулятор знакомств', 'farming sim': 'Фермерский симулятор',
+        'fps': 'Шутер от первого лица', 'first-person': 'От первого лица',
+        'first person': 'От первого лица', 'third person': 'От третьего лица',
+        'third-person': 'От третьего лица', 'top-down': 'Вид сверху',
+        'shooter': 'Шутер', 'twin stick shooter': 'Twin-stick шутер',
+        'bullet hell': 'Bullet hell', 'roguelike': 'Рогалик', 'roguelite': 'Рогалит',
+        'rogue-like': 'Рогалик', 'rogue-lite': 'Рогалит', 'souls-like': 'Souls-like',
+        'metroidvania': 'Метроидвания', 'platformer': 'Платформер', '2d platformer': '2D-платформер',
+        'precision platformer': 'Точный платформер', 'puzzle': 'Головоломка',
+        'puzzle-platformer': 'Головоломка-платформер', 'logic': 'Логическая',
+        'point & click': 'Квест', 'point and click': 'Квест', 'visual novel': 'Визуальная новелла',
+        'interactive fiction': 'Интерактивная литература', 'choices matter': 'Выбор имеет значение',
+        'multiple endings': 'Несколько концовок', 'narrative': 'Нарратив',
+        'cinematic': 'Кинематографичная', 'story': 'Сюжет',
+        'rpg maker': 'RPG Maker', 'jrpg': 'JRPG', 'crpg': 'CRPG', 'arpg': 'Action RPG',
+        'action rpg': 'Action RPG', 'turn-based': 'Пошаговая', 'turn-based combat': 'Пошаговые бои',
+        'turn-based strategy': 'Пошаговая стратегия', 'real-time': 'В реальном времени',
+        'rts': 'RTS', 'real time tactics': 'Тактика в реальном времени',
+        'tactical': 'Тактика', 'tactics': 'Тактика', 'turn-based tactics': 'Пошаговая тактика',
+        'grand strategy': 'Глобальная стратегия', '4x': '4X', 'wargame': 'Варгейм',
+        'card game': 'Карточная', 'deckbuilding': 'Колодостроение', 'deck builder': 'Колодостроение',
+        'roguelike deckbuilder': 'Рогалик с колодами', 'board game': 'Настольная',
+        'dice': 'Кости', 'tabletop': 'Настольная',
+        'fighting': 'Файтинг', 'beat \'em up': 'Beat \'em up', 'hack and slash': 'Hack and slash',
+        'character action game': 'Character action',
+        'stealth': 'Стелс', 'assassin': 'Ассасин', 'ninja': 'Ниндзя',
+        'parkour': 'Паркур', 'immersive sim': 'Immersive sim',
+        'cyberpunk': 'Киберпанк', 'sci-fi': 'Sci-fi', 'science fiction': 'Научная фантастика',
+        'space': 'Космос', 'space sim': 'Космический симулятор', 'spaceships': 'Корабли',
+        'alien': 'Пришельцы', 'futuristic': 'Футуризм', 'dystopian':  'Антиутопия',
+        'post-apocalyptic': 'Постапокалипсис', 'zombie': 'Зомби', 'zombies': 'Зомби',
+        'vampire': 'Вампиры', 'dark fantasy': 'Тёмное фэнтези', 'fantasy': 'Фэнтези',
+        'magic': 'Магия', 'medieval': 'Средневековье', 'historical': 'Историческая',
+        'world war ii': 'Вторая мировая', 'world war i': 'Первая мировая',
+        'military': 'Военная', 'war': 'Война', 'modern': 'Современность',
+        'cold war': 'Холодная война', 'politics': 'Политика', 'economy': 'Экономика',
+        'crime': 'Криминал', 'detective': 'Детектив', 'mystery': 'Мистика',
+        'thriller': 'Триллер', 'drama': 'Драма', 'comedy': 'Комедия',
+        'funny': 'Смешная', 'humor': 'Юмор', 'memes': 'Мемы', 'parody': 'Пародия',
+        'relaxing': 'Расслабляющая', 'cozy': 'Уютная', 'wholesome': 'Доброжелательная',
+        'family friendly': 'Семейная', 'cute': 'Милая', 'colorful': 'Красочная',
+        'stylized': 'Стилизованная', 'pixel graphics': 'Пиксельная графика',
+        'pixel art': 'Пиксель-арт', 'hand-drawn': 'Рисованная', 'anime': 'Аниме',
+        'cartoon': 'Мультяшная', 'realistic': 'Реализм', 'cinematic': 'Кинематографичная',
+        '3d': '3D', '2d': '2D', 'isometric': 'Изометрия', 'side scroller': 'Сайд-скроллер',
+        'top down': 'Вид сверху', 'third-person shooter': 'Шутер от третьего лица',
+        'first-person shooter': 'Шутер от первого лица', 'tactical shooter': 'Тактический шутер',
+        'loot': 'Лут', 'looter shooter': 'Лутер-шутер', 'extraction shooter': 'Extraction-шутер',
+        'battle royale': 'Королевская битва', 'arena shooter': 'Арена-шутер',
+        'hero shooter': 'Геройский шутер', 'class-based': 'Классовая система',
+        'progression': 'Прокачка', 'character customization': 'Кастомизация персонажа',
+        'character customization': 'Кастомизация', 'inventory management': 'Инвентарь',
+        'inventory': 'Инвентарь', 'loot system': 'Система лута',
+        'difficult': 'Сложная', 'difficultly': 'Сложность', 'challenging': 'Испытание',
+        'soulsborne': 'Soulsborne', 'permadeath': 'Перманентная смерть',
+        'procedural generation': 'Процедурная генерация', 'replay value': 'Реиграбельность',
+        'short': 'Короткая', 'long': 'Длинная', 'linear': 'Линейная',
+        'nonlinear': 'Нелинейная', 'sandbox': 'Песочница',
+        'moddable': 'С модами', 'mod support': 'Поддержка модов', 'workshop': 'Мастерская',
+        'controller support': 'Поддержка геймпада', 'full controller support': 'Полная поддержка геймпада',
+        'partial controller support': 'Частичная поддержка геймпада',
+        'vr': 'VR', 'virtual reality': 'VR', 'vr only': 'Только VR',
+        'horror': 'Хоррор', 'lovecraftian': 'Лавкрафт', 'gothic': 'Готика',
+        'dark': 'Мрачная', 'blood': 'Кровь', 'nudity': 'Нагота',
+        'romance': 'Романтика', 'lgbtq+': 'LGBTQ+', 'female protagonist': 'Протагонистка',
+        'male protagonist': 'Протагонист', 'protagonist': 'Протагонист',
+        'team-based': 'Командная', 'competitive': 'Соревновательная', 'esports': 'Киберспорт',
+        'match 3': 'Три в ряд', 'card battler': 'Карточные бои',
+        'auto battler': 'Автобатлер', 'tower defense': 'Защита башни', 'tower defence': 'Защита башни',
+        'idle': 'Idle', 'clicker': 'Кликер', 'incremental': 'Инкрементальная',
+        'minigames': 'Мини-игры', 'party game': 'Вечеринка', 'local multiplayer': 'Локальный мультиплеер',
+        'split screen': 'Split-screen', 'lan': 'LAN',
+        'driving': 'Вождение', 'automobile sim': 'Автосимулятор', 'flight': 'Авиация',
+        'flight sim': 'Авиасимулятор', 'naval': 'Морская', 'submarine': 'Подводная лодка',
+        'trains': 'Поезда', 'trucking': 'Дальнобойщики', 'transportation': 'Транспорт',
+        'physics': 'Физика', 'destruction': 'Разрушения', 'vehicles': 'Транспорт',
+        'mechs': 'Мехи', 'robots': 'Роботы', 'tanks': 'Танки',
+        'sniper': 'Снайпер', 'stealth': 'Стелс', 'hunting': 'Охота', 'fishing': 'Рыбалка',
+        'cooking': 'Готовка', 'farming': 'Фермерство', 'agriculture': 'Сельское хозяйство',
+        'nature': 'Природа', 'animals': 'Животные', 'dinosaurs': 'Динозавры',
+        'underwater': 'Подводный мир', 'ocean': 'Океан', 'pirates': 'Пираты',
+        'ninjas': 'Ниндзя', 'samurai': 'Самураи', 'western': 'Вестерн',
+        'noir': 'Нуар', 'time travel': 'Путешествия во времени', 'alternate history': 'Альтернативная история',
+        'mythology': 'Мифология', 'supernatural': 'Сверхъестественное', 'occult': 'Оккультизм',
+        'psychological': 'Психологическая', 'emotional': 'Эмоциональная',
+        'philosophical': 'Философская', 'experimental': 'Экспериментальная',
+        'minimalist': 'Минимализм', 'abstract': 'Абстрактная', 'surreal': 'Сюрреализм',
+        'walking simulator': 'Walking simulator', 'immersive': 'Погружение',
+        'cinematic': 'Кинематографичная', 'cutscenes': 'Кат-сцены',
+        'voice acting': 'Озвучка', 'well-written': 'Хороший сюжет',
+        'classic': 'Классика', 'remake': 'Ремейк', 'remaster': 'Ремастер',
+        'retro': 'Ретро', 'old school': 'Олдскул', 'nostalgia': 'Ностальгия',
+        '1990\'s': '90-е', '1980\'s': '80-е', '2000\'s': '2000-е',
+        'cult classic': 'Культовая классика', 'hidden gem': 'Скрытая жемчужина',
+        'underrated': 'Недооценённая', 'masterpiece': 'Шедевр',
+        'difficult': 'Сложная', 'unforgiving': 'Беспощадная',
+        'relaxing': 'Расслабляющая', 'meditative': 'Медитативная',
+        'addictive': 'Затягивающая', 'fast-paced': 'Динамичная', 'slow-paced': 'Размеренная',
+        'resource management': 'Управление ресурсами', 'base building': 'Строительство базы',
+        'automation': 'Автоматизация', 'logistics': 'Логистика', 'factory': 'Фабрика',
+        'programming': 'Программирование', 'hacking': 'Хакерство',
+        'investigation': 'Расследование', 'crime': 'Криминал',
+        'heist': 'Ограбление', 'spy': 'Шпионаж', 'espionage': 'Шпионаж',
+        'superhero': 'Супергерои', 'villain protagonist': 'Протагонист-злодей',
+        'dark humor': 'Чёрный юмор', 'satire': 'Сатира',
+        'music': 'Музыка', 'rhythm': 'Ритм-игра', 'bullet hell': 'Bullet hell',
+        'score attack': 'Набор очков', 'leaderboards': 'Таблица лидеров',
+        'achievements': 'Достижения', 'collectathon': 'Сбор предметов',
+        'exploration': 'Исследование', 'secrets': 'Секреты', 'lore-rich': 'Богатый лор',
+        'worldbuilding': 'Миростроение', 'immersive': 'Погружение'
       };
-      const k = String(s || '').trim().toLowerCase();
-      if (map[k]) return map[k];
-      // already cyrillic
-      if (/[а-яё]/i.test(k)) return String(s).trim();
-      // title-case fallback keep original short tags
-      return String(s || '').trim();
+      const key = raw.toLowerCase().trim();
+      if (map[key]) return map[key];
+      // soft match without punctuation
+      const soft = key.replace(/[_/]+/g, ' ').replace(/\s+/g, ' ').trim();
+      if (map[soft]) return map[soft];
+      return raw;
     }
 
     function tagDedupeKey(s) {
@@ -1763,20 +1769,6 @@
       });
     }
 
-    const FALLBACK_RECS = [
-      { appid: '1145360', name: 'Hades' },
-      { appid: '1245620', name: 'ELDEN RING' },
-      { appid: '1086940', name: "Baldur's Gate 3" },
-      { appid: '892970', name: 'Valheim' },
-      { appid: '105600', name: 'Terraria' },
-      { appid: '413150', name: 'Stardew Valley' },
-      { appid: '367520', name: 'Hollow Knight' },
-      { appid: '524220', name: 'NieR:Automata' },
-      { appid: '814380', name: 'Sekiro' },
-      { appid: '1091500', name: 'Cyberpunk 2077' },
-      { appid: '1174180', name: 'Red Dead Redemption 2' },
-      { appid: '292030', name: 'The Witcher 3' }
-    ];
 
     function libraryKeys() {
       const keys = new Set();
@@ -1790,299 +1782,18 @@
       return keys;
     }
 
-    const DISMISS_KEY = 'solgames-recs-dismissed';
-    function loadDismissedRecs() {
-      try {
-        const arr = JSON.parse(localStorage.getItem(DISMISS_KEY) || '[]');
-        return new Set(Array.isArray(arr) ? arr.map(String) : []);
-      } catch (e) {
-        return new Set();
-      }
-    }
-    function saveDismissedRecs(set) {
-      try {
-        localStorage.setItem(DISMISS_KEY, JSON.stringify([...set].slice(-200)));
-      } catch (e) {}
-    }
-    function dismissRecApp(appid) {
-      const id = String(appid || '');
-      if (!id) return;
-      const set = loadDismissedRecs();
-      set.add(id);
-      saveDismissedRecs(set);
-    }
-    function clearDismissedRecs() {
-      try { localStorage.removeItem(DISMISS_KEY); } catch (e) {}
-    }
+    
 
 
-    function topGenresFromLibrary(limit) {
-      // Вес жанра = сумма оценок игр (любимые сильнее), а не просто «сколько раз встретился»
-      const score = new Map();
-      games.forEach(g => {
-        if (g.status === 'plan') return;
-        const r = Number(g.rating) || 0;
-        const w = r >= 9 ? 3 : r >= 7 ? 2 : r >= 5 ? 1 : 0.5;
-        const tags = (g.genresAll && g.genresAll.length) ? g.genresAll : (g.genres || []);
-        tags.forEach(tag => {
-          const k = String(tag).trim();
-          if (!k) return;
-          score.set(k, (score.get(k) || 0) + w);
-        });
-      });
-      return [...score.entries()].sort((a, b) => b[1] - a[1]).slice(0, limit || 4).map(x => x[0]);
-    }
 
-    function topRatedSeeds(limit) {
-      return games
-        .filter(g => g.status !== 'plan' && Number(g.rating) >= 8)
-        .sort((a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0))
-        .slice(0, limit || 4);
-    }
 
-    const GENRE_QUERY = {
-      'экшен': ['action game', 'action'],
-      'action': ['action game', 'action'],
-      'приключения': ['adventure game', 'adventure'],
-      'adventure': ['adventure game'],
-      'rpg': ['rpg', 'role playing'],
-      'стратегия': ['strategy game', 'strategy'],
-      'strategy': ['strategy game'],
-      'симулятор': ['simulation', 'simulator'],
-      'simulation': ['simulation'],
-      'инди': ['indie game', 'indie'],
-      'indie': ['indie game'],
-      'казуальная': ['casual game'],
-      'casual': ['casual game'],
-      'гонки': ['racing game', 'racing'],
-      'racing': ['racing'],
-      'спорт': ['sports game', 'sports'],
-      'sports': ['sports'],
-      'шутер': ['shooter', 'fps'],
-      'horror': ['horror game', 'horror'],
-      'хоррор': ['horror game'],
-      'открытый мир': ['open world'],
-      'open world': ['open world'],
-      'выживание': ['survival game', 'survival'],
-      'survival': ['survival'],
-      'метроидвания': ['metroidvania'],
-      'metroidvania': ['metroidvania'],
-      'рогалик': ['roguelike', 'roguelite'],
-      'roguelike': ['roguelike'],
-      'roguelite': ['roguelite'],
-      'платформер': ['platformer'],
-      'platformer': ['platformer'],
-      'головоломка': ['puzzle game', 'puzzle'],
-      'puzzle': ['puzzle'],
-      'ммо': ['mmo'],
-      'mmo': ['mmo']
-    };
 
-    function queriesForGenre(tag) {
-      const k = String(tag || '').trim().toLowerCase();
-      if (!k) return [];
-      if (GENRE_QUERY[k]) return GENRE_QUERY[k].slice();
-      // partial match
-      for (const key of Object.keys(GENRE_QUERY)) {
-        if (k.includes(key) || key.includes(k)) return GENRE_QUERY[key].slice();
-      }
-      // use tag itself + english-ish
-      return [tag, k];
-    }
 
-    async function searchPopularByQuery(term, limit) {
-      const lim = limit || 12;
-      // Top sellers in genre — not obscure storesearch noise
-      const urls = [
-        'https://store.steampowered.com/search/results/?term=' + encodeURIComponent(term) +
-          '&category1=998&filter=globaltopsellers&cc=US&l=english&json=1',
-        'https://store.steampowered.com/search/results/?term=' + encodeURIComponent(term) +
-          '&category1=998&filter=topsellers&cc=US&l=english&json=1'
-      ];
-      for (let u = 0; u < urls.length; u++) {
-        try {
-          const data = await fetchJsonProxied(urls[u], 5500);
-          const raw = (data && data.items) || [];
-          const items = [];
-          for (let i = 0; i < raw.length; i++) {
-            const it = raw[i];
-            let appid = it.id != null ? String(it.id) : '';
-            if (!appid && it.logo) {
-              const m = String(it.logo).match(/\/apps\/(\d+)\//);
-              if (m) appid = m[1];
-            }
-            if (!appid || !it.name) continue;
-            items.push({
-              appid: appid,
-              name: it.name,
-              tiny: it.logo || null,
-              rank: i
-            });
-          }
-          if (items.length) return items.slice(0, lim);
-        } catch (e) { /* next */ }
-      }
-      return [];
-    }
 
-    async function fetchTopSellersGlobal() {
-      try {
-        const data = await fetchJsonProxied(
-          'https://store.steampowered.com/api/featuredcategories?cc=US&l=english',
-          5000
-        );
-        const items = (data && data.top_sellers && data.top_sellers.items) || [];
-        return items.map((it, i) => ({
-          appid: String(it.id),
-          name: it.name,
-          tiny: it.small_capsule_image || it.header_image || null,
-          rank: i
-        })).filter(x => x.appid && x.name);
-      } catch (e) {
-        return [];
-      }
-    }
 
     // Quality gate: enough reviews on Steam = not a 5-owner nobody
-    async function filterByPopularity(candidates, minReviews) {
-      const minR = minReviews == null ? 800 : minReviews;
-      const out = [];
-      // check in small parallel batches
-      for (let i = 0; i < candidates.length && out.length < 14; i += 4) {
-        const batch = candidates.slice(i, i + 4);
-        const results = await Promise.all(batch.map(async (c) => {
-          try {
-            const url = 'https://store.steampowered.com/api/appdetails?appids=' + c.appid +
-              '&filters=basic,recommendations&cc=US&l=english';
-            const data = await fetchJsonProxied(url, 4000);
-            const entry = data && data[c.appid];
-            if (!entry || !entry.success || !entry.data) return null;
-            const d = entry.data;
-            if (d.type && d.type !== 'game') return null;
-            if (!d.header_image) return null;
-            const rec = d.recommendations && d.recommendations.total;
-            const total = typeof rec === 'number' ? rec : 0;
-            if (total < minR) return null;
-            return {
-              appid: c.appid,
-              name: d.name || c.name,
-              tiny: d.header_image,
-              cover: d.header_image,
-              reviews: total,
-              reason: c.reason || '',
-              rank: c.rank != null ? c.rank : 99
-            };
-          } catch (e) {
-            return null;
-          }
-        }));
-        for (let j = 0; j < results.length; j++) {
-          if (results[j]) out.push(results[j]);
-        }
-      }
-      // prefer more reviews, then better topseller rank
-      out.sort((a, b) => (b.reviews - a.reviews) || (a.rank - b.rank));
-      return out;
-    }
 
-    async function buildRecommendations() {
-      const owned = libraryKeys();
-      const pool = [];
-      const seen = new Set();
-      const dismissed = loadDismissedRecs();
-      const addPool = (item, reason) => {
-        if (!item || !item.appid) return;
-        const k1 = 'app:' + item.appid;
-        const k2 = normTitle(item.name);
-        if (dismissed.has(String(item.appid))) return;
-        if (owned.has(k1) || owned.has(k2) || seen.has(k1)) return;
-        seen.add(k1);
-        pool.push({
-          appid: item.appid,
-          name: item.name,
-          tiny: item.tiny || null,
-          rank: item.rank != null ? item.rank : 50,
-          reason: reason
-        });
-      };
 
-      const genres = topGenresFromLibrary(4);
-      const seeds = topRatedSeeds(4);
-      const queries = [];
-      // 1) Жанры с весом по вашим оценкам
-      genres.forEach(g => {
-        queriesForGenre(g).forEach(q => {
-          if (q && !queries.includes(q)) queries.push(q);
-        });
-      });
-      // 2) Поиск «рядом» с любимыми играми (оценка 8+)
-      seeds.forEach(g => {
-        const title = String(g.title || '').trim();
-        if (title && title.length > 2 && !queries.includes(title)) queries.push(title);
-      });
-      const shortQ = queries.map(q => String(q).replace(/\s+game$/i, '').trim()).filter(Boolean);
-      const uniqQ = [];
-      shortQ.forEach(q => { if (!uniqQ.includes(q)) uniqQ.push(q); });
-
-      const queriesToRun = uniqQ.slice(0, 6);
-      const results = await Promise.allSettled(queriesToRun.map(q => searchPopularByQuery(q, 12)));
-      results.forEach((res, i) => {
-        if (res.status === 'fulfilled' && Array.isArray(res.value)) {
-          const label = genres[i] || (seeds[i] && seeds[i].title) || queriesToRun[i];
-          res.value.forEach(item => addPool(item, label));
-        }
-      });
-
-      // Blend global top sellers as quality anchors
-      const globalTop = await fetchTopSellersGlobal();
-      for (let i = 0; i < globalTop.length; i++) {
-        addPool(globalTop[i], 'топ продаж');
-      }
-
-      if (!pool.length) {
-        FALLBACK_RECS.forEach(it => addPool(it, 'подборка'));
-      }
-
-      // Hard filter: min ~800 Steam reviews → cut no-name junk
-      let quality = await filterByPopularity(pool.slice(0, 36), 800);
-      if (quality.length < 6) {
-        const more = await filterByPopularity(pool.slice(0, 48), 300);
-        const have = new Set(quality.map(x => x.appid));
-        more.forEach(x => { if (!have.has(x.appid)) quality.push(x); });
-      }
-
-      // If still thin, curated known-good list
-      if (quality.length < 4) {
-        FALLBACK_RECS.forEach(it => {
-          if (quality.length >= 12) return;
-          if (dismissed.has(String(it.appid))) return;
-          if (owned.has('app:' + it.appid) || owned.has(normTitle(it.name))) return;
-          if (quality.some(x => x.appid === it.appid)) return;
-          quality.push({
-            appid: it.appid,
-            name: it.name,
-            tiny: null,
-            reviews: 999999,
-            reason: 'подборка',
-            rank: 0
-          });
-        });
-      }
-
-      return quality.slice(0, 18).map(x => ({
-        appid: x.appid,
-        name: x.name,
-        tiny: x.tiny || x.cover || null,
-        cover: x.cover || x.tiny || null,
-        reason: x.reason || ''
-      }));
-    }
-
-    async function buildRecommendationsPacked(limit, excludeIds) {
-      const list = await buildRecommendations();
-      const ex = excludeIds || new Set();
-      return (list || []).filter(it => !ex.has(String(it.appid))).slice(0, limit || 18);
-    }
 
     function recsLoadingMarkup() {
       let sk = '';
@@ -2099,34 +1810,6 @@
         '<div class="recs-skel-grid">' + sk + '</div></div>';
     }
 
-    async function openRecs() {
-      const overlay = $('recsOverlay');
-      const grid = $('recsGrid');
-      const hint = $('recsHint');
-      if (!overlay || !grid) return;
-      grid.innerHTML = recsLoadingMarkup();
-      const genres = topGenresFromLibrary(3);
-      if (genres.length) {
-        hint.textContent = 'Опираемся на ваши оценки 8+ и жанры: ' + genres.slice(0, 3).join(', ') + '. Крестик — скрыть и заменить.';
-      } else {
-        hint.textContent = 'Поставьте высокие оценки — подборка станет точнее. Крестик скрывает и подставляет другую.';
-      }
-      overlay.classList.add('open');
-      lockBodyScroll();
-      trapFocus(overlay);
-      try {
-        const packed = await buildRecommendationsPacked(18);
-        const list = packed.slice(0, 12);
-        recExtraPool = packed.slice(12);
-        if (!list.length) {
-          grid.innerHTML = '<div class="recs-empty">Не удалось подобрать игры. Проверьте сеть.</div>';
-          return;
-        }
-        grid.innerHTML = list.map((it, idx) => recCardHtml(it, idx)).join('');
-      } catch (err) {
-        grid.innerHTML = '<div class="recs-empty">Ошибка загрузки рекомендаций.</div>';
-      }
-    }
 
     function recCoverUrl(appid, n) {
       const id = String(appid);
@@ -2139,19 +1822,6 @@
       return urls[Math.min(n || 0, urls.length - 1)];
     }
 
-    function recCardHtml(it, idx) {
-      const id = esc(it.appid);
-      const cover = it.cover || it.tiny || recCoverUrl(it.appid, 0);
-      return '<article class="rec-card" data-appid="' + id + '" data-name="' + esc(it.name) + '" style="animation-delay:' + ((idx || 0) * 0.04) + 's">' +
-        '<button type="button" class="rec-dismiss" title="Не предлагать" aria-label="Не предлагать">✕</button>' +
-        '<img class="rec-cover" src="' + cover + '" alt="" loading="lazy" decoding="async" data-cdn="0" data-appid="' + id + '" onerror="window.__recCoverFallback&&window.__recCoverFallback(this)"/>' +
-        '<div class="rec-body">' +
-          '<div class="rec-title">' + esc(it.name) + '</div>' +
-          '<div class="rec-meta">' + esc(it.reason || '') + '</div>' +
-          '<div class="rec-actions">' +
-            '<button type="button" class="btn btn-secondary btn-sm rec-add">В планы</button>' +
-          '</div></div></article>';
-    }
 
     window.__recCoverFallback = function(img) {
       const n = Number(img.dataset.cdn || 0) + 1;
@@ -2161,12 +1831,6 @@
       img.src = recCoverUrl(appid, n);
     };
 
-    function closeRecs() {
-      const overlay = $('recsOverlay');
-      if (overlay) overlay.classList.remove('open');
-      releaseBodyScroll();
-      restoreFocus();
-    }
 
     function toast(msg, icon = '✓') {
       toastEl.innerHTML = `<span>${icon}</span> ${msg}`;
@@ -3351,7 +3015,76 @@ async function resolveSteamApp(appid, sourceStr, force = false) {
       return m ? m[1] : null;
     }
 
-        async function refreshGameFromSteam(id, appid) {
+        
+    let refreshAllRunning = false;
+
+    async function refreshAllFromSteam() {
+      if (refreshAllRunning) {
+        toast('Обновление уже идёт…', '!');
+        return;
+      }
+      const targets = games.filter(g => appidFromGame(g));
+      if (!targets.length) {
+        toast('Нет игр со Steam для обновления', '!');
+        return;
+      }
+      refreshAllRunning = true;
+      const btn = $('refreshAllBtn');
+      if (btn) btn.disabled = true;
+      const total = targets.length;
+      const batchSize = 10;
+      let done = 0;
+      let failed = 0;
+      toast('Обновление 0/' + total + '…', '↻');
+      try {
+        for (let i = 0; i < targets.length; i += batchSize) {
+          const batch = targets.slice(i, i + batchSize);
+          const results = await Promise.allSettled(batch.map(async g => {
+            const appid = appidFromGame(g);
+            const meta = await resolveSteamApp(String(appid), null, true);
+            const idx = games.findIndex(x => x.id === g.id);
+            if (idx === -1) return;
+            const cur = games[idx];
+            if (meta.releaseYear) cur.releaseYear = meta.releaseYear;
+            if (meta.coverUrl) cur.coverUrl = meta.coverUrl;
+            if (meta.steamShort) cur.steamShort = meta.steamShort;
+            if (meta.name && meta.name.trim()) {
+              const prev = String(cur.title || '');
+              if (!prev || /^https?:\/\//i.test(prev) || /^\d{3,10}$/.test(prev)) {
+                cur.title = meta.name.trim();
+              }
+            }
+            const all = cleanTags(meta.genresAll || meta.genres);
+            if (all && all.length) {
+              cur.genresAll = all;
+              cur.genres = all.slice(0, 3);
+            }
+            cur.updatedAt = new Date().toISOString();
+            games[idx] = cur;
+          }));
+          results.forEach(r => {
+            if (r.status === 'fulfilled') done++;
+            else failed++;
+          });
+          save();
+          render();
+          toast('Обновление ' + Math.min(i + batch.length, total) + '/' + total + '…', '↻');
+          // small pause between batches to be gentle on proxies
+          if (i + batchSize < targets.length) {
+            await new Promise(r => setTimeout(r, 400));
+          }
+        }
+        toast('Готово: ' + done + ' обновлено' + (failed ? (', ошибок: ' + failed) : ''), '✓');
+      } catch (e) {
+        console.warn(e);
+        toast('Обновление прервалось', '!');
+      } finally {
+        refreshAllRunning = false;
+        if (btn) btn.disabled = false;
+      }
+    }
+
+async function refreshGameFromSteam(id, appid) {
       const btn = $('detailSteam');
       if (btn) {
         btn.disabled = true;
@@ -3738,83 +3471,6 @@ async function resolveSteamApp(appid, sourceStr, force = false) {
       toast('Экспорт: ' + games.length + ' ' + phraseImported(games.length), '✓');
     };
     $('statsBtn').onclick = openStats;
-    if ($('recsBtn')) $('recsBtn').onclick = openRecs;
-    if ($('recsClose')) $('recsClose').onclick = closeRecs;
-    if ($('recsOverlay')) $('recsOverlay').addEventListener('click', e => { if (e.target === $('recsOverlay')) closeRecs(); });
-    if ($('recsResetDismiss')) {
-      $('recsResetDismiss').onclick = () => {
-        clearDismissedRecs();
-        toast('Скрытые рекомендации сброшены', '✓');
-        openRecs();
-      };
-    }
-    if ($('recsGrid')) $('recsGrid').addEventListener('click', e => {
-      const dismissBtn = e.target.closest('.rec-dismiss');
-      if (dismissBtn) {
-        const card = dismissBtn.closest('.rec-card');
-        if (!card) return;
-        const appid = card.dataset.appid;
-        dismissRecApp(appid);
-        card.classList.add('is-leaving');
-        (async () => {
-          await new Promise(r => setTimeout(r, 260));
-          const gridEl = $('recsGrid');
-          let next = null;
-          while (recExtraPool.length && !next) {
-            const cand = recExtraPool.shift();
-            if (!cand) break;
-            if (String(cand.appid) === String(appid)) continue;
-            if (loadDismissedRecs().has(String(cand.appid))) continue;
-            next = cand;
-          }
-          if (!next) {
-            try {
-              const shown = new Set(
-                [...(gridEl ? gridEl.querySelectorAll('.rec-card') : [])]
-                  .map(el => el.dataset.appid)
-                  .filter(Boolean)
-              );
-              shown.add(String(appid));
-              const more = await buildRecommendationsPacked(12, shown);
-              recExtraPool = more.slice();
-              while (recExtraPool.length && !next) {
-                const cand = recExtraPool.shift();
-                if (!cand) break;
-                if (shown.has(String(cand.appid))) continue;
-                if (loadDismissedRecs().has(String(cand.appid))) continue;
-                next = cand;
-              }
-            } catch (err) {}
-          }
-          if (next && gridEl) {
-            const wrap = document.createElement('div');
-            wrap.innerHTML = recCardHtml(next, 0);
-            const neu = wrap.firstElementChild;
-            if (neu) card.replaceWith(neu);
-            else card.remove();
-          } else {
-            card.remove();
-            if (gridEl && !gridEl.querySelector('.rec-card')) {
-              gridEl.innerHTML = '<div class="recs-empty">Больше нет кандидатов. Откройте рекомендации снова.</div>';
-            }
-          }
-        })();
-        toast('Скрыто · ищем замену', '✕');
-        return;
-      }
-      const btn = e.target.closest('.rec-add');
-      if (!btn) return;
-      const card = btn.closest('.rec-card');
-      if (!card) return;
-      const appid = card.dataset.appid;
-      const name = card.dataset.name || '';
-      closeRecs();
-      openModal();
-      formStatus = 'plan';
-      syncStatusUI();
-      if (appid) applySteamGame(appid, name);
-      else if (name) titleInput.value = name;
-    });
     $('statsClose').onclick = closeStats;
     $('statsOverlay').addEventListener('click', e => { if (e.target === $('statsOverlay')) closeStats(); });
 
