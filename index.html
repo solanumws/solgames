@@ -757,38 +757,6 @@
       .score-pill{min-width:40px;min-height:40px}
     }
 
-
-    .status-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
-    .status-btn{
-      border:1px solid var(--border);background:var(--surface-2);color:var(--text-2);
-      border-radius:12px;padding:10px 12px;font:inherit;font-size:.84rem;font-weight:600;
-      cursor:pointer;transition:background .15s,border-color .15s,color .15s;text-align:left;
-    }
-    .status-btn:hover{border-color:var(--border-hover);color:var(--text)}
-    .status-btn.active{
-      background:color-mix(in srgb,var(--accent) 16%,var(--surface));
-      border-color:color-mix(in srgb,var(--accent) 45%,var(--border));
-      color:var(--text);
-    }
-    .status-btn small{display:block;font-size:.72rem;font-weight:500;color:var(--text-3);margin-top:2px}
-    .field.is-disabled{opacity:.42;pointer-events:none}
-    .plan-badge{
-      display:inline-flex;align-items:center;font-size:.68rem;font-weight:700;letter-spacing:.02em;
-      text-transform:uppercase;padding:3px 8px;border-radius:999px;
-      background:color-mix(in srgb,var(--accent) 14%,var(--surface-2));
-      color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border));
-    }
-    .card.is-plan{border-style:dashed}
-    .recs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;padding:8px 0 16px}
-    .rec-card{background:var(--surface-2);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .2s,transform .2s}
-    .rec-card:hover{border-color:var(--border-hover);transform:translateY(-2px)}
-    .rec-cover{aspect-ratio:460/215;background:var(--surface-3);object-fit:cover;width:100%;display:block}
-    .rec-body{padding:10px;display:flex;flex-direction:column;gap:8px;flex:1}
-    .rec-title{font-size:.8rem;font-weight:600;line-height:1.25;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    .rec-meta{font-size:.72rem;color:var(--text-3)}
-    .recs-empty{text-align:center;padding:28px 16px;color:var(--text-3);font-size:.9rem}
-    .recs-hint{font-size:.8rem;color:var(--text-3);margin:0 0 8px;line-height:1.45}
-
     /* Mobile / touch */
     @media (max-width:768px), (pointer:coarse){
       .bg-glow{opacity:.45;animation:none!important}
@@ -852,9 +820,6 @@
           <button class="btn btn-secondary btn-icon" id="steamSyncBtn" title="Подтянуть Steam для игр без года" aria-label="Синхронизация Steam">
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 01-9 9 9 9 0 01-6.3-2.6L3 21l2.7-2.7A9 9 0 1112 21"/><path d="M12 7v5l3 2"/></svg>
           </button>
-          <button class="btn btn-secondary btn-icon" id="recsBtn" title="Рекомендации" aria-label="Рекомендации">
-            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3l1.6 4.8L18.5 9l-4.9 1.6L12 15.5l-1.6-4.9L5.5 9l4.9-1.2L12 3z"/></svg>
-          </button>
           <button class="btn btn-secondary btn-icon" id="statsBtn" title="Статистика" aria-label="Статистика">
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19V9M12 19V5M20 19v-7"/></svg>
           </button>
@@ -888,8 +853,6 @@
       </div>
       <div class="filter-chips" id="filterChips">
         <span class="filter-chip active" data-p="all">Все</span>
-        <span class="filter-chip" data-status="done">Пройденные</span>
-        <span class="filter-chip" data-status="plan">В планах</span>
         <span class="filter-chip" data-p="PC">PC</span>
         <span class="filter-chip" data-p="Android">Android</span>
         <span class="filter-chip" data-p="Switch">Switch</span>
@@ -924,13 +887,6 @@
           <p class="steam-hint">Можно вставить ссылку Steam — подтянется само</p>
         </div>
         <div class="field">
-          <label>Статус</label>
-          <div class="status-toggle" id="statusToggle" role="group" aria-label="Статус игры">
-            <button type="button" class="status-btn active" data-status="done">Пройдена<small>Оценка и отзыв</small></button>
-            <button type="button" class="status-btn" data-status="plan">В планах<small>Сыграю позже · без оценки</small></button>
-          </div>
-        </div>
-        <div class="field" id="ratingField">
           <label>Оценка</label>
           <div class="score-picker" id="scorePicker" role="radiogroup" aria-label="Оценка от 1 до 10">
             <button type="button" class="score-btn" data-score="1" aria-label="Оценка 1">1</button><button type="button" class="score-btn" data-score="2" aria-label="Оценка 2">2</button><button type="button" class="score-btn" data-score="3" aria-label="Оценка 3">3</button><button type="button" class="score-btn" data-score="4" aria-label="Оценка 4">4</button><button type="button" class="score-btn" data-score="5" aria-label="Оценка 5">5</button><button type="button" class="score-btn" data-score="6" aria-label="Оценка 6">6</button><button type="button" class="score-btn" data-score="7" aria-label="Оценка 7">7</button><button type="button" class="score-btn" data-score="8" aria-label="Оценка 8">8</button><button type="button" class="score-btn" data-score="9" aria-label="Оценка 9">9</button><button type="button" class="score-btn" data-score="10" aria-label="Оценка 10">10</button>
@@ -1026,21 +982,7 @@
     </div>
   </div>
 
-  
-  <div class="overlay" id="recsOverlay">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="recsTitle" style="max-width:560px">
-      <div class="modal-head">
-        <h2 id="recsTitle">Рекомендации</h2>
-        <button type="button" class="btn btn-ghost btn-icon" id="recsClose" aria-label="Закрыть">✕</button>
-      </div>
-      <div class="modal-body" style="padding-top:0">
-        <p class="recs-hint" id="recsHint">Подбираем игры…</p>
-        <div class="recs-grid" id="recsGrid"></div>
-      </div>
-    </div>
-  </div>
-
-<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-overlay" id="confirmOverlay">
     <div class="confirm-box">
       <h3 id="confirmTitle">Удалить игру?</h3>
       <p id="confirmText">Это действие нельзя отменить.</p>
@@ -1203,9 +1145,7 @@
         let searchTimer = null;
     let suggestIndex = -1;
     let renderTimer = null;
-    let sortMode = 'date-desc';
-    let formStatus = 'done';
-    let statusFilter = 'all';
+    let sortMode = 'date-desc'; // date-desc | date-asc | rating-desc | rating-asc | year-desc | year-asc
     let pendingSteamMeta = null;
 
     const IDB_NAME = 'solgames-db';
@@ -1386,10 +1326,7 @@
       return {
         id: g.id || uid(),
         title: g.title || 'Без названия',
-        status: (g.status === 'plan' || g.status === 'planned' || g.status === 'wishlist') ? 'plan' : 'done',
-        rating: (g.status === 'plan' || g.status === 'planned' || g.status === 'wishlist')
-          ? null
-          : (Math.round(Number(g.rating) || 0) || null),
+        rating: Math.round(Number(g.rating) || 0) || null,
         completedAt: g.completedAt || null,
         coverUrl: g.coverUrl || null,
         review: g.review || '',
@@ -1508,7 +1445,6 @@
 
     function resetFiltersUI() {
       activePlatformFilter = 'all';
-      statusFilter = 'all';
       favOnly = false;
       document.querySelectorAll('#filterChips .filter-chip').forEach(c => {
         c.classList.remove('active');
@@ -1536,157 +1472,6 @@
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-
-    
-    function syncStatusUI() {
-      document.querySelectorAll('#statusToggle .status-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.status === formStatus);
-      });
-      const ratingField = $('ratingField');
-      const dateEl = $('fieldDate');
-      const dateField = dateEl ? dateEl.closest('.field') : null;
-      if (ratingField) ratingField.classList.toggle('is-disabled', formStatus === 'plan');
-      if (dateField) dateField.classList.toggle('is-disabled', formStatus === 'plan');
-    }
-
-    const statusToggle = $('statusToggle');
-    if (statusToggle) {
-      statusToggle.addEventListener('click', e => {
-        const btn = e.target.closest('.status-btn');
-        if (!btn) return;
-        formStatus = btn.dataset.status === 'plan' ? 'plan' : 'done';
-        syncStatusUI();
-      });
-    }
-
-    const FALLBACK_RECS = [
-      { appid: '1145360', name: 'Hades' },
-      { appid: '1245620', name: 'ELDEN RING' },
-      { appid: '1086940', name: "Baldur's Gate 3" },
-      { appid: '892970', name: 'Valheim' },
-      { appid: '105600', name: 'Terraria' },
-      { appid: '413150', name: 'Stardew Valley' },
-      { appid: '367520', name: 'Hollow Knight' },
-      { appid: '524220', name: 'NieR:Automata' },
-      { appid: '814380', name: 'Sekiro' },
-      { appid: '1091500', name: 'Cyberpunk 2077' },
-      { appid: '1174180', name: 'Red Dead Redemption 2' },
-      { appid: '292030', name: 'The Witcher 3' }
-    ];
-
-    function libraryKeys() {
-      const keys = new Set();
-      games.forEach(g => {
-        keys.add(normTitle(g.title));
-        (g.links || []).forEach(l => {
-          const id = String(l || '').match(/\/app\/(\d+)/);
-          if (id) keys.add('app:' + id[1]);
-        });
-      });
-      return keys;
-    }
-
-    function topGenresFromLibrary(limit) {
-      const freq = new Map();
-      games.forEach(g => {
-        if (g.status === 'plan') return;
-        (g.genres || []).forEach(tag => {
-          const k = String(tag).trim();
-          if (!k) return;
-          freq.set(k, (freq.get(k) || 0) + 1);
-        });
-      });
-      return [...freq.entries()].sort((a, b) => b[1] - a[1]).slice(0, limit || 3).map(x => x[0]);
-    }
-
-    async function searchSteamByTerm(term, limit) {
-      const url = 'https://store.steampowered.com/api/storesearch/?term=' +
-        encodeURIComponent(term) + '&l=russian&cc=US';
-      try {
-        const data = await fetchJsonProxied(url, 4500);
-        const items = (data && data.items) || [];
-        return items.slice(0, limit || 8).map(it => ({
-          appid: String(it.id),
-          name: it.name,
-          tiny: it.tiny_image || null
-        })).filter(x => x.appid && x.name);
-      } catch (e) {
-        return [];
-      }
-    }
-
-    async function buildRecommendations() {
-      const owned = libraryKeys();
-      const out = [];
-      const seen = new Set();
-      const push = (item, reason) => {
-        if (!item || !item.appid) return;
-        const k1 = 'app:' + item.appid;
-        const k2 = normTitle(item.name);
-        if (owned.has(k1) || owned.has(k2) || seen.has(k1)) return;
-        seen.add(k1);
-        out.push({ appid: item.appid, name: item.name, tiny: item.tiny || null, reason: reason });
-      };
-
-      const genres = topGenresFromLibrary(3);
-      if (genres.length) {
-        for (let i = 0; i < genres.length; i++) {
-          if (out.length >= 12) break;
-          const found = await searchSteamByTerm(genres[i], 6);
-          for (let j = 0; j < found.length; j++) push(found[j], genres[i]);
-        }
-      }
-
-      if (out.length < 8) {
-        for (let i = 0; i < FALLBACK_RECS.length; i++) {
-          push(FALLBACK_RECS[i], genres.length ? 'популярное' : 'на заметку');
-        }
-      }
-      return out.slice(0, 12);
-    }
-
-    async function openRecs() {
-      const overlay = $('recsOverlay');
-      const grid = $('recsGrid');
-      const hint = $('recsHint');
-      if (!overlay || !grid) return;
-      grid.innerHTML = '<div class="recs-empty">Загрузка…</div>';
-      const genres = topGenresFromLibrary(3);
-      if (genres.length) {
-        hint.textContent = 'На основе ваших жанров: ' + genres.join(', ') + '. Уже добавленные игры скрыты.';
-      } else {
-        hint.textContent = 'Пока мало пройденных игр с тегами — универсальная подборка. Чем больше прохождений, тем точнее рекомендации.';
-      }
-      overlay.classList.add('open');
-      lockBodyScroll();
-      trapFocus(overlay);
-      try {
-        const list = await buildRecommendations();
-        if (!list.length) {
-          grid.innerHTML = '<div class="recs-empty">Не удалось подобрать игры. Проверьте сеть.</div>';
-          return;
-        }
-        grid.innerHTML = list.map(it => {
-          const cover = it.tiny || ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + it.appid + '/header.jpg');
-          return '<article class="rec-card" data-appid="' + esc(it.appid) + '" data-name="' + esc(it.name) + '">' +
-            '<img class="rec-cover" src="' + cover + '" alt="" loading="lazy" onerror="this.style.opacity=.3"/>' +
-            '<div class="rec-body">' +
-              '<div class="rec-title">' + esc(it.name) + '</div>' +
-              '<div class="rec-meta">' + esc(it.reason || '') + '</div>' +
-              '<button type="button" class="btn btn-secondary btn-sm rec-add">В планы</button>' +
-            '</div></article>';
-        }).join('');
-      } catch (err) {
-        grid.innerHTML = '<div class="recs-empty">Ошибка загрузки рекомендаций.</div>';
-      }
-    }
-
-    function closeRecs() {
-      const overlay = $('recsOverlay');
-      if (overlay) overlay.classList.remove('open');
-      releaseBodyScroll();
-      restoreFocus();
-    }
 
     function toast(msg, icon = '✓') {
       toastEl.innerHTML = `<span>${icon}</span> ${msg}`;
@@ -2347,8 +2132,6 @@
 
       if (activePlatformFilter !== 'all')
         list = list.filter(g => (g.platforms || []).includes(activePlatformFilter));
-      if (statusFilter === 'plan') list = list.filter(g => g.status === 'plan');
-      else if (statusFilter === 'done') list = list.filter(g => g.status !== 'plan');
       if (favOnly) list = list.filter(g => g.favorite);
       if (q) {
         list = list.filter(g => {
@@ -2423,12 +2206,9 @@
       grid.innerHTML = list.map((g, i) => {
         const links = (g.links || []).filter(Boolean).map(linkChipHtml).join('');
         const hasRating = g.rating != null && g.rating >= 1;
-        const isPlan = g.status === 'plan';
-        const ratingHtml = isPlan
-          ? `<span class="plan-badge">В планах</span>`
-          : (hasRating
-            ? `<span class="rating" style="${ratingStyle(g.rating)}">${Math.round(g.rating)}</span>`
-            : `<span class="rating none">—</span>`);
+        const ratingHtml = hasRating
+          ? `<span class="rating" style="${ratingStyle(g.rating)}">${Math.round(g.rating)}</span>`
+          : `<span class="rating none">—</span>`;
         const cover = g.coverUrl
           ? `<div class="card-cover-wrap"><img class="card-cover" src="${esc(g.coverUrl)}" alt="" loading="lazy" decoding="async" onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')" onerror="this.parentElement.classList.add('is-failed')" /></div>`
           : '';
@@ -2438,7 +2218,7 @@
           ? ` --card-accent:${g.accentColor};${delay ? `animation-delay:${delay.toFixed(2)}s` : 'animation:none'}`
           : (delay ? `animation-delay:${delay.toFixed(2)}s` : 'animation:none');
         return `
-          <article class="card${g.accentColor ? ' has-accent' : ''}${isPlan ? ' is-plan' : ''}" data-id="${g.id}" style="${accentStyle}">
+          <article class="card${g.accentColor ? ' has-accent' : ''}" data-id="${g.id}" style="${accentStyle}">
             ${cover}
             <div class="card-body">
               <div class="card-top">
@@ -2447,9 +2227,9 @@
               </div>
               <div class="card-meta">
                 ${g.releaseYear ? `<span class="meta-year">${g.releaseYear}</span>` : ''}
-                ${!isPlan && g.completedAt ? `<span>📅 ${fmtDate(g.completedAt)}</span>` : ''}
+                ${g.completedAt ? `<span>📅 ${fmtDate(g.completedAt)}</span>` : ''}
               </div>
-              <p class="card-review ${g.review ? '' : 'is-empty'}">${g.review ? esc(g.review) : (isPlan ? 'Запланирована' : 'Без отзыва')}</p>
+              <p class="card-review ${g.review ? '' : 'is-empty'}">${g.review ? esc(g.review) : 'Без отзыва'}</p>
               ${links ? `<div class="card-links">${links}</div>` : ''}
               <div class="card-footer">
                 <button class="fav-btn ${g.favorite ? 'active' : ''}" data-fav="${g.id}" aria-label="Избранное">${g.favorite ? '♥' : '♡'}</button>
@@ -2551,8 +2331,6 @@
 
       titleInput.dataset.releaseYear = '';
       pendingSteamMeta = null;
-      formStatus = 'done';
-      syncStatusUI();
       if (id) {
         const g = games.find(x => x.id === id);
         if (!g) return;
@@ -2561,8 +2339,6 @@
         titleInput.value = g.title || '';
         if (g.releaseYear) titleInput.dataset.releaseYear = String(g.releaseYear);
         setScore(Math.round(g.rating ?? 8));
-        formStatus = g.status === 'plan' ? 'plan' : 'done';
-        syncStatusUI();
         $('fieldDate').value = g.completedAt || '';
         coverInput.value = g.coverUrl || '';
         $('fieldReview').value = g.review || '';
@@ -2615,18 +2391,12 @@
         cover.removeAttribute('src');
       }
       $('detailTitle').textContent = g.title || '';
-      const hasR = g.status !== 'plan' && g.rating != null && g.rating >= 1;
+      const hasR = g.rating != null && g.rating >= 1;
       const dr = $('detailRating');
-      if (g.status === 'plan') {
-        dr.textContent = 'План';
-        dr.className = 'plan-badge';
-        dr.removeAttribute('style');
-      } else {
-        dr.textContent = hasR ? String(Math.round(g.rating)) : '—';
-        dr.className = 'rating' + (hasR ? '' : ' none');
-        if (hasR) dr.setAttribute('style', ratingStyle(g.rating));
-        else dr.removeAttribute('style');
-      }
+      dr.textContent = hasR ? String(Math.round(g.rating)) : '—';
+      dr.className = 'rating' + (hasR ? '' : ' none');
+      if (hasR) dr.setAttribute('style', ratingStyle(g.rating));
+      else dr.removeAttribute('style');
       const meta = [];
       if (g.releaseYear) meta.push(`<span>${g.releaseYear}</span>`);
       if (g.completedAt) meta.push(`<span>📅 ${fmtDate(g.completedAt)}</span>`);
@@ -2974,8 +2744,8 @@
         applySteamGame(detected, null);
         return;
       }
-      const ratingNum = formStatus === 'plan' ? null : Math.round(+ratingInput.value);
-      if (formStatus !== 'plan' && (ratingNum < 1 || ratingNum > 10)) { toast('Оценка 1–10', '!'); return; }
+      const ratingNum = Math.round(+ratingInput.value);
+      if (ratingNum < 1 || ratingNum > 10) { toast('Оценка 1–10', '!'); return; }
 
       const dup = findDuplicate(title, editId);
       if (dup) {
@@ -2989,9 +2759,8 @@
       const ry = ryRaw ? (+ryRaw || null) : null;
       const data = {
         title: titleInput.value.trim(),
-        status: formStatus === 'plan' ? 'plan' : 'done',
-        rating: formStatus === 'plan' ? null : ratingNum,
-        completedAt: formStatus === 'plan' ? null : ($('fieldDate').value || null),
+        rating: ratingNum,
+        completedAt: $('fieldDate').value || null,
         coverUrl,
         review: $('fieldReview').value.trim(),
         platforms: [...selectedPlatforms],
@@ -3132,23 +2901,6 @@
       toast('Экспорт: ' + games.length + ' ' + phraseImported(games.length), '✓');
     };
     $('statsBtn').onclick = openStats;
-    if ($('recsBtn')) $('recsBtn').onclick = openRecs;
-    if ($('recsClose')) $('recsClose').onclick = closeRecs;
-    if ($('recsOverlay')) $('recsOverlay').addEventListener('click', e => { if (e.target === $('recsOverlay')) closeRecs(); });
-    if ($('recsGrid')) $('recsGrid').addEventListener('click', e => {
-      const btn = e.target.closest('.rec-add');
-      if (!btn) return;
-      const card = btn.closest('.rec-card');
-      if (!card) return;
-      const appid = card.dataset.appid;
-      const name = card.dataset.name || '';
-      closeRecs();
-      openModal();
-      formStatus = 'plan';
-      syncStatusUI();
-      if (appid) applySteamGame(appid, name);
-      else if (name) titleInput.value = name;
-    });
     $('statsClose').onclick = closeStats;
     $('statsOverlay').addEventListener('click', e => { if (e.target === $('statsOverlay')) closeStats(); });
 
@@ -3355,16 +3107,10 @@
       if (chip.dataset.fav === '1') {
         favOnly = !favOnly;
         chip.classList.toggle('active', favOnly);
-      } else if (chip.dataset.status) {
-        document.querySelectorAll('#filterChips .filter-chip:not([data-fav])').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        statusFilter = chip.dataset.status;
-        activePlatformFilter = 'all';
       } else {
         document.querySelectorAll('#filterChips .filter-chip:not([data-fav])').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
-        activePlatformFilter = chip.dataset.p || 'all';
-        statusFilter = 'all';
+        activePlatformFilter = chip.dataset.p;
       }
       persistUI();
       render();
