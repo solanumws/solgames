@@ -10,11 +10,6 @@
   <title>SolGames</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2032%2032%22%3E%20%20%3Cdefs%3E%20%20%20%20%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%20%20%20%20%20%20%3Cstop%20offset=%220%%22%20stop-color=%22%238b5cf6%22/%3E%20%20%20%20%20%20%3Cstop%20offset=%22100%%22%20stop-color=%22%236d28d9%22/%3E%20%20%20%20%3C/linearGradient%3E%20%20%3C/defs%3E%20%20%3Crect%20width=%2232%22%20height=%2232%22%20rx=%228%22%20fill=%22url(%23g)%22/%3E%20%20%3Crect%20x=%226%22%20y=%2212%22%20width=%2220%22%20height=%2212%22%20rx=%224%22%20fill=%22white%22%20fill-opacity=%22.92%22/%3E%20%20%3Cpath%20d=%22M11%2015v6M8%2018h6%22%20stroke=%22%236d28d9%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22/%3E%20%20%3Ccircle%20cx=%2221%22%20cy=%2216.5%22%20r=%221.4%22%20fill=%22%236d28d9%22/%3E%20%20%3Ccircle%20cx=%2223.5%22%20cy=%2218.5%22%20r=%221.4%22%20fill=%22%236d28d9%22/%3E%20%20%3Ccircle%20cx=%2218.5%22%20cy=%2218.5%22%20r=%221.4%22%20fill=%22%236d28d9%22/%3E%20%20%3Ccircle%20cx=%2221%22%20cy=%2220.5%22%20r=%221.4%22%20fill=%22%236d28d9%22/%3E%3C/svg%3E" type="image/svg+xml" />
   <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABLElEQVR42u2XTQrCMBCFk1JPYHoFwbUgvYLiETyDG7FLrW7deRaR3kRwI3Vr3LoROq5SdeiktT9JQQOBNoR5Xzsv0w7fTu8sYwBrZnC84EICJoRxfJ4F0LQ4BuHvACbFPyBcABvanx6wSQDYhBbeQAtS8OsAJVOw3HclXttMbuLr0hiOrrkEq4OQZZ9wPZZaKAcSYLpZRVzB6+I7AMCoGUaerCPPYeRJSqN2E876p4e63h17nbTiEDqFAajA1B51r/ZSOg4AY9TUBc4Tx+uUhrE6UDkFTQFoTwGV8ywPUL5IPVD1FFACeE9jp6DooEBLpSDwL6IOqMC/CEojtxQvhnEliMUwFrr4fD44W/0e//+IXEiAW+oLWGv6AtWrmSbh2AMmIV7NKZLkptvzJ9I4j6faqqA3AAAAAElFTkSuQmCC" type="image/png" sizes="32x32" />
-  <link rel="icon" href="./icon-192.png" sizes="192x192" type="image/png" />
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
-  <link rel="manifest" href="./manifest.webmanifest" />
-  <meta name="mobile-web-app-capable" content="yes" />
-
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -270,7 +265,57 @@
       color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 10%,transparent);
     }
 
-    .filter-chips{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+    .filter-bar{
+      display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;
+      margin:0 0 14px;
+    }
+    .filter-bar .seg{
+      display:inline-flex;padding:3px;gap:2px;border-radius:11px;
+      background:var(--surface-2);border:1px solid var(--border);
+    }
+    .seg-btn{
+      border:none;background:transparent;color:var(--text-3);
+      border-radius:8px;padding:6px 12px;font:inherit;font-size:.78rem;font-weight:600;
+      cursor:pointer;transition:background .15s,color .15s,box-shadow .15s;
+    }
+    .seg-btn:hover{color:var(--text-2)}
+    .seg-btn.active{
+      background:var(--surface);color:var(--text);
+      box-shadow:0 1px 3px rgba(0,0,0,.16);
+    }
+    .filter-right{display:flex;align-items:center;gap:10px;flex-shrink:0;overflow:visible;padding:4px 4px 4px 0}
+    .filter-bar{overflow:visible;padding-right:2px}
+    .plat-wrap{display:flex;align-items:center;gap:6px}
+    .plat-label{font-size:.72rem;font-weight:600;color:var(--text-3)}
+    .plat-select{
+      appearance:none;-webkit-appearance:none;
+      background-color:var(--surface-2);color:var(--text);border:1px solid var(--border);
+      border-radius:9px;padding:7px 30px 7px 12px;
+      font-family:var(--font);font-size:.8rem;font-weight:600;letter-spacing:-.01em;
+      line-height:1.2;cursor:pointer;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 8px center;
+    }
+    .plat-select:focus{outline:none;border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
+    .plat-select option{font-family:var(--font);font-size:.85rem;font-weight:500;background:var(--surface);color:var(--text)}
+    .fav-filter-btn{
+      width:40px;height:40px;min-width:40px;border-radius:12px;
+      border:1px solid var(--border);background:var(--surface-2);color:#e11d48;
+      cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+      flex-shrink:0;box-sizing:border-box;
+      transition:background .15s,border-color .15s,color .15s,box-shadow .15s;
+    }
+    .fav-filter-btn .fav-ico{font-size:1.2rem;line-height:1;display:block}
+    .fav-filter-btn:hover{background:color-mix(in srgb,#e11d48 12%,var(--surface-2));border-color:color-mix(in srgb,#e11d48 45%,var(--border))}
+    .fav-filter-btn.active{color:#fff;border-color:transparent;background:#e11d48;box-shadow:0 3px 12px color-mix(in srgb,#e11d48 35%,transparent)}
+    @media (max-width:560px){
+      .filter-bar{flex-direction:column;align-items:stretch}
+      .filter-bar .seg{width:100%;display:flex}
+      .seg-btn{flex:1;text-align:center;padding:7px 8px}
+      .filter-right{justify-content:space-between}
+      .plat-label{display:none}
+    }
+
     .filter-chip{
       padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--border);
       color:var(--text-2);font-size:.78rem;font-weight:560;cursor:pointer;letter-spacing:-.01em;
@@ -372,6 +417,39 @@
       font-size:.84rem;color:var(--text-2);line-height:1.5;font-weight:450;
       display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1;
     }
+    .card-tags{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:2px}
+    .card-tag{
+      font-size:.68rem;font-weight:600;color:var(--text-3);
+      padding:3px 8px;border-radius:999px;border:1px solid var(--border);
+      background:var(--surface-2);letter-spacing:-.01em;
+    }
+    .card-tags-more{
+      border:1px solid var(--border);background:var(--surface-2);color:var(--text-2);
+      border-radius:999px;padding:3px 8px;font:inherit;font-size:.68rem;font-weight:700;
+      cursor:pointer;line-height:1.2;
+      transition:background .15s,color .15s,border-color .15s;
+    }
+    .card-tags-more:hover{color:var(--text);border-color:var(--border-hover)}
+    .detail-tags-wrap{margin:6px 0 2px}
+    .detail-tags-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    .detail-tags-extra{display:none;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+    .detail-tags-wrap.is-open .detail-tags-extra{display:flex}
+    .tags-expand-btn{
+      display:inline-flex !important;align-items:center;justify-content:center;
+      width:26px;height:26px;min-width:26px;padding:0;border-radius:50%;
+      border:1px solid color-mix(in srgb,var(--accent) 40%,var(--border));
+      background:color-mix(in srgb,var(--accent) 14%,var(--surface-2));
+      color:var(--accent);cursor:pointer;flex-shrink:0;
+      line-height:0;font-size:0;
+      transition:background .15s,border-color .15s,transform .12s,color .15s;
+    }
+    .tags-expand-btn svg{width:14px;height:14px;display:block;pointer-events:none}
+    .tags-expand-btn:hover{
+      background:color-mix(in srgb,var(--accent) 24%,var(--surface-2));
+      border-color:color-mix(in srgb,var(--accent) 65%,var(--border));
+    }
+    .tags-expand-btn:active{transform:scale(.95)}
+    .tags-expand-btn[aria-expanded="true"]{color:var(--text);background:var(--surface-2)}
     .card-review.is-empty{color:var(--text-3);font-style:italic;font-weight:400}
     .card-links{display:flex;flex-wrap:wrap;gap:5px}
     .link-chip{
@@ -757,6 +835,49 @@
       .score-pill{min-width:40px;min-height:40px}
     }
 
+
+    .status-toggle{
+      display:flex;width:100%;padding:4px;gap:4px;border-radius:14px;
+      background:var(--surface-2);border:1px solid var(--border);
+      box-sizing:border-box;
+    }
+    .status-btn{
+      flex:1;border:none;background:transparent;color:var(--text-2);
+      border-radius:10px;padding:10px 12px;font:inherit;font-size:.86rem;font-weight:600;
+      cursor:pointer;transition:background .15s,color .15s,box-shadow .15s;
+      line-height:1.2;text-align:center;
+    }
+    .status-btn:hover{color:var(--text);background:color-mix(in srgb,var(--surface) 55%,transparent)}
+    .status-btn.active{
+      background:var(--surface);color:var(--text);
+      box-shadow:0 1px 4px rgba(0,0,0,.2),0 0 0 1px color-mix(in srgb,var(--accent) 22%,transparent);
+    }
+    .field.is-disabled{opacity:.42;pointer-events:none}
+    .plan-badge{
+      display:inline-flex;align-items:center;font-size:.68rem;font-weight:700;letter-spacing:.02em;
+      text-transform:uppercase;padding:3px 8px;border-radius:999px;
+      background:color-mix(in srgb,var(--accent) 14%,var(--surface-2));
+      color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border));
+    }
+    .card.is-plan{border-style:dashed;border-color:color-mix(in srgb,var(--accent) 35%,var(--border))}
+    .card.is-plan .rating.none,.rating.none{
+      background:color-mix(in srgb,var(--accent) 16%,var(--surface-2));
+      color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);
+      font-size:.72rem;font-weight:700;letter-spacing:.02em;
+    }
+    #detailMarkDone{color:var(--accent);font-weight:650}
+    @keyframes recIn{
+      from{opacity:0;transform:translateY(10px) scale(.96)}
+      to{opacity:1;transform:none}
+    }
+    .rec-body{padding:10px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .rec-title{font-size:.8rem;font-weight:600;line-height:1.25;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    @keyframes recsSpin{to{transform:rotate(360deg)}}
+    @keyframes recsShimmer{
+      0%{background-position:100% 0}
+      100%{background-position:-100% 0}
+    }
+
     /* Mobile / touch */
     @media (max-width:768px), (pointer:coarse){
       .bg-glow{opacity:.45;animation:none!important}
@@ -816,12 +937,12 @@
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
             <span>Добавить</span>
           </button>
-          <span class="divider" aria-hidden="true"></span>
-          <button class="btn btn-secondary btn-icon" id="steamSyncBtn" title="Подтянуть Steam для игр без года" aria-label="Синхронизация Steam">
-            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 01-9 9 9 9 0 01-6.3-2.6L3 21l2.7-2.7A9 9 0 1112 21"/><path d="M12 7v5l3 2"/></svg>
-          </button>
+          
           <button class="btn btn-secondary btn-icon" id="statsBtn" title="Статистика" aria-label="Статистика">
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19V9M12 19V5M20 19v-7"/></svg>
+          </button>
+          <button class="btn btn-secondary btn-icon" id="refreshAllBtn" title="Обновить всё" aria-label="Обновить всё">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
           </button>
           <button class="btn btn-secondary btn-icon" id="exportBtn" title="Экспорт" aria-label="Экспорт">
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
@@ -851,15 +972,27 @@
           <button type="button" class="sort-pill" data-sort="year" data-dir="desc">Год ↓</button>
         </div>
       </div>
-      <div class="filter-chips" id="filterChips">
-        <span class="filter-chip active" data-p="all">Все</span>
-        <span class="filter-chip" data-p="PC">PC</span>
-        <span class="filter-chip" data-p="Android">Android</span>
-        <span class="filter-chip" data-p="Switch">Switch</span>
-        <span class="filter-chip" data-p="PS1">PS1</span>
-        <span class="filter-chip" data-p="PS2">PS2</span>
-        <span class="filter-chip" data-p="PSP">PSP</span>
-        <span class="filter-chip" data-fav="1" title="Избранное">♥</span>
+      <div class="filter-bar" id="filterChips">
+        <div class="seg" role="group" aria-label="Статус">
+          <button type="button" class="seg-btn active" data-status="all">Все</button>
+          <button type="button" class="seg-btn" data-status="done">Пройденные</button>
+          <button type="button" class="seg-btn" data-status="plan">В планах</button>
+        </div>
+        <div class="filter-right">
+          <label class="plat-wrap">
+            <span class="plat-label">Платформа</span>
+            <select id="platFilter" class="plat-select" aria-label="Платформа">
+              <option value="all">Все</option>
+              <option value="PC">PC</option>
+              <option value="Android">Android</option>
+              <option value="Switch">Switch</option>
+              <option value="PS1">PS1</option>
+              <option value="PS2">PS2</option>
+              <option value="PSP">PSP</option>
+            </select>
+          </label>
+          <button type="button" class="fav-filter-btn" id="favFilterBtn" data-fav="1" title="Только избранное" aria-label="Избранное" aria-pressed="false"><span class="fav-ico" aria-hidden="true">♥</span></button>
+        </div>
       </div>
     </div>
 
@@ -887,6 +1020,13 @@
           <p class="steam-hint">Можно вставить ссылку Steam — подтянется само</p>
         </div>
         <div class="field">
+          <label>Статус</label>
+          <div class="status-toggle" id="statusToggle" role="group" aria-label="Статус игры">
+            <button type="button" class="status-btn active" data-status="done">Пройдена</button>
+            <button type="button" class="status-btn" data-status="plan">В планах</button>
+          </div>
+        </div>
+        <div class="field" id="ratingField">
           <label>Оценка</label>
           <div class="score-picker" id="scorePicker" role="radiogroup" aria-label="Оценка от 1 до 10">
             <button type="button" class="score-btn" data-score="1" aria-label="Оценка 1">1</button><button type="button" class="score-btn" data-score="2" aria-label="Оценка 2">2</button><button type="button" class="score-btn" data-score="3" aria-label="Оценка 3">3</button><button type="button" class="score-btn" data-score="4" aria-label="Оценка 4">4</button><button type="button" class="score-btn" data-score="5" aria-label="Оценка 5">5</button><button type="button" class="score-btn" data-score="6" aria-label="Оценка 6">6</button><button type="button" class="score-btn" data-score="7" aria-label="Оценка 7">7</button><button type="button" class="score-btn" data-score="8" aria-label="Оценка 8">8</button><button type="button" class="score-btn" data-score="9" aria-label="Оценка 9">9</button><button type="button" class="score-btn" data-score="10" aria-label="Оценка 10">10</button>
@@ -971,6 +1111,7 @@
         <p class="detail-review" id="detailReview"></p>
         <div class="card-links" id="detailLinks"></div>
         <div class="detail-tools" id="detailTools">
+          <button type="button" class="detail-linkbtn" id="detailMarkDone" title="Отметить пройденной" hidden>✓ Пройдено</button>
           <button type="button" class="detail-linkbtn" id="detailReplay" title="Отметить перепрохождение">↻ Перепрохождение</button>
           <button type="button" class="detail-linkbtn" id="detailSteam" title="Обновить данные из Steam" hidden>Обновить из Steam</button>
         </div>
@@ -982,16 +1123,7 @@
     </div>
   </div>
 
-  <div class="confirm-overlay" id="confirmOverlay">
-    <div class="confirm-box">
-      <h3 id="confirmTitle">Удалить игру?</h3>
-      <p id="confirmText">Это действие нельзя отменить.</p>
-      <div class="confirm-actions">
-        <button class="btn btn-secondary" id="confirmCancel">Отмена</button>
-        <button class="btn btn-danger" id="confirmOk">Удалить</button>
-      </div>
-    </div>
-  </div>
+  
 
   <input type="file" id="importFile" accept=".json,application/json" hidden />
   <button type="button" class="to-top" id="toTop" aria-label="Наверх" title="Наверх">
@@ -1145,7 +1277,9 @@
         let searchTimer = null;
     let suggestIndex = -1;
     let renderTimer = null;
-    let sortMode = 'date-desc'; // date-desc | date-asc | rating-desc | rating-asc | year-desc | year-asc
+    let sortMode = 'date-desc';
+    let formStatus = 'done';
+    let statusFilter = 'all';
     let pendingSteamMeta = null;
 
     const IDB_NAME = 'solgames-db';
@@ -1236,45 +1370,158 @@
     
     /** EN → RU tags */
     function translateTag(s) {
+      if (!s) return '';
+      const raw = String(s).trim();
+      if (!raw) return '';
+      // already Cyrillic — keep
+      if (/[а-яё]/i.test(raw)) return raw;
       const map = {
+        // core genres
         'action': 'Экшен', 'adventure': 'Приключения', 'rpg': 'RPG', 'strategy': 'Стратегия',
         'simulation': 'Симулятор', 'casual': 'Казуальная', 'indie': 'Инди', 'sports': 'Спорт',
-        'racing': 'Гонки', 'massively multiplayer': 'ММО', 'mmo': 'ММО',
+        'racing': 'Гонки', 'massively multiplayer': 'ММО', 'mmo': 'ММО', 'mmorpg': 'MMORPG',
         'early access': 'Ранний доступ', 'free to play': 'Бесплатная', 'free-to-play': 'Бесплатная',
-        'animation & modeling': 'Анимация и моделирование', 'design & illustration': 'Дизайн',
+        'animation & modeling': 'Анимация', 'design & illustration': 'Дизайн',
         'photo editing': 'Фото', 'utilities': 'Утилиты', 'web publishing': 'Веб',
         'education': 'Обучение', 'video production': 'Видео', 'audio production': 'Аудио',
         'software training': 'Обучение ПО', 'game development': 'Разработка игр',
         'violent': 'Насилие', 'gore': 'Кровь', 'nudity': 'Нагота', 'sexual content': 'Сексуальный контент',
-        'mature': 'Для взрослых', 'hentai': 'Хентай', 'nsfw': 'NSFW',
-        'horror': 'Хоррор', 'puzzle': 'Головоломка', 'platformer': 'Платформер',
-        'shooter': 'Шутер', 'fps': 'Шутер', 'open world': 'Открытый мир',
-        'story rich': 'Сюжетная', 'atmospheric': 'Атмосферная', '2d': '2D', '3d': '3D',
-        'pixel graphics': 'Пиксельная графика', 'anime': 'Аниме', 'visual novel': 'Визуальная новелла',
-        'roguelike': 'Рогалик', 'roguelite': 'Рогалик', 'metroidvania': 'Метроидвания',
-        'survival': 'Выживание', 'crafting': 'Крафт', 'building': 'Строительство',
-        'co-op': 'Кооператив', 'multiplayer': 'Мультиплеер', 'singleplayer': 'Одиночная',
-        'single-player': 'Одиночная', 'single player': 'Одиночная',
-        'sci-fi': 'Sci-Fi',
-        'cyberpunk': 'Киберпанк',
-        'first-person': 'От первого лица',
-        'third person': 'От третьего лица',
-        'third-person': 'От третьего лица',
-        'dating sim': 'Симулятор свиданий',
-        'action rpg': 'Action RPG',
-        'exploration': 'Исследование',
-        'sandbox': 'Песочница',
-        'great soundtrack': 'Саундтрек',
-        'souls-like': 'Souls-like',
-        'difficult': 'Сложная',
-        'comedy': 'Комедия'
+        'mature': 'Для взрослых', 'nsfw': '18+',
+        // modes
+        'singleplayer': 'Одиночная', 'single-player': 'Одиночная', 'single player': 'Одиночная',
+        'multiplayer': 'Мультиплеер', 'multi-player': 'Мультиплеер', 'multi player': 'Мультиплеер',
+        'co-op': 'Кооператив', 'coop': 'Кооператив', 'co-operative': 'Кооператив',
+        'local co-op': 'Локальный кооп', 'online co-op': 'Онлайн кооп',
+        'local multiplayer': 'Локальный мультиплеер', 'online multiplayer': 'Онлайн-мультиплеер',
+        'pvp': 'PvP', 'pve': 'PvE', 'moba': 'MOBA',
+        // popular tags (~top steam)
+        'atmospheric': 'Атмосферная', 'story rich': 'Сюжетная', 'story-rich': 'Сюжетная',
+        'great soundtrack': 'Отличный саундтрек', 'soundtrack': 'Саундтрек',
+        'open world': 'Открытый мир', 'open-world': 'Открытый мир',
+        'sandbox': 'Песочница', 'exploration': 'Исследование',
+        'horror': 'Хоррор', 'survival horror': 'Хоррор на выживание',
+        'psychological horror': 'Психологический хоррор', 'survival': 'Выживание',
+        'craft': 'Крафт', 'crafting': 'Крафт', 'building': 'Строительство',
+        'base building': 'Строительство базы', 'resource management': 'Управление ресурсами',
+        'management': 'Менеджмент', 'city builder': 'Градостроительный симулятор',
+        'colony sim': 'Симулятор колонии', 'life sim': 'Симулятор жизни',
+        'dating sim': 'Симулятор знакомств', 'farming sim': 'Фермерский симулятор',
+        'fps': 'Шутер от первого лица', 'first-person': 'От первого лица',
+        'first person': 'От первого лица', 'third person': 'От третьего лица',
+        'third-person': 'От третьего лица', 'top-down': 'Вид сверху',
+        'shooter': 'Шутер', 'twin stick shooter': 'Twin-stick шутер',
+        'bullet hell': 'Bullet hell', 'roguelike': 'Рогалик', 'roguelite': 'Рогалит',
+        'rogue-like': 'Рогалик', 'rogue-lite': 'Рогалит', 'souls-like': 'Souls-like',
+        'metroidvania': 'Метроидвания', 'platformer': 'Платформер', '2d platformer': '2D-платформер',
+        'precision platformer': 'Точный платформер', 'puzzle': 'Головоломка',
+        'puzzle-platformer': 'Головоломка-платформер', 'logic': 'Логическая',
+        'point & click': 'Квест', 'point and click': 'Квест', 'visual novel': 'Визуальная новелла',
+        'interactive fiction': 'Интерактивная литература', 'choices matter': 'Выбор имеет значение',
+        'multiple endings': 'Несколько концовок', 'narrative': 'Нарратив',
+        'cinematic': 'Кинематографичная', 'story': 'Сюжет',
+        'rpg maker': 'RPG Maker', 'jrpg': 'JRPG', 'crpg': 'CRPG', 'arpg': 'Action RPG',
+        'action rpg': 'Action RPG', 'turn-based': 'Пошаговая', 'turn-based combat': 'Пошаговые бои',
+        'turn-based strategy': 'Пошаговая стратегия', 'real-time': 'В реальном времени',
+        'rts': 'RTS', 'real time tactics': 'Тактика в реальном времени',
+        'tactical': 'Тактика', 'tactics': 'Тактика', 'turn-based tactics': 'Пошаговая тактика',
+        'grand strategy': 'Глобальная стратегия', '4x': '4X', 'wargame': 'Варгейм',
+        'card game': 'Карточная', 'deckbuilding': 'Колодостроение', 'deck builder': 'Колодостроение',
+        'roguelike deckbuilder': 'Рогалик с колодами', 'board game': 'Настольная',
+        'dice': 'Кости', 'tabletop': 'Настольная',
+        'fighting': 'Файтинг', 'beat \'em up': 'Beat \'em up', 'hack and slash': 'Hack and slash',
+        'character action game': 'Character action',
+        'stealth': 'Стелс', 'assassin': 'Ассасин', 'ninja': 'Ниндзя',
+        'parkour': 'Паркур', 'immersive sim': 'Immersive sim',
+        'cyberpunk': 'Киберпанк', 'sci-fi': 'Sci-fi', 'science fiction': 'Научная фантастика',
+        'space': 'Космос', 'space sim': 'Космический симулятор', 'spaceships': 'Корабли',
+        'alien': 'Пришельцы', 'futuristic': 'Футуризм', 'dystopian':  'Антиутопия',
+        'post-apocalyptic': 'Постапокалипсис', 'zombie': 'Зомби', 'zombies': 'Зомби',
+        'vampire': 'Вампиры', 'dark fantasy': 'Тёмное фэнтези', 'fantasy': 'Фэнтези',
+        'magic': 'Магия', 'medieval': 'Средневековье', 'historical': 'Историческая',
+        'world war ii': 'Вторая мировая', 'world war i': 'Первая мировая',
+        'military': 'Военная', 'war': 'Война', 'modern': 'Современность',
+        'cold war': 'Холодная война', 'politics': 'Политика', 'economy': 'Экономика',
+        'crime': 'Криминал', 'detective': 'Детектив', 'mystery': 'Мистика',
+        'thriller': 'Триллер', 'drama': 'Драма', 'comedy': 'Комедия',
+        'funny': 'Смешная', 'humor': 'Юмор', 'memes': 'Мемы', 'parody': 'Пародия',
+        'relaxing': 'Расслабляющая', 'cozy': 'Уютная', 'wholesome': 'Доброжелательная',
+        'family friendly': 'Семейная', 'cute': 'Милая', 'colorful': 'Красочная',
+        'stylized': 'Стилизованная', 'pixel graphics': 'Пиксельная графика',
+        'pixel art': 'Пиксель-арт', 'hand-drawn': 'Рисованная', 'anime': 'Аниме',
+        'cartoon': 'Мультяшная', 'realistic': 'Реализм', 'cinematic': 'Кинематографичная',
+        '3d': '3D', '2d': '2D', 'isometric': 'Изометрия', 'side scroller': 'Сайд-скроллер',
+        'top down': 'Вид сверху', 'third-person shooter': 'Шутер от третьего лица',
+        'first-person shooter': 'Шутер от первого лица', 'tactical shooter': 'Тактический шутер',
+        'loot': 'Лут', 'looter shooter': 'Лутер-шутер', 'extraction shooter': 'Extraction-шутер',
+        'battle royale': 'Королевская битва', 'arena shooter': 'Арена-шутер',
+        'hero shooter': 'Геройский шутер', 'class-based': 'Классовая система',
+        'progression': 'Прокачка', 'character customization': 'Кастомизация персонажа',
+        'character customization': 'Кастомизация', 'inventory management': 'Инвентарь',
+        'inventory': 'Инвентарь', 'loot system': 'Система лута',
+        'difficult': 'Сложная', 'difficultly': 'Сложность', 'challenging': 'Испытание',
+        'soulsborne': 'Soulsborne', 'permadeath': 'Перманентная смерть',
+        'procedural generation': 'Процедурная генерация', 'replay value': 'Реиграбельность',
+        'short': 'Короткая', 'long': 'Длинная', 'linear': 'Линейная',
+        'nonlinear': 'Нелинейная', 'sandbox': 'Песочница',
+        'moddable': 'С модами', 'mod support': 'Поддержка модов', 'workshop': 'Мастерская',
+        'controller support': 'Поддержка геймпада', 'full controller support': 'Полная поддержка геймпада',
+        'partial controller support': 'Частичная поддержка геймпада',
+        'vr': 'VR', 'virtual reality': 'VR', 'vr only': 'Только VR',
+        'horror': 'Хоррор', 'lovecraftian': 'Лавкрафт', 'gothic': 'Готика',
+        'dark': 'Мрачная', 'blood': 'Кровь', 'nudity': 'Нагота',
+        'romance': 'Романтика', 'lgbtq+': 'LGBTQ+', 'female protagonist': 'Протагонистка',
+        'male protagonist': 'Протагонист', 'protagonist': 'Протагонист',
+        'team-based': 'Командная', 'competitive': 'Соревновательная', 'esports': 'Киберспорт',
+        'match 3': 'Три в ряд', 'card battler': 'Карточные бои',
+        'auto battler': 'Автобатлер', 'tower defense': 'Защита башни', 'tower defence': 'Защита башни',
+        'idle': 'Idle', 'clicker': 'Кликер', 'incremental': 'Инкрементальная',
+        'minigames': 'Мини-игры', 'party game': 'Вечеринка', 'local multiplayer': 'Локальный мультиплеер',
+        'split screen': 'Split-screen', 'lan': 'LAN',
+        'driving': 'Вождение', 'automobile sim': 'Автосимулятор', 'flight': 'Авиация',
+        'flight sim': 'Авиасимулятор', 'naval': 'Морская', 'submarine': 'Подводная лодка',
+        'trains': 'Поезда', 'trucking': 'Дальнобойщики', 'transportation': 'Транспорт',
+        'physics': 'Физика', 'destruction': 'Разрушения', 'vehicles': 'Транспорт',
+        'mechs': 'Мехи', 'robots': 'Роботы', 'tanks': 'Танки',
+        'sniper': 'Снайпер', 'stealth': 'Стелс', 'hunting': 'Охота', 'fishing': 'Рыбалка',
+        'cooking': 'Готовка', 'farming': 'Фермерство', 'agriculture': 'Сельское хозяйство',
+        'nature': 'Природа', 'animals': 'Животные', 'dinosaurs': 'Динозавры',
+        'underwater': 'Подводный мир', 'ocean': 'Океан', 'pirates': 'Пираты',
+        'ninjas': 'Ниндзя', 'samurai': 'Самураи', 'western': 'Вестерн',
+        'noir': 'Нуар', 'time travel': 'Путешествия во времени', 'alternate history': 'Альтернативная история',
+        'mythology': 'Мифология', 'supernatural': 'Сверхъестественное', 'occult': 'Оккультизм',
+        'psychological': 'Психологическая', 'emotional': 'Эмоциональная',
+        'philosophical': 'Философская', 'experimental': 'Экспериментальная',
+        'minimalist': 'Минимализм', 'abstract': 'Абстрактная', 'surreal': 'Сюрреализм',
+        'walking simulator': 'Walking simulator', 'immersive': 'Погружение',
+        'cinematic': 'Кинематографичная', 'cutscenes': 'Кат-сцены',
+        'voice acting': 'Озвучка', 'well-written': 'Хороший сюжет',
+        'classic': 'Классика', 'remake': 'Ремейк', 'remaster': 'Ремастер',
+        'retro': 'Ретро', 'old school': 'Олдскул', 'nostalgia': 'Ностальгия',
+        '1990\'s': '90-е', '1980\'s': '80-е', '2000\'s': '2000-е',
+        'cult classic': 'Культовая классика', 'hidden gem': 'Скрытая жемчужина',
+        'underrated': 'Недооценённая', 'masterpiece': 'Шедевр',
+        'difficult': 'Сложная', 'unforgiving': 'Беспощадная',
+        'relaxing': 'Расслабляющая', 'meditative': 'Медитативная',
+        'addictive': 'Затягивающая', 'fast-paced': 'Динамичная', 'slow-paced': 'Размеренная',
+        'resource management': 'Управление ресурсами', 'base building': 'Строительство базы',
+        'automation': 'Автоматизация', 'logistics': 'Логистика', 'factory': 'Фабрика',
+        'programming': 'Программирование', 'hacking': 'Хакерство',
+        'investigation': 'Расследование', 'crime': 'Криминал',
+        'heist': 'Ограбление', 'spy': 'Шпионаж', 'espionage': 'Шпионаж',
+        'superhero': 'Супергерои', 'villain protagonist': 'Протагонист-злодей',
+        'dark humor': 'Чёрный юмор', 'satire': 'Сатира',
+        'music': 'Музыка', 'rhythm': 'Ритм-игра', 'bullet hell': 'Bullet hell',
+        'score attack': 'Набор очков', 'leaderboards': 'Таблица лидеров',
+        'achievements': 'Достижения', 'collectathon': 'Сбор предметов',
+        'exploration': 'Исследование', 'secrets': 'Секреты', 'lore-rich': 'Богатый лор',
+        'worldbuilding': 'Миростроение', 'immersive': 'Погружение'
       };
-      const k = String(s || '').trim().toLowerCase();
-      if (map[k]) return map[k];
-      // already cyrillic
-      if (/[а-яё]/i.test(k)) return String(s).trim();
-      // title-case fallback keep original short tags
-      return String(s || '').trim();
+      const key = raw.toLowerCase().trim();
+      if (map[key]) return map[key];
+      // soft match without punctuation
+      const soft = key.replace(/[_/]+/g, ' ').replace(/\s+/g, ' ').trim();
+      if (map[soft]) return map[soft];
+      return raw;
     }
 
     function tagDedupeKey(s) {
@@ -1293,8 +1540,12 @@
         'horror': 'horror', 'хоррор': 'horror',
         'puzzle': 'puzzle', 'головоломка': 'puzzle',
         'open world': 'openworld', 'открытый мир': 'openworld',
-        'singleplayer': 'skip', 'single-player': 'skip', 'single player': 'skip',
-        'для одного игрока': 'skip', 'одиночная': 'skip'
+        'singleplayer': 'singleplayer', 'single-player': 'singleplayer', 'single player': 'singleplayer',
+        'для одного игрока': 'singleplayer', 'одиночная': 'singleplayer',
+        'multiplayer': 'multiplayer', 'multi-player': 'multiplayer', 'multi player': 'multiplayer',
+        'кооператив': 'coop', 'co-op': 'coop', 'coop': 'coop', 'co-operative': 'coop',
+        'local co-op': 'localcoop', 'online co-op': 'onlinecoop',
+        'локальный кооп': 'localcoop', 'онлайн кооп': 'onlinecoop'
       };
       const k = syn[s];
       if (k === 'skip') return null;
@@ -1303,30 +1554,31 @@
 
     function cleanTags(list) {
       if (!Array.isArray(list)) return null;
-      const skip = /steam|cloud|achievements|trading|workshop|leaderboard|controller|remote|stats|vr support|family|captions|includes level|mods|single-?player|single player|для одного|один игрок|local multiplayer|full controller|partial controller|remote play|local co-op|online co-op|одиночная/i;
-      const allowAbbrev = /^(RPG|JRPG|FPS|TPS|MMO|MOBA|2D|3D|VR|AR|PvP|PvE)$/i;
+      const skip = /steam|cloud|achievements?|достижен|trading|workshop|мастерская|leaderboard|лидерборд|controller|контроллер|remote play|remote|stats|статистик|vr support|family sharing|семейный доступ|captions|субтитры|скрытые субтитры|includes level|level editor|mods?|моды?|full controller|partial controller|in-app purchases|valve anti-cheat|\bvac\b|tracked controller|steam input|steam deck|steam timeline|steam achievements|steam cloud|steam trading|steam workshop|shared\/?split screen|cross-?platform|online pvp|remote play on (phone|tablet|tv)|commentary available|includes source sdk|hdr|ray tracing|ранний доступ|early access|бесплатная|free to play|free-to-play|демо|demo|soundtrack|\bost\b/i;
       const out = [];
       const seen = new Set();
       list.forEach(raw => {
         let s = String(raw || '').trim();
-        if (!s || skip.test(s)) return;
+        if (!s || s.length < 2 || skip.test(s)) return;
         if (typeof translateTag === 'function') s = translateTag(s);
         if (!s || skip.test(s)) return;
-        const hasCyr = /[а-яё]/i.test(s);
-        if (!hasCyr && !allowAbbrev.test(s)) return;
+        // keep RU, abbreviations, and meaningful EN tags (Steam user tags)
         const key = tagDedupeKey(s);
         if (!key || seen.has(key)) return;
         seen.add(key);
         out.push(s);
       });
-      return out.length ? out.slice(0, 3) : null;
+      return out.length ? out : null;
     }
 
     function normalizeGame(g) {
       return {
         id: g.id || uid(),
         title: g.title || 'Без названия',
-        rating: Math.round(Number(g.rating) || 0) || null,
+        status: (g.status === 'plan' || g.status === 'planned' || g.status === 'wishlist') ? 'plan' : 'done',
+        rating: (g.status === 'plan' || g.status === 'planned' || g.status === 'wishlist')
+          ? null
+          : (Math.round(Number(g.rating) || 0) || null),
         completedAt: g.completedAt || null,
         coverUrl: g.coverUrl || null,
         review: g.review || '',
@@ -1338,7 +1590,12 @@
         releaseYear: g.releaseYear || null,
         developers: g.developers || null,
         publishers: g.publishers || null,
-        genres: cleanTags(g.genres),
+        genres: (function() {
+          const src = Array.isArray(g.genresAll) && g.genresAll.length ? g.genresAll : g.genres;
+          const all = cleanTags(src);
+          return all ? all.slice(0, 3) : null;
+        })(),
+        genresAll: cleanTags(Array.isArray(g.genresAll) && g.genresAll.length ? g.genresAll : g.genres),
         metacritic: g.metacritic || null,
         steamShort: g.steamShort || null,
         accentColor: g.accentColor || null,
@@ -1406,17 +1663,23 @@
       const allowed = ['date-desc', 'rating-desc', 'rating-asc', 'year-desc', 'year-asc'];
       if (p.sort && allowed.includes(p.sort)) sortMode = p.sort;
       if (p.filter && (p.filter === 'all' || PLATS.includes(p.filter))) activePlatformFilter = p.filter;
+      if (p.statusFilter === 'done' || p.statusFilter === 'plan' || p.statusFilter === 'all') statusFilter = p.statusFilter;
       if (p.favOnly) favOnly = !!p.favOnly;
-      document.querySelectorAll('#filterChips .filter-chip').forEach(c => {
-        c.classList.remove('active');
-        if (c.dataset.fav === '1') { if (favOnly) c.classList.add('active'); }
-        else if (c.dataset.p === activePlatformFilter) c.classList.add('active');
+      document.querySelectorAll('#filterChips .seg-btn').forEach(b => {
+        b.classList.toggle('active', (b.dataset.status || 'all') === (statusFilter || 'all'));
       });
+      const platSel = $('platFilter');
+      if (platSel) platSel.value = activePlatformFilter || 'all';
+      const favBtn = $('favFilterBtn');
+      if (favBtn) {
+        favBtn.classList.toggle('active', !!favOnly);
+        favBtn.setAttribute('aria-pressed', favOnly ? 'true' : 'false');
+      }
       syncSortPills();
     }
 
     function persistUI() {
-      savePrefs({ sort: sortMode, filter: activePlatformFilter, favOnly });
+      savePrefs({ sort: sortMode, filter: activePlatformFilter, statusFilter, favOnly });
     }
 
     function syncSortPills() {
@@ -1445,11 +1708,18 @@
 
     function resetFiltersUI() {
       activePlatformFilter = 'all';
+      statusFilter = 'all';
       favOnly = false;
-      document.querySelectorAll('#filterChips .filter-chip').forEach(c => {
-        c.classList.remove('active');
-        if (c.dataset.p === 'all') c.classList.add('active');
+      document.querySelectorAll('#filterChips .seg-btn').forEach(b => {
+        b.classList.toggle('active', (b.dataset.status || 'all') === 'all');
       });
+      const platSel = $('platFilter');
+      if (platSel) platSel.value = 'all';
+      const favBtn = $('favFilterBtn');
+      if (favBtn) {
+        favBtn.classList.remove('active');
+        favBtn.setAttribute('aria-pressed', 'false');
+      }
       persistUI();
     }
 
@@ -1472,6 +1742,50 @@
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+
+    
+    function syncStatusUI() {
+      document.querySelectorAll('#statusToggle .status-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.status === formStatus);
+      });
+      const ratingField = $('ratingField');
+      const dateEl = $('fieldDate');
+      const dateField = dateEl ? dateEl.closest('.field') : null;
+      if (ratingField) ratingField.classList.toggle('is-disabled', formStatus === 'plan');
+      if (dateField) dateField.classList.toggle('is-disabled', formStatus === 'plan');
+    }
+
+    const statusToggle = $('statusToggle');
+    if (statusToggle) {
+      statusToggle.addEventListener('click', e => {
+        const btn = e.target.closest('.status-btn');
+        if (!btn) return;
+        formStatus = btn.dataset.status === 'plan' ? 'plan' : 'done';
+        syncStatusUI();
+      });
+    }
+
+
+    function libraryKeys() {
+      const keys = new Set();
+      games.forEach(g => {
+        keys.add(normTitle(g.title));
+        (g.links || []).forEach(l => {
+          const id = String(l || '').match(/\/app\/(\d+)/);
+          if (id) keys.add('app:' + id[1]);
+        });
+      });
+      return keys;
+    }
+
+    
+
+
+
+
+
+
+
 
     function toast(msg, icon = '✓') {
       toastEl.innerHTML = `<span>${icon}</span> ${msg}`;
@@ -1604,6 +1918,20 @@
         ac.forEach(c => c.abort());
       }
     }
+
+    async function fetchTextProxied(targetUrl, ms = 8000) {
+      const ac = new AbortController();
+      const timer = setTimeout(() => ac.abort(), ms);
+      try {
+        const r = await fetch('https://proxy.cors.dev/' + targetUrl, { signal: ac.signal });
+        if (!r.ok) throw new Error('http ' + r.status);
+        return await r.text();
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+
 
     async function fetchJsonDirect(url, ms = 4000) {
       const ac = new AbortController();
@@ -1770,12 +2098,32 @@
       return null;
     }
 
-    async function resolveSteamApp(appid, sourceStr, force = false) {
+    
+    async function fetchSteamUserTags(appid) {
+      const id = String(appid);
+      const url = 'https://store.steampowered.com/app/' + id + '/?l=russian';
+      try {
+        const html = await fetchTextProxied(url, 6000);
+        if (!html) return null;
+        const tags = [];
+        const re = /<a[^>]*class="[^"]*app_tag[^"]*"[^>]*>([^<]+)<\/a>/gi;
+        let m;
+        while ((m = re.exec(html)) !== null && tags.length < 30) {
+          const tag = String(m[1] || '').replace(/\s+/g, ' ').trim();
+          if (!tag || tag.length < 2 || tag.length > 48) continue;
+          if (tags.some(x => x.toLowerCase() === tag.toLowerCase())) continue;
+          tags.push(tag);
+        }
+        return tags.length ? tags : null;
+      } catch {
+        return null;
+      }
+    }
 
+async function resolveSteamApp(appid, sourceStr, force = false) {
       const id = String(appid);
       if (!force && steamMetaCache.has(id)) {
-        const c = steamMetaCache.get(id);
-        return { ...c };
+        return { ...steamMetaCache.get(id) };
       }
 
       const out = {
@@ -1783,104 +2131,103 @@
         coverUrl: coverUrlFor(id),
         releaseYear: null,
         genres: null,
+        genresAll: null,
         steamShort: null
       };
 
-      const takeTagsFromStore = (data) => {
-        if (!data) return null;
-        const skip = /для одного|один игрок|single|multiplayer|кооператив|контроллер|достижен|облако|мастерская|лидерборд|статистик|мод\b|family|remote|captions|уровень|карточки|коллекцион|стереозвук|громкост|qte|dualshock|dualsense|сохранение|камера|доступност/i;
-        const tags = [];
-        const push = (raw) => {
-          let s = (typeof raw === 'string' ? raw : (raw && raw.description)) || '';
-          s = String(s).trim();
-          if (!s || skip.test(s)) return;
-          if (tags.some(x => x.toLowerCase() === s.toLowerCase())) return;
-          tags.push(s);
-        };
-        if (Array.isArray(data.genres)) data.genres.forEach(push);
-        return tags.length ? tags.slice(0, 3) : null;
-      };
-
-      const applyAppDetails = (data, lang) => {
-        if (!data || typeof data !== 'object') return false;
-        if (data.name) out.name = data.name;
-        if (data.header_image) out.coverUrl = data.header_image;
-        const rd = data.release_date && data.release_date.date;
-        if (rd) {
-          const years = String(rd).match(/(?:19|20)\d{2}/g);
-          if (years && years.length) out.releaseYear = +years[years.length - 1];
-        }
-        if (!out.releaseYear && data.release_date && /^\d{4}/.test(String(data.release_date))) {
-          out.releaseYear = parseInt(String(data.release_date).slice(0, 4), 10) || null;
-        }
-        // Prefer RU tags/description
-        if (lang === 'russian') {
-          const tags = takeTagsFromStore(data);
-          if (tags) out.genres = tags;
-          if (data.short_description) {
-            out.steamShort = String(data.short_description)
-              .replace(/<[^>]+>/g, ' ')
-              .replace(/\s+/g, ' ')
-              .trim()
-              .slice(0, 280);
-          }
-        } else {
-          // EN: fill gaps only
-          if (!out.genres && Array.isArray(data.genres)) {
-            const tags = data.genres
-              .map(g => translateTag(typeof g === 'string' ? g : (g && g.description)))
-              .filter(Boolean);
-            const cleaned = cleanTags(tags);
-            if (cleaned) out.genres = cleaned;
-          }
-          if (!out.steamShort && data.short_description) {
-            out.steamShort = String(data.short_description)
-              .replace(/<[^>]+>/g, ' ')
-              .replace(/\s+/g, ' ')
-              .trim()
-              .slice(0, 280);
-          }
-        }
-        return !!(out.name || out.releaseYear || out.genres);
-      };
-
-      // Steam appdetails (filters) + SteamSpy in parallel
-      const FILTERS = 'basic,genres,release_date';
+      const FILTERS = 'basic,genres,categories,release_date';
       const storeUrl =
         'https://store.steampowered.com/api/appdetails?appids=' + id +
         '&l=russian&filters=' + FILTERS;
-      const spyUrl = 'https://steamspy.com/api.php?request=appdetails&appid=' + id;
+      const spyUrl =
+        'https://steamspy.com/api.php?request=appdetails&appid=' + id;
 
+      // Parallel: official API + SteamSpy (no HTML scraping)
       const [storeRes, spyRes] = await Promise.allSettled([
         fetchJsonProxied(storeUrl, 4000),
         fetchJsonProxied(spyUrl, 4000)
       ]);
 
-      let gotDetails = false;
-      if (storeRes.status === 'fulfilled') {
-        const json = storeRes.value;
-        const entry = json && json[id];
+      // Official store data
+      if (storeRes.status === 'fulfilled' && storeRes.value) {
+        const entry = storeRes.value[id];
         if (entry && entry.success && entry.data) {
-          gotDetails = applyAppDetails(entry.data, 'russian') || gotDetails;
+          const data = entry.data;
+          if (data.name) out.name = data.name;
+          if (data.header_image) out.coverUrl = data.header_image;
+          const rd = data.release_date && data.release_date.date;
+          if (rd) {
+            const years = String(rd).match(/(?:19|20)\d{2}/g);
+            if (years && years.length) out.releaseYear = +years[years.length - 1];
+          }
+          if (data.short_description) {
+            out.steamShort = String(data.short_description)
+              .replace(/<[^>]+>/g, ' ')
+              .replace(/\s+/g, ' ')
+              .trim()
+              .slice(0, 400);
+          }
+          // Official genres as fallback tags
+          const official = [];
+          const pushOff = (raw) => {
+            let s = (typeof raw === 'string' ? raw : (raw && raw.description)) || '';
+            s = String(s).trim();
+            if (!s) return;
+            if (typeof translateTag === 'function') s = translateTag(s);
+            if (!s) return;
+            if (official.some(x => x.toLowerCase() === s.toLowerCase())) return;
+            official.push(s);
+          };
+          if (Array.isArray(data.genres)) data.genres.forEach(pushOff);
+          if (official.length) {
+            const cleaned = cleanTags(official);
+            if (cleaned && cleaned.length) {
+              out.genresAll = cleaned;
+              out.genres = cleaned.slice(0, 3);
+            }
+          }
         }
       }
 
-      // EN fallback if RU incomplete
-      if (!out.name || !out.releaseYear || !out.genres) {
+      // EN fallback for name/year only
+      if (!out.name || !out.releaseYear) {
         try {
           const json = await fetchJsonProxied(
             'https://store.steampowered.com/api/appdetails?appids=' + id +
               '&l=english&filters=' + FILTERS,
-            3500
+            3000
           );
           const entry = json && json[id];
           if (entry && entry.success && entry.data) {
-            gotDetails = applyAppDetails(entry.data, 'english') || gotDetails;
+            const data = entry.data;
+            if (!out.name && data.name) out.name = data.name;
+            if (!out.coverUrl && data.header_image) out.coverUrl = data.header_image;
+            if (!out.releaseYear && data.release_date && data.release_date.date) {
+              const years = String(data.release_date.date).match(/(?:19|20)\d{2}/g);
+              if (years && years.length) out.releaseYear = +years[years.length - 1];
+            }
+            if (!out.steamShort && data.short_description) {
+              out.steamShort = String(data.short_description)
+                .replace(/<[^>]+>/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .slice(0, 400);
+            }
+            if (!(out.genresAll && out.genresAll.length) && Array.isArray(data.genres)) {
+              const official = data.genres
+                .map(g => translateTag(typeof g === 'string' ? g : (g && g.description)))
+                .filter(Boolean);
+              const cleaned = cleanTags(official);
+              if (cleaned && cleaned.length) {
+                out.genresAll = cleaned;
+                out.genres = cleaned.slice(0, 3);
+              }
+            }
           }
         } catch { /* ignore */ }
       }
 
-      // SteamSpy fallback
+      // SteamSpy user tags — preferred when available
       if (spyRes.status === 'fulfilled' && spyRes.value && typeof spyRes.value === 'object') {
         const spy = spyRes.value;
         if (!out.name && spy.name) out.name = spy.name;
@@ -1889,41 +2236,65 @@
           const ym = String(raw).match(/(20\d{2}|19\d{2})/);
           if (ym) out.releaseYear = +ym[1];
         }
-        const have = out.genres ? out.genres.slice() : [];
-        if (have.length < 3) {
-          const extra = [];
-          if (spy.tags && typeof spy.tags === 'object') {
-            Object.keys(spy.tags)
-              .sort((a, b) => (spy.tags[b] || 0) - (spy.tags[a] || 0))
-              .forEach(k => extra.push(k));
-          }
-          if (typeof spy.genre === 'string') {
-            spy.genre.split(',').forEach(s => extra.push(s.trim()));
-          }
-          for (const raw of extra) {
-            if (have.length >= 3) break;
-            const s = translateTag(raw);
-            if (!s) continue;
-            const cleaned = cleanTags([s]);
-            if (!cleaned || !cleaned.length) continue;
-            const tag = cleaned[0];
-            if (have.some(x => x.toLowerCase() === tag.toLowerCase())) continue;
-            have.push(tag);
-          }
-          if (have.length) out.genres = have.slice(0, 3);
+        const pool = [];
+        const pushTag = (raw) => {
+          if (!raw) return;
+          let s = String(raw).trim();
+          if (!s) return;
+          if (typeof translateTag === 'function') s = translateTag(s);
+          if (!s) return;
+          const cleaned = cleanTags([s]);
+          if (!cleaned || !cleaned.length) return;
+          const tag = cleaned[0];
+          if (pool.some(x => x.toLowerCase() === tag.toLowerCase())) return;
+          pool.push(tag);
+        };
+        if (spy.tags && typeof spy.tags === 'object' && !Array.isArray(spy.tags)) {
+          Object.keys(spy.tags)
+            .sort((a, b) => (spy.tags[b] || 0) - (spy.tags[a] || 0))
+            .forEach(pushTag);
         }
-        gotDetails = true;
+        if (typeof spy.genre === 'string') {
+          spy.genre.split(',').forEach(s => pushTag(s.trim()));
+        }
+        // Prefer spy tags when we got a real list
+        if (pool.length >= 2) {
+          out.genresAll = pool;
+          out.genres = pool.slice(0, 3);
+        } else if (pool.length && !(out.genresAll && out.genresAll.length)) {
+          out.genresAll = pool;
+          out.genres = pool.slice(0, 3);
+        }
+      }
+
+      // HTML fallback if still fewer than 3 tags
+      if (!out.genresAll || out.genresAll.length < 3) {
+        try {
+          const userTags = await fetchSteamUserTags(id);
+          if (userTags && userTags.length) {
+            const cleaned = cleanTags(userTags);
+            if (cleaned && cleaned.length) {
+              out.genresAll = cleaned;
+              out.genres = cleaned.slice(0, 3);
+            }
+          }
+        } catch (e) { /* ignore */ }
+      }
+
+      if (out.genresAll && out.genresAll.length) {
+        const all = cleanTags(out.genresAll) || out.genresAll;
+        out.genresAll = all;
+        out.genres = all.slice(0, 3);
       }
 
       if (!out.coverUrl) out.coverUrl = coverUrlFor(id);
-      if (out.genres) out.genres = cleanTags(out.genres) || out.genres.slice(0, 3);
 
-      // Adjust year: fix store relists, but keep remakes/reboots (DOOM 2016 ≠ 1993)
-      if (out.name) {
+      // Year correction only on forced refresh (faster adds)
+      if (force && out.name) {
         try {
           const adjusted = await fetchOriginalReleaseYear(out.name, out.releaseYear);
           if (adjusted) out.releaseYear = adjusted;
-        } catch { /* keep steam year */ }
+        } catch { /* keep */ }
       }
 
       if (steamMetaCache.size > 200) {
@@ -2010,6 +2381,7 @@
         pendingSteamMeta = {
           releaseYear: meta.releaseYear || null,
           genres: meta.genres || null,
+          genresAll: meta.genresAll || meta.genres || null,
           steamShort: meta.steamShort || null
         };
 
@@ -2132,6 +2504,8 @@
 
       if (activePlatformFilter !== 'all')
         list = list.filter(g => (g.platforms || []).includes(activePlatformFilter));
+      if (statusFilter === 'plan') list = list.filter(g => g.status === 'plan');
+      else if (statusFilter === 'done') list = list.filter(g => g.status !== 'plan');
       if (favOnly) list = list.filter(g => g.favorite);
       if (q) {
         list = list.filter(g => {
@@ -2173,17 +2547,28 @@
 
       const usedPlats = new Set();
       games.forEach(g => (g.platforms || []).forEach(p => usedPlats.add(p)));
-      document.querySelectorAll('#filterChips .filter-chip[data-p]').forEach(c => {
-        if (c.dataset.p === 'all') return;
-        const show = usedPlats.has(c.dataset.p);
-        c.hidden = !show;
-        if (!show && activePlatformFilter === c.dataset.p) {
+      const platSel = $('platFilter');
+      if (platSel) {
+        [...platSel.options].forEach(opt => {
+          if (opt.value === 'all') { opt.hidden = false; return; }
+          opt.hidden = !usedPlats.has(opt.value);
+        });
+        if (activePlatformFilter !== 'all' && !usedPlats.has(activePlatformFilter)) {
           activePlatformFilter = 'all';
-          c.classList.remove('active');
-          const allChip = document.querySelector('#filterChips .filter-chip[data-p="all"]');
-          if (allChip) allChip.classList.add('active');
+          platSel.value = 'all';
+        } else {
+          platSel.value = activePlatformFilter || 'all';
         }
+      }
+      // status seg sync
+      document.querySelectorAll('#filterChips .seg-btn').forEach(b => {
+        b.classList.toggle('active', (b.dataset.status || 'all') === (statusFilter || 'all'));
       });
+      const favBtn = $('favFilterBtn');
+      if (favBtn) {
+        favBtn.classList.toggle('active', !!favOnly);
+        favBtn.setAttribute('aria-pressed', favOnly ? 'true' : 'false');
+      }
 
       if (!list.length) {
         const filtered = !!(q || activePlatformFilter !== 'all' || favOnly);
@@ -2206,9 +2591,12 @@
       grid.innerHTML = list.map((g, i) => {
         const links = (g.links || []).filter(Boolean).map(linkChipHtml).join('');
         const hasRating = g.rating != null && g.rating >= 1;
-        const ratingHtml = hasRating
-          ? `<span class="rating" style="${ratingStyle(g.rating)}">${Math.round(g.rating)}</span>`
-          : `<span class="rating none">—</span>`;
+        const isPlan = g.status === 'plan';
+        const ratingHtml = isPlan
+          ? `<span class="plan-badge">В планах</span>`
+          : (hasRating
+            ? `<span class="rating" style="${ratingStyle(g.rating)}">${Math.round(g.rating)}</span>`
+            : `<span class="rating none">—</span>`);
         const cover = g.coverUrl
           ? `<div class="card-cover-wrap"><img class="card-cover" src="${esc(g.coverUrl)}" alt="" loading="lazy" decoding="async" onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')" onerror="this.parentElement.classList.add('is-failed')" /></div>`
           : '';
@@ -2218,7 +2606,7 @@
           ? ` --card-accent:${g.accentColor};${delay ? `animation-delay:${delay.toFixed(2)}s` : 'animation:none'}`
           : (delay ? `animation-delay:${delay.toFixed(2)}s` : 'animation:none');
         return `
-          <article class="card${g.accentColor ? ' has-accent' : ''}" data-id="${g.id}" style="${accentStyle}">
+          <article class="card${g.accentColor ? ' has-accent' : ''}${isPlan ? ' is-plan' : ''}" data-id="${g.id}" style="${accentStyle}">
             ${cover}
             <div class="card-body">
               <div class="card-top">
@@ -2227,9 +2615,9 @@
               </div>
               <div class="card-meta">
                 ${g.releaseYear ? `<span class="meta-year">${g.releaseYear}</span>` : ''}
-                ${g.completedAt ? `<span>📅 ${fmtDate(g.completedAt)}</span>` : ''}
+                ${!isPlan && g.completedAt ? `<span>📅 ${fmtDate(g.completedAt)}</span>` : ''}
               </div>
-              <p class="card-review ${g.review ? '' : 'is-empty'}">${g.review ? esc(g.review) : 'Без отзыва'}</p>
+              <p class="card-review ${g.review ? '' : 'is-empty'}">${g.review ? esc(g.review) : (isPlan ? 'Запланирована' : 'Без отзыва')}</p>
               ${links ? `<div class="card-links">${links}</div>` : ''}
               <div class="card-footer">
                 <button class="fav-btn ${g.favorite ? 'active' : ''}" data-fav="${g.id}" aria-label="Избранное">${g.favorite ? '♥' : '♡'}</button>
@@ -2331,6 +2719,8 @@
 
       titleInput.dataset.releaseYear = '';
       pendingSteamMeta = null;
+      formStatus = 'done';
+      syncStatusUI();
       if (id) {
         const g = games.find(x => x.id === id);
         if (!g) return;
@@ -2339,6 +2729,8 @@
         titleInput.value = g.title || '';
         if (g.releaseYear) titleInput.dataset.releaseYear = String(g.releaseYear);
         setScore(Math.round(g.rating ?? 8));
+        formStatus = g.status === 'plan' ? 'plan' : 'done';
+        syncStatusUI();
         $('fieldDate').value = g.completedAt || '';
         coverInput.value = g.coverUrl || '';
         $('fieldReview').value = g.review || '';
@@ -2391,21 +2783,62 @@
         cover.removeAttribute('src');
       }
       $('detailTitle').textContent = g.title || '';
-      const hasR = g.rating != null && g.rating >= 1;
+      const detailTags = $('detailTags');
+      if (detailTags) {
+        // merge genresAll + genres, unique, preserve order
+        const seen = new Set();
+        const all = [];
+        const pushTag = (tg) => {
+          const s = String(tg || '').trim();
+          if (!s) return;
+          const k = s.toLowerCase();
+          if (seen.has(k)) return;
+          seen.add(k);
+          all.push(s);
+        };
+        (Array.isArray(g.genresAll) ? g.genresAll : []).forEach(pushTag);
+        (Array.isArray(g.genres) ? g.genres : []).forEach(pushTag);
+
+        if (!all.length) {
+          detailTags.innerHTML = '';
+          detailTags.hidden = true;
+        } else {
+          detailTags.hidden = false;
+          detailTags.className = 'detail-tags-wrap';
+          const head = all.slice(0, 3).map(tg => '<span class="card-tag">' + esc(tg) + '</span>').join('');
+          const rest = all.slice(3);
+          let extra = '';
+          let more = '';
+          if (rest.length) {
+            more = '<button type="button" class="tags-expand-btn" data-tags-expand="1" aria-expanded="false" title="Показать все метки" aria-label="Ещё метки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>';
+            extra = '<div class="detail-tags-extra">' +
+              rest.map(tg => '<span class="card-tag">' + esc(tg) + '</span>').join('') +
+              '</div>';
+          }
+          detailTags.innerHTML =
+            '<div class="detail-tags-row">' + head + more + '</div>' +
+            extra;
+        }
+      }
+      const hasR = g.status !== 'plan' && g.rating != null && g.rating >= 1;
       const dr = $('detailRating');
-      dr.textContent = hasR ? String(Math.round(g.rating)) : '—';
-      dr.className = 'rating' + (hasR ? '' : ' none');
-      if (hasR) dr.setAttribute('style', ratingStyle(g.rating));
-      else dr.removeAttribute('style');
+      if (g.status === 'plan') {
+        dr.textContent = 'План';
+        dr.className = 'plan-badge';
+        dr.removeAttribute('style');
+      } else {
+        dr.textContent = hasR ? String(Math.round(g.rating)) : '—';
+        dr.className = 'rating' + (hasR ? '' : ' none');
+        if (hasR) dr.setAttribute('style', ratingStyle(g.rating));
+        else dr.removeAttribute('style');
+      }
       const meta = [];
       if (g.releaseYear) meta.push(`<span>${g.releaseYear}</span>`);
       if (g.completedAt) meta.push(`<span>📅 ${fmtDate(g.completedAt)}</span>`);
       if (g.replays > 0) meta.push(`<span>↻ ${g.replays} ${phraseReplays(g.replays)}</span>`);
       if (g.favorite) meta.push('<span>♥ Избранное</span>');
       $('detailMeta').innerHTML = meta.join('') || '';
-      const genreTags = (g.genres || []).slice(0, 3).map(p => `<span class="tag">${esc(p)}</span>`).join('');
-      const platTags = (g.platforms || []).slice(0, 2).map(p => `<span class="tag">${esc(p)}</span>`).join('');
-      $('detailTags').innerHTML = genreTags || platTags;
+      // detailTags already filled above with genresAll + expand button — do not overwrite
       const rev = $('detailReview');
       if (g.review) {
         rev.textContent = g.review;
@@ -2428,8 +2861,32 @@
         });
       }
       $('detailEdit').onclick = () => { closeDetail(); openModal(id); };
+      const markDoneBtn = $('detailMarkDone');
+      if (markDoneBtn) {
+        if (g.status === 'plan') {
+          markDoneBtn.hidden = false;
+          markDoneBtn.onclick = () => {
+            const idx = games.findIndex(x => x.id === id);
+            if (idx === -1) return;
+            games[idx].status = 'done';
+            if (!games[idx].completedAt) {
+              games[idx].completedAt = new Date().toISOString().slice(0, 10);
+            }
+            games[idx].updatedAt = new Date().toISOString();
+            save();
+            closeDetail();
+            openModal(id);
+            toast('Отметь оценку и сохрани', '✓');
+          };
+        } else {
+          markDoneBtn.hidden = true;
+          markDoneBtn.onclick = null;
+        }
+      }
+
       const replayBtn = $('detailReplay');
       if (replayBtn) {
+        replayBtn.hidden = (g.status === 'plan');
         replayBtn.onclick = () => {
           pendingReplayId = id;
           pendingDeleteId = null;
@@ -2471,7 +2928,20 @@
     const detailTagsEl = $('detailTags');
     if (detailTagsEl) {
       detailTagsEl.addEventListener('click', e => {
-        const tag = e.target.closest('.tag');
+        const exp = e.target.closest('[data-tags-expand]');
+        if (exp) {
+          e.preventDefault();
+          e.stopPropagation();
+          const wrap = exp.closest('.detail-tags-wrap') || detailTagsEl;
+          const open = wrap.classList.toggle('is-open');
+          exp.setAttribute('aria-expanded', open ? 'true' : 'false');
+          exp.innerHTML = open
+            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>'
+            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
+          exp.title = open ? 'Свернуть' : 'Показать все метки';
+          return;
+        }
+        const tag = e.target.closest('.card-tag, .tag');
         if (!tag) return;
         const text = (tag.textContent || '').trim();
         if (!text) return;
@@ -2500,85 +2970,131 @@
       return m ? m[1] : null;
     }
 
-    async function refreshGameFromSteam(id, appid) {
-      const btn = $('detailSteam');
-      btn.disabled = true;
-      btn.textContent = '…';
-      try {
-        const meta = await resolveSteamApp(appid, null, true);
-        const i = games.findIndex(x => x.id === id);
-        if (i === -1) return;
-        const g = games[i];
-        if (meta.releaseYear) g.releaseYear = meta.releaseYear;
         
-        if (meta.genres && meta.genres.length) g.genres = cleanTags(meta.genres) || meta.genres.slice(0, 3);
-        else g.genres = cleanTags(g.genres);
-        if (meta.steamShort) g.steamShort = meta.steamShort;
+    let refreshAllRunning = false;
+
+    async function refreshAllFromSteam() {
+      if (refreshAllRunning) {
+        toast('Обновление уже идёт…', '!');
+        return;
+      }
+      const targets = games.filter(g => appidFromGame(g));
+      if (!targets.length) {
+        toast('Нет игр со Steam для обновления', '!');
+        return;
+      }
+      refreshAllRunning = true;
+      const btn = $('refreshAllBtn');
+      if (btn) btn.disabled = true;
+      const total = targets.length;
+      const batchSize = 3;
+      let done = 0;
+      let failed = 0;
+      toast('Обновление 0/' + total + '…', '↻');
+      try {
+        for (let i = 0; i < targets.length; i += batchSize) {
+          const batch = targets.slice(i, i + batchSize);
+          const results = await Promise.allSettled(batch.map(async g => {
+            const appid = appidFromGame(g);
+            const meta = await resolveSteamApp(String(appid), null, true);
+            const idx = games.findIndex(x => x.id === g.id);
+            if (idx === -1) return;
+            const cur = games[idx];
+            if (meta.releaseYear) cur.releaseYear = meta.releaseYear;
+            if (meta.coverUrl) cur.coverUrl = meta.coverUrl;
+            if (meta.steamShort) cur.steamShort = meta.steamShort;
+            if (meta.name && meta.name.trim()) {
+              const prev = String(cur.title || '');
+              if (!prev || /^https?:\/\//i.test(prev) || /^\d{3,10}$/.test(prev)) {
+                cur.title = meta.name.trim();
+              }
+            }
+            const all = cleanTags(meta.genresAll || meta.genres);
+            if (all && all.length) {
+              cur.genresAll = all;
+              cur.genres = all.slice(0, 3);
+            }
+            cur.updatedAt = new Date().toISOString();
+            games[idx] = cur;
+          }));
+          results.forEach(r => {
+            if (r.status === 'fulfilled') done++;
+            else failed++;
+          });
+          save();
+          render();
+          toast('Обновление ' + Math.min(i + batch.length, total) + '/' + total + '…', '↻');
+          // small pause between batches to be gentle on proxies
+          if (i + batchSize < targets.length) {
+            await new Promise(r => setTimeout(r, 400));
+          }
+        }
+        toast('Готово: ' + done + ' обновлено' + (failed ? (', ошибок: ' + failed) : ''), '✓');
+      } catch (e) {
+        console.warn(e);
+        toast('Обновление прервалось', '!');
+      } finally {
+        refreshAllRunning = false;
+        if (btn) btn.disabled = false;
+      }
+    }
+
+async function refreshGameFromSteam(id, appid) {
+      const btn = $('detailSteam');
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '…';
+      }
+      try {
+        const meta = await resolveSteamApp(String(appid), null, true);
+        const idx = games.findIndex(x => x.id === id);
+        if (idx === -1) return;
+        const g = games[idx];
+
+        // Preserve user data: rating, review, favorite, status, dates, platforms, links, id
+        // Update only Steam-derived fields
+        if (meta.name && meta.name.trim()) {
+          const prev = String(g.title || '');
+          if (!prev || /^https?:\/\//i.test(prev) || /^\d{3,10}$/.test(prev) || prev === 'Загрузка…') {
+            g.title = meta.name.trim();
+          }
+        }
+        if (meta.releaseYear) g.releaseYear = meta.releaseYear;
         if (meta.coverUrl) g.coverUrl = meta.coverUrl;
+        if (meta.steamShort) g.steamShort = meta.steamShort;
+
+        const all = cleanTags(meta.genresAll || meta.genres);
+        if (all && all.length) {
+          g.genresAll = all;
+          g.genres = all.slice(0, 3);
+        }
+
+        // Ensure Steam store link exists among links
+        const steamUrl = 'https://store.steampowered.com/app/' + appid + '/';
+        const links = Array.isArray(g.links) ? g.links.slice() : [];
+        const hasSteam = links.some(u => /store\.steampowered\.com\/app\//i.test(String(u || '')));
+        if (!hasSteam) links.push(steamUrl);
+        g.links = links;
+
         g.updatedAt = new Date().toISOString();
+        games[idx] = g;
         save();
         fillDetail(g, id);
         render();
-        toast('Данные Steam обновлены', '✓');
-      } catch {
+        const n = (g.genresAll && g.genresAll.length) || (g.genres && g.genres.length) || 0;
+        toast('Обновлено из Steam · меток: ' + n, '✓');
+      } catch (err) {
+        console.warn(err);
         toast('Не удалось обновить из Steam', '!');
       } finally {
-        btn.disabled = false;
-        btn.textContent = 'Обновить';
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Обновить из Steam';
+        }
       }
     }
 
-    function needsSteamRefresh(g) {
-      if (!appidFromGame(g)) return false;
-      if (!g.releaseYear) return true;
-      if (!g.coverUrl) return true;
-      const tags = g.genres || [];
-      if (!tags.length) return true;
-      
-      const joined = tags.join(' | ');
-      if (/[A-Za-z]{4,}/.test(joined) && !/(RPG|JRPG|FPS|MMO|MOBA|PvP|PvE)/i.test(joined)) return true;
-      if (tags.length !== new Set(tags.map(x => String(x).toLowerCase())).size) return true;
-      if (cleanTags(tags) && cleanTags(tags).length < tags.length) return true;
-      return false;
-    }
 
-    async function batchSteamEnrich() {
-      const need = games.filter(needsSteamRefresh);
-      if (!need.length) {
-        toast('Все Steam-игры уже обновлены', '✓');
-        return;
-      }
-      const btn = $('steamSyncBtn');
-      if (btn) btn.disabled = true;
-      toast(`Обновляю ${need.length} ${phraseImported(need.length)}…`, '…');
-      let ok = 0, fail = 0;
-      const concurrency = 4;
-      for (let i = 0; i < need.length; i += concurrency) {
-        const chunk = need.slice(i, i + concurrency);
-        await Promise.all(chunk.map(async (g) => {
-          const appid = appidFromGame(g);
-          try {
-            const meta = await resolveSteamApp(appid, null, true);
-            if (meta.releaseYear) g.releaseYear = meta.releaseYear;
-            
-            if (meta.genres && meta.genres.length) g.genres = cleanTags(meta.genres) || meta.genres.slice(0, 3);
-            else g.genres = cleanTags(g.genres);
-            if (meta.steamShort) g.steamShort = meta.steamShort;
-            
-            if (meta.coverUrl) g.coverUrl = meta.coverUrl;
-            if (meta.name && (!g.title || /^https?:/i.test(g.title) || /^\d{3,10}$/.test(g.title))) {
-              g.title = meta.name;
-            }
-            g.updatedAt = new Date().toISOString();
-            ok++;
-          } catch { fail++; }
-        }));
-      }
-      save();
-      render();
-      if (btn) btn.disabled = false;
-      toast('Steam: ' + phraseUpdated(ok) + (fail ? `, ошибок: ${fail}` : ''), ok ? '✓' : '!');
-    }
 
     function addLinkRow(val = '') {
       const row = document.createElement('div');
@@ -2744,8 +3260,8 @@
         applySteamGame(detected, null);
         return;
       }
-      const ratingNum = Math.round(+ratingInput.value);
-      if (ratingNum < 1 || ratingNum > 10) { toast('Оценка 1–10', '!'); return; }
+      const ratingNum = formStatus === 'plan' ? null : Math.round(+ratingInput.value);
+      if (formStatus !== 'plan' && (ratingNum < 1 || ratingNum > 10)) { toast('Оценка 1–10', '!'); return; }
 
       const dup = findDuplicate(title, editId);
       if (dup) {
@@ -2759,8 +3275,9 @@
       const ry = ryRaw ? (+ryRaw || null) : null;
       const data = {
         title: titleInput.value.trim(),
-        rating: ratingNum,
-        completedAt: $('fieldDate').value || null,
+        status: formStatus === 'plan' ? 'plan' : 'done',
+        rating: formStatus === 'plan' ? null : ratingNum,
+        completedAt: formStatus === 'plan' ? null : ($('fieldDate').value || null),
         coverUrl,
         review: $('fieldReview').value.trim(),
         platforms: [...selectedPlatforms],
@@ -2782,7 +3299,11 @@
               releaseYear: ry || steam.releaseYear || prev.releaseYear || null,
               developers: steam.developers || prev.developers || null,
               publishers: steam.publishers || prev.publishers || null,
-              genres: steam.genres || cleanTags(prev.genres) || null,
+              genres: (function() {
+                const all = cleanTags(steam.genresAll || steam.genres || prev.genresAll || prev.genres);
+                return all ? all.slice(0, 3) : null;
+              })(),
+              genresAll: cleanTags(steam.genresAll || steam.genres || prev.genresAll || prev.genres),
               metacritic: steam.metacritic || prev.metacritic || null,
               steamShort: steam.steamShort || prev.steamShort || null,
               accentColor: data.accentColor || prev.accentColor || null
@@ -2795,7 +3316,11 @@
             releaseYear: ry || steam.releaseYear || null,
             developers: steam.developers || null,
             publishers: steam.publishers || null,
-            genres: steam.genres || null,
+            genres: (function() {
+              const all = cleanTags(steam.genresAll || steam.genres);
+              return all ? all.slice(0, 3) : null;
+            })(),
+            genresAll: cleanTags(steam.genresAll || steam.genres),
             metacritic: steam.metacritic || null,
             steamShort: steam.steamShort || null,
             accentColor: data.accentColor || null,
@@ -3101,20 +3626,36 @@
       }
     });
 
-    $('filterChips').addEventListener('click', e => {
-      const chip = e.target.closest('.filter-chip');
-      if (!chip) return;
-      if (chip.dataset.fav === '1') {
-        favOnly = !favOnly;
-        chip.classList.toggle('active', favOnly);
-      } else {
-        document.querySelectorAll('#filterChips .filter-chip:not([data-fav])').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        activePlatformFilter = chip.dataset.p;
-      }
-      persistUI();
-      render();
-    });
+    const filterBar = $('filterChips');
+    if (filterBar) {
+      filterBar.addEventListener('click', e => {
+        const seg = e.target.closest('.seg-btn');
+        if (seg) {
+          filterBar.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+          seg.classList.add('active');
+          statusFilter = seg.dataset.status || 'all';
+          persistUI();
+          render();
+          return;
+        }
+        const favBtn = e.target.closest('.fav-filter-btn');
+        if (favBtn) {
+          favOnly = !favOnly;
+          favBtn.classList.toggle('active', favOnly);
+          favBtn.setAttribute('aria-pressed', favOnly ? 'true' : 'false');
+          persistUI();
+          render();
+        }
+      });
+    }
+    const platFilterEl = $('platFilter');
+    if (platFilterEl) {
+      platFilterEl.addEventListener('change', () => {
+        activePlatformFilter = platFilterEl.value || 'all';
+        persistUI();
+        render();
+      });
+    }
 
     grid.addEventListener('click', e => {
       const editBtn = e.target.closest('[data-edit]');
@@ -3281,9 +3822,6 @@
       grid.addEventListener('pointerleave', releaseTilt);
     }
 
-    const steamSyncBtn = $('steamSyncBtn');
-    if (steamSyncBtn) steamSyncBtn.onclick = () => batchSteamEnrich();
-
     // load library
     setScore(Number(ratingInput.value) || 8);
     syncSearchClear();
@@ -3312,14 +3850,6 @@ const ric = window.requestIdleCallback || (cb => setTimeout(() => cb(), 600));
       });
     });
   })();
-  </script>
-
-  <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
-    });
-  }
   </script>
 </body>
 </html>
