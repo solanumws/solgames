@@ -440,13 +440,14 @@
     .detail-tags-wrap.is-open .detail-tags-extra{display:flex}
     .tags-expand-btn{
       display:inline-flex !important;align-items:center;justify-content:center;
-      width:28px;height:28px;padding:0;border-radius:999px;
+      width:26px;height:26px;min-width:26px;padding:0;border-radius:50%;
       border:1px solid color-mix(in srgb,var(--accent) 40%,var(--border));
       background:color-mix(in srgb,var(--accent) 14%,var(--surface-2));
-      color:var(--accent);font:inherit;font-size:1.05rem;font-weight:700;
-      line-height:1;cursor:pointer;
+      color:var(--accent);cursor:pointer;flex-shrink:0;
+      line-height:0;font-size:0;
       transition:background .15s,border-color .15s,transform .12s,color .15s;
     }
+    .tags-expand-btn svg{width:14px;height:14px;display:block;pointer-events:none}
     .tags-expand-btn:hover{
       background:color-mix(in srgb,var(--accent) 24%,var(--surface-2));
       border-color:color-mix(in srgb,var(--accent) 65%,var(--border));
@@ -862,7 +863,13 @@
       background:color-mix(in srgb,var(--accent) 14%,var(--surface-2));
       color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border));
     }
-    .card.is-plan{border-style:dashed}
+    .card.is-plan{border-style:dashed;border-color:color-mix(in srgb,var(--accent) 35%,var(--border))}
+    .card.is-plan .rating.none,.rating.none{
+      background:color-mix(in srgb,var(--accent) 16%,var(--surface-2));
+      color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);
+      font-size:.72rem;font-weight:700;letter-spacing:.02em;
+    }
+    #detailMarkDone{color:var(--accent);font-weight:650}
     .recs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;padding:8px 0 16px}
     .rec-card{
       position:relative;
@@ -1183,6 +1190,7 @@
         <p class="detail-review" id="detailReview"></p>
         <div class="card-links" id="detailLinks"></div>
         <div class="detail-tools" id="detailTools">
+          <button type="button" class="detail-linkbtn" id="detailMarkDone" title="Отметить пройденной" hidden>✓ Пройдено</button>
           <button type="button" class="detail-linkbtn" id="detailReplay" title="Отметить перепрохождение">↻ Перепрохождение</button>
           <button type="button" class="detail-linkbtn" id="detailSteam" title="Обновить данные из Steam" hidden>Обновить из Steam</button>
         </div>
@@ -1478,7 +1486,12 @@
         'education': 'Обучение', 'video production': 'Видео', 'audio production': 'Аудио',
         'software training': 'Обучение ПО', 'game development': 'Разработка игр',
         'violent': 'Насилие', 'gore': 'Кровь', 'nudity': 'Нагота', 'sexual content': 'Сексуальный контент',
-        'mature': 'Для взрослых', 'hentai': 'Хентай', 'nsfw': 'NSFW',
+        'mature': 'Для взрослых',
+        'singleplayer': 'Одиночная', 'single-player': 'Одиночная', 'single player': 'Одиночная',
+        'для одного игрока': 'Одиночная', 'одиночная': 'Одиночная',
+        'multiplayer': 'Мультиплеер', 'multi-player': 'Мультиплеер', 'multi player': 'Мультиплеер',
+        'co-op': 'Кооператив', 'coop': 'Кооператив', 'local co-op': 'Локальный кооп',
+        'online co-op': 'Онлайн кооп', 'co-operative': 'Кооператив', 'hentai': 'Хентай', 'nsfw': 'NSFW',
         'horror': 'Хоррор', 'puzzle': 'Головоломка', 'platformer': 'Платформер',
         'shooter': 'Шутер', 'fps': 'Шутер', 'open world': 'Открытый мир',
         'story rich': 'Сюжетная', 'atmospheric': 'Атмосферная', '2d': '2D', '3d': '3D',
@@ -1525,8 +1538,12 @@
         'horror': 'horror', 'хоррор': 'horror',
         'puzzle': 'puzzle', 'головоломка': 'puzzle',
         'open world': 'openworld', 'открытый мир': 'openworld',
-        'singleplayer': 'skip', 'single-player': 'skip', 'single player': 'skip',
-        'для одного игрока': 'skip', 'одиночная': 'skip'
+        'singleplayer': 'singleplayer', 'single-player': 'singleplayer', 'single player': 'singleplayer',
+        'для одного игрока': 'singleplayer', 'одиночная': 'singleplayer',
+        'multiplayer': 'multiplayer', 'multi-player': 'multiplayer', 'multi player': 'multiplayer',
+        'кооператив': 'coop', 'co-op': 'coop', 'coop': 'coop', 'co-operative': 'coop',
+        'local co-op': 'localcoop', 'online co-op': 'onlinecoop',
+        'локальный кооп': 'localcoop', 'онлайн кооп': 'onlinecoop'
       };
       const k = syn[s];
       if (k === 'skip') return null;
@@ -1535,7 +1552,7 @@
 
     function cleanTags(list) {
       if (!Array.isArray(list)) return null;
-      const skip = /steam|cloud|achievements|trading|workshop|leaderboard|controller|remote play|remote|stats|vr support|family sharing|captions|includes level|mods?|single-?player|single player|для одного|один игрок|local multiplayer|full controller|partial controller|local co-op|online co-op|одиночная|multi-?player|кооператив|совместная игра|in-app purchases|valve anti-cheat|\bvac\b|tracked controller|steam input|steam deck|steam timeline/i;
+      const skip = /steam|cloud|achievements?|достижен|trading|workshop|мастерская|leaderboard|лидерборд|controller|контроллер|remote play|remote|stats|статистик|vr support|family sharing|семейный доступ|captions|субтитры|скрытые субтитры|includes level|level editor|mods?|моды?|full controller|partial controller|in-app purchases|valve anti-cheat|\bvac\b|tracked controller|steam input|steam deck|steam timeline|steam achievements|steam cloud|steam trading|steam workshop|shared\/?split screen|cross-?platform|online pvp|remote play on (phone|tablet|tv)|commentary available|includes source sdk|hdr|ray tracing|ранний доступ|early access|бесплатная|free to play|free-to-play|демо|demo|soundtrack|\bost\b/i;
       const out = [];
       const seen = new Set();
       list.forEach(raw => {
@@ -2462,7 +2479,29 @@
       return null;
     }
 
-    async function resolveSteamApp(appid, sourceStr, force = false) {
+    
+    async function fetchSteamUserTags(appid) {
+      const id = String(appid);
+      const url = 'https://store.steampowered.com/app/' + id + '/?l=russian';
+      try {
+        const html = await fetchTextProxied(url, 6000);
+        if (!html) return null;
+        const tags = [];
+        const re = /<a[^>]*class="[^"]*app_tag[^"]*"[^>]*>([^<]+)<\/a>/gi;
+        let m;
+        while ((m = re.exec(html)) !== null && tags.length < 30) {
+          const tag = String(m[1] || '').replace(/\s+/g, ' ').trim();
+          if (!tag || tag.length < 2 || tag.length > 48) continue;
+          if (tags.some(x => x.toLowerCase() === tag.toLowerCase())) continue;
+          tags.push(tag);
+        }
+        return tags.length ? tags : null;
+      } catch {
+        return null;
+      }
+    }
+
+async function resolveSteamApp(appid, sourceStr, force = false) {
       const id = String(appid);
       if (!force && steamMetaCache.has(id)) {
         return { ...steamMetaCache.get(id) };
@@ -2607,6 +2646,20 @@
           out.genresAll = pool;
           out.genres = pool.slice(0, 3);
         }
+      }
+
+      // HTML fallback if still fewer than 3 tags
+      if (!out.genresAll || out.genresAll.length < 3) {
+        try {
+          const userTags = await fetchSteamUserTags(id);
+          if (userTags && userTags.length) {
+            const cleaned = cleanTags(userTags);
+            if (cleaned && cleaned.length) {
+              out.genresAll = cleaned;
+              out.genres = cleaned.slice(0, 3);
+            }
+          }
+        } catch (e) { /* ignore */ }
       }
 
       if (out.genresAll && out.genresAll.length) {
@@ -3138,7 +3191,7 @@
           let extra = '';
           let more = '';
           if (rest.length) {
-            more = '<button type="button" class="tags-expand-btn" data-tags-expand="1" aria-expanded="false" title="Показать все метки">+</button>';
+            more = '<button type="button" class="tags-expand-btn" data-tags-expand="1" aria-expanded="false" title="Показать все метки" aria-label="Ещё метки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>';
             extra = '<div class="detail-tags-extra">' +
               rest.map(tg => '<span class="card-tag">' + esc(tg) + '</span>').join('') +
               '</div>';
@@ -3189,8 +3242,32 @@
         });
       }
       $('detailEdit').onclick = () => { closeDetail(); openModal(id); };
+      const markDoneBtn = $('detailMarkDone');
+      if (markDoneBtn) {
+        if (g.status === 'plan') {
+          markDoneBtn.hidden = false;
+          markDoneBtn.onclick = () => {
+            const idx = games.findIndex(x => x.id === id);
+            if (idx === -1) return;
+            games[idx].status = 'done';
+            if (!games[idx].completedAt) {
+              games[idx].completedAt = new Date().toISOString().slice(0, 10);
+            }
+            games[idx].updatedAt = new Date().toISOString();
+            save();
+            closeDetail();
+            openModal(id);
+            toast('Отметь оценку и сохрани', '✓');
+          };
+        } else {
+          markDoneBtn.hidden = true;
+          markDoneBtn.onclick = null;
+        }
+      }
+
       const replayBtn = $('detailReplay');
       if (replayBtn) {
+        replayBtn.hidden = (g.status === 'plan');
         replayBtn.onclick = () => {
           pendingReplayId = id;
           pendingDeleteId = null;
@@ -3239,7 +3316,9 @@
           const wrap = exp.closest('.detail-tags-wrap') || detailTagsEl;
           const open = wrap.classList.toggle('is-open');
           exp.setAttribute('aria-expanded', open ? 'true' : 'false');
-          exp.textContent = open ? '−' : '+';
+          exp.innerHTML = open
+            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>'
+            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
           exp.title = open ? 'Свернуть' : 'Показать все метки';
           return;
         }
