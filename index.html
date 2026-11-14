@@ -13,6 +13,7 @@
   <link rel="icon" href="./icon-192.png" sizes="192x192" type="image/png" />
   <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
   <link rel="manifest" href="./manifest.webmanifest" />
+  <meta name="mobile-web-app-capable" content="yes" />
 
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -436,7 +437,8 @@
     .card-tags-more:hover{color:var(--text);border-color:var(--border-hover)}
     .card-tags.is-open .card-tag.is-extra{display:inline-flex}
     .card-tag.is-extra{display:none}
-    .detail-tags{margin:8px 0 4px}
+    .detail-tags{margin:8px 0 4px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+    .detail-tags .card-tags-more{cursor:pointer}
     .card-review.is-empty{color:var(--text-3);font-style:italic;font-weight:400}
     .card-links{display:flex;flex-wrap:wrap;gap:5px}
     .link-chip{
@@ -2517,7 +2519,7 @@
       };
 
       // Steam appdetails (filters) + SteamSpy in parallel
-      const FILTERS = 'basic,genres,release_date';
+      const FILTERS = 'basic,genres,categories,release_date';
       const storeUrl =
         'https://store.steampowered.com/api/appdetails?appids=' + id +
         '&l=russian&filters=' + FILTERS;
@@ -2538,7 +2540,7 @@
       }
 
       // EN fallback if RU incomplete
-      if (!out.name || !out.releaseYear || !out.genres) {
+      if (!out.name || !out.releaseYear || !out.genres || !(out.genresAll && out.genresAll.length >= 3)) {
         try {
           const json = await fetchJsonProxied(
             'https://store.steampowered.com/api/appdetails?appids=' + id +
@@ -2552,7 +2554,7 @@
         } catch { /* ignore */ }
       }
 
-      // SteamSpy fallback
+      // SteamSpy: full tag list for genresAll
       if (spyRes.status === 'fulfilled' && spyRes.value && typeof spyRes.value === 'object') {
         const spy = spyRes.value;
         if (!out.name && spy.name) out.name = spy.name;
@@ -2561,32 +2563,39 @@
           const ym = String(raw).match(/(20\d{2}|19\d{2})/);
           if (ym) out.releaseYear = +ym[1];
         }
-        const have = out.genres ? out.genres.slice() : [];
-        if (have.length < 3) {
-          const extra = [];
-          if (spy.tags && typeof spy.tags === 'object') {
-            Object.keys(spy.tags)
-              .sort((a, b) => (spy.tags[b] || 0) - (spy.tags[a] || 0))
-              .forEach(k => extra.push(k));
-          }
-          if (typeof spy.genre === 'string') {
-            spy.genre.split(',').forEach(s => extra.push(s.trim()));
-          }
-          for (const raw of extra) {
-            if (have.length >= 3) break;
-            const s = translateTag(raw);
-            if (!s) continue;
-            const cleaned = cleanTags([s]);
-            if (!cleaned || !cleaned.length) continue;
-            const tag = cleaned[0];
-            if (have.some(x => x.toLowerCase() === tag.toLowerCase())) continue;
-            have.push(tag);
-          }
-          if (have.length) out.genres = have.slice(0, 3);
+        const pool = [];
+        const pushRaw = (raw) => {
+          if (!raw) return;
+          let s = translateTag(String(raw).trim());
+          if (!s) return;
+          const cleaned = cleanTags([s]);
+          if (!cleaned || !cleaned.length) return;
+          const tag = cleaned[0];
+          if (pool.some(x => x.toLowerCase() === tag.toLowerCase())) return;
+          pool.push(tag);
+        };
+        // existing store tags first
+        (out.genresAll || out.genres || []).forEach(pushRaw);
+        if (spy.tags && typeof spy.tags === 'object') {
+          Object.keys(spy.tags)
+            .sort((a, b) => (spy.tags[b] || 0) - (spy.tags[a] || 0))
+            .forEach(pushRaw);
+        }
+        if (typeof spy.genre === 'string') {
+          spy.genre.split(',').forEach(s => pushRaw(s.trim()));
+        }
+        if (pool.length) {
+          out.genresAll = pool;
+          out.genres = pool.slice(0, 3);
         }
         gotDetails = true;
       }
 
+      if (out.genresAll && out.genresAll.length) {
+        out.genres = out.genresAll.slice(0, 3);
+      } else if (out.genres && out.genres.length) {
+        out.genresAll = out.genres.slice();
+      }
       if (!out.coverUrl) out.coverUrl = coverUrlFor(id);
       if (out.genres) out.genres = cleanTags(out.genres) || out.genres.slice(0, 3);
 
@@ -2682,6 +2691,7 @@
         pendingSteamMeta = {
           releaseYear: meta.releaseYear || null,
           genres: meta.genres || null,
+          genresAll: meta.genresAll || meta.genres || null,
           steamShort: meta.steamShort || null
         };
 
@@ -3218,33 +3228,60 @@
       return m ? m[1] : null;
     }
 
-    async function refreshGameFromSteam(id, appid) {
+        async function refreshGameFromSteam(id, appid) {
       const btn = $('detailSteam');
-      btn.disabled = true;
-      btn.textContent = '…';
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '…';
+      }
       try {
-        const meta = await resolveSteamApp(appid, null, true);
-        const i = games.findIndex(x => x.id === id);
-        if (i === -1) return;
-        const g = games[i];
+        const meta = await resolveSteamApp(String(appid), null, true);
+        const idx = games.findIndex(x => x.id === id);
+        if (idx === -1) return;
+        const g = games[idx];
+
+        // Preserve user data: rating, review, favorite, status, dates, platforms, links, id
+        // Update only Steam-derived fields
+        if (meta.name && meta.name.trim()) {
+          const prev = String(g.title || '');
+          if (!prev || /^https?:\/\//i.test(prev) || /^\d{3,10}$/.test(prev) || prev === 'Загрузка…') {
+            g.title = meta.name.trim();
+          }
+        }
         if (meta.releaseYear) g.releaseYear = meta.releaseYear;
-        
-        if (meta.genres && meta.genres.length) g.genres = cleanTags(meta.genres) || meta.genres.slice(0, 3);
-        else g.genres = cleanTags(g.genres);
-        if (meta.steamShort) g.steamShort = meta.steamShort;
         if (meta.coverUrl) g.coverUrl = meta.coverUrl;
+        if (meta.steamShort) g.steamShort = meta.steamShort;
+
+        const all = cleanTags(meta.genresAll || meta.genres);
+        if (all && all.length) {
+          g.genresAll = all;
+          g.genres = all.slice(0, 3);
+        }
+
+        // Ensure Steam store link exists among links
+        const steamUrl = 'https://store.steampowered.com/app/' + appid + '/';
+        const links = Array.isArray(g.links) ? g.links.slice() : [];
+        const hasSteam = links.some(u => /store\.steampowered\.com\/app\//i.test(String(u || '')));
+        if (!hasSteam) links.push(steamUrl);
+        g.links = links;
+
         g.updatedAt = new Date().toISOString();
+        games[idx] = g;
         save();
         fillDetail(g, id);
         render();
-        toast('Данные Steam обновлены', '✓');
-      } catch {
+        toast('Обновлено из Steam · отзыв и оценка сохранены', '✓');
+      } catch (err) {
+        console.warn(err);
         toast('Не удалось обновить из Steam', '!');
       } finally {
-        btn.disabled = false;
-        btn.textContent = 'Обновить';
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Обновить из Steam';
+        }
       }
     }
+
 
 
     function addLinkRow(val = '') {
@@ -3451,10 +3488,10 @@
               developers: steam.developers || prev.developers || null,
               publishers: steam.publishers || prev.publishers || null,
               genres: (function() {
-                const all = cleanTags(steam.genres || prev.genresAll || prev.genres);
+                const all = cleanTags(steam.genresAll || steam.genres || prev.genresAll || prev.genres);
                 return all ? all.slice(0, 3) : null;
               })(),
-              genresAll: cleanTags(steam.genres || prev.genresAll || prev.genres),
+              genresAll: cleanTags(steam.genresAll || steam.genres || prev.genresAll || prev.genres),
               metacritic: steam.metacritic || prev.metacritic || null,
               steamShort: steam.steamShort || prev.steamShort || null,
               accentColor: data.accentColor || prev.accentColor || null
@@ -3468,10 +3505,10 @@
             developers: steam.developers || null,
             publishers: steam.publishers || null,
             genres: (function() {
-              const all = cleanTags(steam.genres);
+              const all = cleanTags(steam.genresAll || steam.genres);
               return all ? all.slice(0, 3) : null;
             })(),
-            genresAll: cleanTags(steam.genres),
+            genresAll: cleanTags(steam.genresAll || steam.genres),
             metacritic: steam.metacritic || null,
             steamShort: steam.steamShort || null,
             accentColor: data.accentColor || null,
@@ -4078,6 +4115,14 @@ const ric = window.requestIdleCallback || (cb => setTimeout(() => cb(), 600));
       });
     });
   })();
+  </script>
+
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
   </script>
 </body>
 </html>
