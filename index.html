@@ -294,13 +294,15 @@
     .plat-label{font-size:.72rem;font-weight:600;color:var(--text-3)}
     .plat-select{
       appearance:none;-webkit-appearance:none;
-      background:var(--surface-2);color:var(--text);border:1px solid var(--border);
-      border-radius:9px;padding:6px 28px 6px 10px;font:inherit;font-size:.78rem;font-weight:600;
-      cursor:pointer;
+      background-color:var(--surface-2);color:var(--text);border:1px solid var(--border);
+      border-radius:9px;padding:7px 30px 7px 12px;
+      font-family:var(--font);font-size:.8rem;font-weight:600;letter-spacing:-.01em;
+      line-height:1.2;cursor:pointer;
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
       background-repeat:no-repeat;background-position:right 8px center;
     }
     .plat-select:focus{outline:none;border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
+    .plat-select option{font-family:var(--font);font-size:.85rem;font-weight:500;background:var(--surface);color:var(--text)}
     .fav-filter-btn{
       width:40px;height:40px;min-width:40px;border-radius:12px;border:1px solid var(--border);
       background:var(--surface-2);color:var(--text-3);cursor:pointer;
@@ -871,18 +873,6 @@
     .recs-hint{font-size:.8rem;color:var(--text-3);margin:0 0 8px;line-height:1.45}
     .recs-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 12px}
     .recs-toolbar .btn{font-size:.78rem;padding:7px 11px}
-    .recs-key-row{
-      display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%;
-      padding:10px 12px;border-radius:12px;border:1px solid var(--border);
-      background:var(--surface-2);margin-bottom:8px;
-    }
-    .recs-key-row input{
-      flex:1;min-width:140px;border:1px solid var(--border);border-radius:9px;
-      background:var(--surface);color:var(--text);padding:8px 10px;
-      font:inherit;font-size:.8rem;
-    }
-    .recs-key-row input:focus{outline:none;border-color:color-mix(in srgb,var(--accent) 45%,var(--border))}
-    .recs-key-hint{font-size:.72rem;color:var(--text-3);width:100%;line-height:1.35}
     .recs-grid:has(.recs-loading){
       display:block;
     }
@@ -1191,13 +1181,6 @@
         <p class="recs-hint" id="recsHint">Подбираем игры…</p>
         <div class="recs-toolbar">
           <button type="button" class="btn btn-secondary btn-sm" id="recsResetDismiss" title="Снова показывать скрытые">Сброс скрытых</button>
-          <button type="button" class="btn btn-ghost btn-sm" id="recsKeyToggle" title="DeepSeek API">DeepSeek</button>
-        </div>
-        <div class="recs-key-row" id="recsKeyRow" hidden>
-          <input type="password" id="deepseekKey" placeholder="API-ключ DeepSeek" autocomplete="off" spellcheck="false" />
-          <button type="button" class="btn btn-secondary btn-sm" id="recsKeySave">Сохранить</button>
-          <button type="button" class="btn btn-ghost btn-sm" id="recsKeyClear">Очистить</button>
-          <div class="recs-key-hint">Ключ только в этом браузере. Без ключа — обычный подбор. Ключ: platform.deepseek.com</div>
         </div>
         <div class="recs-grid" id="recsGrid"></div>
       </div>
@@ -1370,6 +1353,7 @@
     let sortMode = 'date-desc';
     let formStatus = 'done';
     let statusFilter = 'all';
+    let recExtraPool = [];
     let pendingSteamMeta = null;
 
     const IDB_NAME = 'solgames-db';
@@ -1565,7 +1549,12 @@
         releaseYear: g.releaseYear || null,
         developers: g.developers || null,
         publishers: g.publishers || null,
-        genres: cleanTags(g.genres),
+        genres: (function() {
+          const src = Array.isArray(g.genresAll) && g.genresAll.length ? g.genresAll : g.genres;
+          const all = cleanTags(src);
+          return all ? all.slice(0, 3) : null;
+        })(),
+        genresAll: cleanTags(Array.isArray(g.genresAll) && g.genresAll.length ? g.genresAll : g.genres),
         metacritic: g.metacritic || null,
         steamShort: g.steamShort || null,
         accentColor: g.accentColor || null,
@@ -1787,111 +1776,6 @@
       try { localStorage.removeItem(DISMISS_KEY); } catch (e) {}
     }
 
-    const DS_KEY = 'solgames-deepseek-key';
-    function getDeepseekKey() {
-      try { return (localStorage.getItem(DS_KEY) || '').trim(); } catch (e) { return ''; }
-    }
-    function setDeepseekKey(k) {
-      try {
-        if (k) localStorage.setItem(DS_KEY, k);
-        else localStorage.removeItem(DS_KEY);
-      } catch (e) {}
-    }
-
-    function buildDeepseekPrompt(profile) {
-      return (
-        'You are a video game recommender. Based on the user library, suggest 10 Steam games they would enjoy but do NOT already own.\n' +
-        'Return ONLY a JSON array, no markdown, no text. Format: [{"appid":"123","name":"Game Name","reason":"short reason in Russian"}]\n' +
-        'Rules: real existing Steam appids only; prefer well-known quality games with large audiences; avoid obscure games; avoid games in the owned list; prefer variety.\n\n' +
-        'Owned / rated games:\n' + profile
-      );
-    }
-
-    function libraryProfileForAI() {
-      const lines = games
-        .filter(g => g.status !== 'plan')
-        .sort((a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0))
-        .slice(0, 40)
-        .map(g => {
-          const tags = (g.genres || []).slice(0, 3).join(', ');
-          return '- ' + g.title + ' | rating ' + (g.rating != null ? g.rating : '?') +
-            (tags ? ' | ' + tags : '');
-        });
-      const plan = games.filter(g => g.status === 'plan').slice(0, 15).map(g => g.title);
-      let s = lines.join('\n') || '(empty library)';
-      if (plan.length) s += '\n\nAlready planned (do not suggest):\n' + plan.map(x => '- ' + x).join('\n');
-      const dismissed = [...loadDismissedRecs()].slice(0, 30);
-      if (dismissed.length) s += '\n\nDismissed appids (do not suggest): ' + dismissed.join(', ');
-      return s;
-    }
-
-    function parseDeepseekAppList(text) {
-      if (!text) return [];
-      let raw = String(text).trim();
-      const fence = raw.match(/\[[\s\S]*\]/);
-      if (fence) raw = fence[0];
-      try {
-        const arr = JSON.parse(raw);
-        if (!Array.isArray(arr)) return [];
-        return arr.map(it => ({
-          appid: String(it.appid || it.id || '').replace(/\D/g, ''),
-          name: String(it.name || it.title || '').trim(),
-          reason: String(it.reason || 'DeepSeek').trim() || 'DeepSeek'
-        })).filter(x => x.appid && /^\d{2,}$/.test(x.appid));
-      } catch (e) {
-        return [];
-      }
-    }
-
-    async function fetchDeepseekRecommendations() {
-      const key = getDeepseekKey();
-      if (!key) return null;
-      const body = {
-        model: 'deepseek-flash',
-        messages: [
-          { role: 'system', content: 'Return only valid JSON arrays. No markdown.' },
-          { role: 'user', content: buildDeepseekPrompt(libraryProfileForAI()) }
-        ],
-        temperature: 0.7,
-        max_tokens: 1200
-      };
-      const endpoints = [
-        'https://api.deepseek.com/chat/completions',
-        'https://proxy.cors.dev/https://api.deepseek.com/chat/completions'
-      ];
-      let lastErr = null;
-      for (let i = 0; i < endpoints.length; i++) {
-        try {
-          const ctrl = new AbortController();
-          const timer = setTimeout(() => ctrl.abort(), 25000);
-          const res = await fetch(endpoints[i], {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + key
-            },
-            body: JSON.stringify(body),
-            signal: ctrl.signal
-          });
-          clearTimeout(timer);
-          if (!res.ok) {
-            lastErr = 'HTTP ' + res.status;
-            continue;
-          }
-          const data = await res.json();
-          const content = data && data.choices && data.choices[0] && data.choices[0].message
-            ? data.choices[0].message.content
-            : '';
-          const list = parseDeepseekAppList(content);
-          if (list.length) return list;
-          lastErr = 'empty parse';
-        } catch (e) {
-          lastErr = e && e.message ? e.message : 'network';
-        }
-      }
-      console.warn('DeepSeek recs failed', lastErr);
-      return null;
-    }
 
     function topGenresFromLibrary(limit) {
       // Вес жанра = сумма оценок игр (любимые сильнее), а не просто «сколько раз встретился»
@@ -1900,7 +1784,8 @@
         if (g.status === 'plan') return;
         const r = Number(g.rating) || 0;
         const w = r >= 9 ? 3 : r >= 7 ? 2 : r >= 5 ? 1 : 0.5;
-        (g.genres || []).forEach(tag => {
+        const tags = (g.genresAll && g.genresAll.length) ? g.genresAll : (g.genres || []);
+        tags.forEach(tag => {
           const k = String(tag).trim();
           if (!k) return;
           score.set(k, (score.get(k) || 0) + w);
@@ -2138,12 +2023,17 @@
         });
       }
 
-      return quality.slice(0, 12).map(x => ({
+      return quality.slice(0, 18).map(x => ({
         appid: x.appid,
         name: x.name,
-        tiny: x.tiny,
+        tiny: null,
         reason: x.reason || ''
       }));
+    }
+
+    async function buildRecommendationsPacked(limit) {
+      const list = await buildRecommendations();
+      return (list || []).slice(0, limit || 18);
     }
 
     function recsLoadingMarkup() {
@@ -2169,59 +2059,39 @@
       grid.innerHTML = recsLoadingMarkup();
       const genres = topGenresFromLibrary(3);
       if (genres.length) {
-        hint.textContent = 'Опираемся на ваши оценки 8+ и любимые жанры: ' + genres.slice(0, 3).join(', ') + '. Крестик — скрыть навсегда.';
+        hint.textContent = 'Опираемся на ваши оценки 8+ и жанры: ' + genres.slice(0, 3).join(', ') + '. Крестик — скрыть и заменить.';
       } else {
-        hint.textContent = 'Поставьте высокие оценки играм — подборка станет ближе к вкусу. Крестик скрывает игру навсегда.';
+        hint.textContent = 'Поставьте высокие оценки — подборка станет точнее. Крестик скрывает и подставляет другую.';
       }
       overlay.classList.add('open');
       lockBodyScroll();
       trapFocus(overlay);
       try {
-        let list = [];
-        let source = 'steam';
-        if (getDeepseekKey()) {
-          hint.textContent = 'DeepSeek читает вашу библиотеку и подбирает app id…';
-          const aiList = await fetchDeepseekRecommendations();
-          if (aiList && aiList.length) {
-            const owned = libraryKeys();
-            const dismissed = loadDismissedRecs();
-            list = aiList.filter(it => {
-              if (dismissed.has(String(it.appid))) return false;
-              if (owned.has('app:' + it.appid)) return false;
-              if (owned.has(normTitle(it.name))) return false;
-              return true;
-            }).slice(0, 12);
-            source = 'deepseek';
-          }
-        }
+        const packed = await buildRecommendationsPacked(18);
+        const list = packed.slice(0, 12);
+        recExtraPool = packed.slice(12);
         if (!list.length) {
-          list = await buildRecommendations();
-          source = 'steam';
-        }
-        if (!list.length) {
-          grid.innerHTML = '<div class="recs-empty">Не удалось подобрать игры. Проверьте сеть' +
-            (getDeepseekKey() ? ' или ключ DeepSeek' : '') + '.</div>';
+          grid.innerHTML = '<div class="recs-empty">Не удалось подобрать игры. Проверьте сеть.</div>';
           return;
         }
-        if (source === 'deepseek') {
-          hint.textContent = 'Подборка DeepSeek по вашей библиотеке. Крестик — скрыть навсегда.';
-        }
-        grid.innerHTML = list.map((it, idx) => {
-          const cover = it.tiny || ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + it.appid + '/header.jpg');
-          return '<article class="rec-card" data-appid="' + esc(it.appid) + '" data-name="' + esc(it.name) + '" style="animation-delay:' + (idx * 0.04) + 's">' +
-            '<button type="button" class="rec-dismiss" title="Не предлагать" aria-label="Не предлагать">✕</button>' +
-            '<img class="rec-cover" src="' + cover + '" alt="" loading="lazy" onerror="this.style.opacity=.3"/>' +
-            '<div class="rec-body">' +
-              '<div class="rec-title">' + esc(it.name) + '</div>' +
-              '<div class="rec-meta">' + esc(it.reason || '') + '</div>' +
-              '<div class="rec-actions">' +
-                '<button type="button" class="btn btn-secondary btn-sm rec-add">В планы</button>' +
-              '</div>' +
-            '</div></article>';
-        }).join('');
+        grid.innerHTML = list.map((it, idx) => recCardHtml(it, idx)).join('');
       } catch (err) {
         grid.innerHTML = '<div class="recs-empty">Ошибка загрузки рекомендаций.</div>';
       }
+    }
+
+    function recCardHtml(it, idx) {
+      const id = esc(it.appid);
+      const cover = 'https://cdn.cloudflare.steamstatic.com/steam/apps/' + it.appid + '/header.jpg';
+      return '<article class="rec-card" data-appid="' + id + '" data-name="' + esc(it.name) + '" style="animation-delay:' + ((idx || 0) * 0.04) + 's">' +
+        '<button type="button" class="rec-dismiss" title="Не предлагать" aria-label="Не предлагать">✕</button>' +
+        '<img class="rec-cover" src="' + cover + '" alt="" loading="lazy" decoding="async" onerror="this.style.opacity=.35"/>' +
+        '<div class="rec-body">' +
+          '<div class="rec-title">' + esc(it.name) + '</div>' +
+          '<div class="rec-meta">' + esc(it.reason || '') + '</div>' +
+          '<div class="rec-actions">' +
+            '<button type="button" class="btn btn-secondary btn-sm rec-add">В планы</button>' +
+          '</div></div></article>';
     }
 
     function closeRecs() {
@@ -3316,6 +3186,8 @@
       if (!appidFromGame(g)) return false;
       if (!g.releaseYear) return true;
       if (!g.coverUrl) return true;
+      const all = g.genresAll || g.genres || [];
+      if (all.length < 3) return true;
       const tags = g.genres || [];
       if (!tags.length) return true;
       
@@ -3345,8 +3217,15 @@
             const meta = await resolveSteamApp(appid, null, true);
             if (meta.releaseYear) g.releaseYear = meta.releaseYear;
             
-            if (meta.genres && meta.genres.length) g.genres = cleanTags(meta.genres) || meta.genres.slice(0, 3);
-            else g.genres = cleanTags(g.genres);
+            if (meta.genres && meta.genres.length) {
+              const all = cleanTags(meta.genres) || meta.genres;
+              g.genresAll = all;
+              g.genres = all ? all.slice(0, 3) : null;
+            } else {
+              const all = cleanTags(g.genresAll || g.genres);
+              g.genresAll = all;
+              g.genres = all ? all.slice(0, 3) : null;
+            }
             if (meta.steamShort) g.steamShort = meta.steamShort;
             
             if (meta.coverUrl) g.coverUrl = meta.coverUrl;
@@ -3567,7 +3446,11 @@
               releaseYear: ry || steam.releaseYear || prev.releaseYear || null,
               developers: steam.developers || prev.developers || null,
               publishers: steam.publishers || prev.publishers || null,
-              genres: steam.genres || cleanTags(prev.genres) || null,
+              genres: (function() {
+                const all = cleanTags(steam.genres || prev.genresAll || prev.genres);
+                return all ? all.slice(0, 3) : null;
+              })(),
+              genresAll: cleanTags(steam.genres || prev.genresAll || prev.genres),
               metacritic: steam.metacritic || prev.metacritic || null,
               steamShort: steam.steamShort || prev.steamShort || null,
               accentColor: data.accentColor || prev.accentColor || null
@@ -3580,7 +3463,11 @@
             releaseYear: ry || steam.releaseYear || null,
             developers: steam.developers || null,
             publishers: steam.publishers || null,
-            genres: steam.genres || null,
+            genres: (function() {
+              const all = cleanTags(steam.genres);
+              return all ? all.slice(0, 3) : null;
+            })(),
+            genresAll: cleanTags(steam.genres),
             metacritic: steam.metacritic || null,
             steamShort: steam.steamShort || null,
             accentColor: data.accentColor || null,
@@ -3696,35 +3583,6 @@
         openRecs();
       };
     }
-    if ($('recsKeyToggle')) {
-      $('recsKeyToggle').onclick = () => {
-        const row = $('recsKeyRow');
-        if (!row) return;
-        row.hidden = !row.hidden;
-        if (!row.hidden) {
-          const inp = $('deepseekKey');
-          if (inp) inp.value = getDeepseekKey();
-        }
-      };
-    }
-    if ($('recsKeySave')) {
-      $('recsKeySave').onclick = () => {
-        const inp = $('deepseekKey');
-        const k = inp ? inp.value.trim() : '';
-        if (!k) { toast('Вставьте API-ключ', '!'); return; }
-        setDeepseekKey(k);
-        toast('DeepSeek подключён', '✓');
-        openRecs();
-      };
-    }
-    if ($('recsKeyClear')) {
-      $('recsKeyClear').onclick = () => {
-        setDeepseekKey('');
-        const inp = $('deepseekKey');
-        if (inp) inp.value = '';
-        toast('Ключ удалён · обычный подбор', '✓');
-      };
-    }
     if ($('recsGrid')) $('recsGrid').addEventListener('click', e => {
       const dismissBtn = e.target.closest('.rec-dismiss');
       if (dismissBtn) {
@@ -3734,13 +3592,29 @@
         dismissRecApp(appid);
         card.classList.add('is-leaving');
         setTimeout(() => {
-          card.remove();
           const grid = $('recsGrid');
-          if (grid && !grid.querySelector('.rec-card')) {
-            grid.innerHTML = '<div class="recs-empty">Все предложенные скрыты. Откройте рекомендации снова — подберём другие.</div>';
+          let next = null;
+          while (recExtraPool.length && !next) {
+            const cand = recExtraPool.shift();
+            if (!cand) break;
+            if (String(cand.appid) === String(appid)) continue;
+            if (loadDismissedRecs().has(String(cand.appid))) continue;
+            next = cand;
+          }
+          if (next && grid) {
+            const wrap = document.createElement('div');
+            wrap.innerHTML = recCardHtml(next, 0);
+            const neu = wrap.firstElementChild;
+            if (neu) card.replaceWith(neu);
+            else card.remove();
+          } else {
+            card.remove();
+            if (grid && !grid.querySelector('.rec-card')) {
+              grid.innerHTML = '<div class="recs-empty">Больше нет кандидатов. Откройте рекомендации снова.</div>';
+            }
           }
         }, 280);
-        toast('Больше не предложим', '✕');
+        toast('Скрыто · другая игра', '✕');
         return;
       }
       const btn = e.target.closest('.rec-add');
