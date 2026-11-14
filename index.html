@@ -434,24 +434,25 @@
       transition:background .15s,color .15s,border-color .15s;
     }
     .card-tags-more:hover{color:var(--text);border-color:var(--border-hover)}
-    .detail-tags-wrap{margin:6px 0 2px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-    .detail-tags-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
-    .detail-tags-extra{display:none;flex-wrap:wrap;gap:5px;align-items:center}
+    .detail-tags-wrap{margin:6px 0 2px}
+    .detail-tags-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    .detail-tags-extra{display:none;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
     .detail-tags-wrap.is-open .detail-tags-extra{display:flex}
     .tags-expand-btn{
       display:inline-flex !important;align-items:center;justify-content:center;
-      margin-top:2px;padding:7px 14px;border-radius:999px;
-      border:1px solid color-mix(in srgb,var(--accent) 45%,var(--border));
+      width:28px;height:28px;padding:0;border-radius:999px;
+      border:1px solid color-mix(in srgb,var(--accent) 40%,var(--border));
       background:color-mix(in srgb,var(--accent) 14%,var(--surface-2));
-      color:var(--accent);font:inherit;font-size:.8rem;font-weight:700;
-      letter-spacing:-.01em;cursor:pointer;line-height:1.2;
-      transition:background .15s,border-color .15s,transform .12s;
+      color:var(--accent);font:inherit;font-size:1.05rem;font-weight:700;
+      line-height:1;cursor:pointer;
+      transition:background .15s,border-color .15s,transform .12s,color .15s;
     }
     .tags-expand-btn:hover{
-      background:color-mix(in srgb,var(--accent) 22%,var(--surface-2));
-      border-color:color-mix(in srgb,var(--accent) 60%,var(--border));
+      background:color-mix(in srgb,var(--accent) 24%,var(--surface-2));
+      border-color:color-mix(in srgb,var(--accent) 65%,var(--border));
     }
-    .tags-expand-btn:active{transform:scale(.97)}
+    .tags-expand-btn:active{transform:scale(.95)}
+    .tags-expand-btn[aria-expanded="true"]{color:var(--text);background:var(--surface-2)}
     .card-review.is-empty{color:var(--text-3);font-style:italic;font-weight:400}
     .card-links{display:flex;flex-wrap:wrap;gap:5px}
     .link-chip{
@@ -2006,11 +2007,14 @@
       const uniqQ = [];
       shortQ.forEach(q => { if (!uniqQ.includes(q)) uniqQ.push(q); });
 
-      for (let i = 0; i < Math.min(uniqQ.length, 6); i++) {
-        const found = await searchPopularByQuery(uniqQ[i], 12);
-        const label = genres[i] || (seeds[i] && seeds[i].title) || uniqQ[i];
-        for (let j = 0; j < found.length; j++) addPool(found[j], label);
-      }
+      const queriesToRun = uniqQ.slice(0, 6);
+      const results = await Promise.allSettled(queriesToRun.map(q => searchPopularByQuery(q, 12)));
+      results.forEach((res, i) => {
+        if (res.status === 'fulfilled' && Array.isArray(res.value)) {
+          const label = genres[i] || (seeds[i] && seeds[i].title) || queriesToRun[i];
+          res.value.forEach(item => addPool(item, label));
+        }
+      });
 
       // Blend global top sellers as quality anchors
       const globalTop = await fetchTopSellersGlobal();
@@ -2291,41 +2295,6 @@
       }
     }
 
-    async function fetchSteamUserTags(appid) {
-      const id = String(appid);
-      const urls = [
-        'https://store.steampowered.com/app/' + id + '/?l=russian',
-        'https://store.steampowered.com/apphoverpublic/' + id + '?l=russian'
-      ];
-      const tags = [];
-      const push = (s) => {
-        s = String(s || '').replace(/\s+/g, ' ').trim();
-        if (!s || s.length < 2 || s.length > 48) return;
-        if (tags.some(x => x.toLowerCase() === s.toLowerCase())) return;
-        tags.push(s);
-      };
-      for (let u = 0; u < urls.length && tags.length < 12; u++) {
-        try {
-          const html = await fetchTextProxied(urls[u], 9000);
-          if (!html) continue;
-          const re = /class=["'][^"']*app_tag[^"']*["'][^>]*>([^<]+)</gi;
-          let m;
-          while ((m = re.exec(html)) && tags.length < 30) {
-            push(m[1]);
-          }
-          // JSON-ish: "name":"Хоррор"
-          if (tags.length < 5) {
-            const re2 = /"name"\s*:\s*"([^"]{2,40})"/g;
-            while ((m = re2.exec(html)) && tags.length < 24) {
-              // only likely tag context — skip if looks like game title dump
-              const s = m[1];
-              if (/[а-яё]/i.test(s) || /^(Action|Adventure|RPG|Horror|Indie|Strategy)/i.test(s)) push(s);
-            }
-          }
-        } catch (e) { /* try next */ }
-      }
-      return tags.length ? tags : null;
-    }
 
 
     async function fetchJsonDirect(url, ms = 4000) {
@@ -2494,11 +2463,9 @@
     }
 
     async function resolveSteamApp(appid, sourceStr, force = false) {
-
       const id = String(appid);
       if (!force && steamMetaCache.has(id)) {
-        const c = steamMetaCache.get(id);
-        return { ...c };
+        return { ...steamMetaCache.get(id) };
       }
 
       const out = {
@@ -2510,111 +2477,99 @@
         steamShort: null
       };
 
-      const takeTagsFromStore = (data) => {
-        if (!data) return null;
-        const skip = /для одного|один игрок|single-?player|single player|multi-?player|multiplayer|кооператив|совместная|контроллер|controller|достижен|achievements?|облако|cloud|мастерская|workshop|лидерборд|leaderboard|статистик|stats|мод|mods?|family sharing|remote play|captions|уровень|level editor|карточки|trading cards|коллекцион|стереозвук|громкост|qte|dualshock|dualsense|сохранение|camera|доступност|in-app purchases|valve anti-cheat|hdr|ray tracing|vr support|tracked controller/i;
-        const tags = [];
-        const push = (raw) => {
-          let s = (typeof raw === 'string' ? raw : (raw && raw.description)) || '';
-          s = String(s).trim();
-          if (!s || s.length < 2 || skip.test(s)) return;
-          if (typeof translateTag === 'function') s = translateTag(s);
-          if (!s || skip.test(s)) return;
-          const key = s.toLowerCase();
-          if (tags.some(x => x.toLowerCase() === key)) return;
-          tags.push(s);
-        };
-        if (Array.isArray(data.genres)) data.genres.forEach(push);
-        if (Array.isArray(data.categories)) data.categories.forEach(push);
-        return tags.length ? tags : null;
-      };
+      const FILTERS = 'basic,genres,categories,release_date';
+      const storeUrl =
+        'https://store.steampowered.com/api/appdetails?appids=' + id +
+        '&l=russian&filters=' + FILTERS;
+      const spyUrl =
+        'https://steamspy.com/api.php?request=appdetails&appid=' + id;
 
-      const applyAppDetails = (data, lang) => {
-        if (!data || typeof data !== 'object') return false;
-        if (data.name) out.name = data.name;
-        if (data.header_image) out.coverUrl = data.header_image;
-        const rd = data.release_date && data.release_date.date;
-        if (rd) {
-          const years = String(rd).match(/(?:19|20)\d{2}/g);
-          if (years && years.length) out.releaseYear = +years[years.length - 1];
-        }
-        if (!out.releaseYear && data.release_date && /^\d{4}/.test(String(data.release_date))) {
-          out.releaseYear = parseInt(String(data.release_date).slice(0, 4), 10) || null;
-        }
-        // Prefer RU tags/description
-        if (lang === 'russian') {
-          const tags = takeTagsFromStore(data);
-          if (tags && tags.length) {
-            out.genresAll = tags;
-            out.genres = tags.slice(0, 3);
+      // Parallel: official API + SteamSpy (no HTML scraping)
+      const [storeRes, spyRes] = await Promise.allSettled([
+        fetchJsonProxied(storeUrl, 4000),
+        fetchJsonProxied(spyUrl, 4000)
+      ]);
+
+      // Official store data
+      if (storeRes.status === 'fulfilled' && storeRes.value) {
+        const entry = storeRes.value[id];
+        if (entry && entry.success && entry.data) {
+          const data = entry.data;
+          if (data.name) out.name = data.name;
+          if (data.header_image) out.coverUrl = data.header_image;
+          const rd = data.release_date && data.release_date.date;
+          if (rd) {
+            const years = String(rd).match(/(?:19|20)\d{2}/g);
+            if (years && years.length) out.releaseYear = +years[years.length - 1];
           }
           if (data.short_description) {
             out.steamShort = String(data.short_description)
               .replace(/<[^>]+>/g, ' ')
               .replace(/\s+/g, ' ')
               .trim()
-              .slice(0, 280);
+              .slice(0, 400);
           }
-        } else {
-          // EN: fill gaps only
-          if (!out.genresAll && Array.isArray(data.genres)) {
-            const tags = data.genres
-              .map(g => translateTag(typeof g === 'string' ? g : (g && g.description)))
-              .filter(Boolean);
-            const cleaned = cleanTags(tags);
+          // Official genres as fallback tags
+          const official = [];
+          const pushOff = (raw) => {
+            let s = (typeof raw === 'string' ? raw : (raw && raw.description)) || '';
+            s = String(s).trim();
+            if (!s) return;
+            if (typeof translateTag === 'function') s = translateTag(s);
+            if (!s) return;
+            if (official.some(x => x.toLowerCase() === s.toLowerCase())) return;
+            official.push(s);
+          };
+          if (Array.isArray(data.genres)) data.genres.forEach(pushOff);
+          if (official.length) {
+            const cleaned = cleanTags(official);
             if (cleaned && cleaned.length) {
               out.genresAll = cleaned;
               out.genres = cleaned.slice(0, 3);
             }
           }
-          if (!out.steamShort && data.short_description) {
-            out.steamShort = String(data.short_description)
-              .replace(/<[^>]+>/g, ' ')
-              .replace(/\s+/g, ' ')
-              .trim()
-              .slice(0, 280);
-          }
-        }
-        return !!(out.name || out.releaseYear || out.genres);
-      };
-
-      // Steam appdetails (filters) + SteamSpy in parallel
-      const FILTERS = 'basic,genres,categories,release_date';
-      const storeUrl =
-        'https://store.steampowered.com/api/appdetails?appids=' + id +
-        '&l=russian&filters=' + FILTERS;
-      const spyUrl = 'https://steamspy.com/api.php?request=appdetails&appid=' + id;
-
-      const [storeRes, spyRes] = await Promise.allSettled([
-        fetchJsonProxied(storeUrl, 4000),
-        fetchJsonProxied(spyUrl, 4000)
-      ]);
-
-      let gotDetails = false;
-      if (storeRes.status === 'fulfilled') {
-        const json = storeRes.value;
-        const entry = json && json[id];
-        if (entry && entry.success && entry.data) {
-          gotDetails = applyAppDetails(entry.data, 'russian') || gotDetails;
         }
       }
 
-      // EN fallback if RU incomplete
-      if (!out.name || !out.releaseYear || !out.genres || !(out.genresAll && out.genresAll.length >= 3)) {
+      // EN fallback for name/year only
+      if (!out.name || !out.releaseYear) {
         try {
           const json = await fetchJsonProxied(
             'https://store.steampowered.com/api/appdetails?appids=' + id +
               '&l=english&filters=' + FILTERS,
-            3500
+            3000
           );
           const entry = json && json[id];
           if (entry && entry.success && entry.data) {
-            gotDetails = applyAppDetails(entry.data, 'english') || gotDetails;
+            const data = entry.data;
+            if (!out.name && data.name) out.name = data.name;
+            if (!out.coverUrl && data.header_image) out.coverUrl = data.header_image;
+            if (!out.releaseYear && data.release_date && data.release_date.date) {
+              const years = String(data.release_date.date).match(/(?:19|20)\d{2}/g);
+              if (years && years.length) out.releaseYear = +years[years.length - 1];
+            }
+            if (!out.steamShort && data.short_description) {
+              out.steamShort = String(data.short_description)
+                .replace(/<[^>]+>/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .slice(0, 400);
+            }
+            if (!(out.genresAll && out.genresAll.length) && Array.isArray(data.genres)) {
+              const official = data.genres
+                .map(g => translateTag(typeof g === 'string' ? g : (g && g.description)))
+                .filter(Boolean);
+              const cleaned = cleanTags(official);
+              if (cleaned && cleaned.length) {
+                out.genresAll = cleaned;
+                out.genres = cleaned.slice(0, 3);
+              }
+            }
           }
         } catch { /* ignore */ }
       }
 
-      // SteamSpy tags
+      // SteamSpy user tags — preferred when available
       if (spyRes.status === 'fulfilled' && spyRes.value && typeof spyRes.value === 'object') {
         const spy = spyRes.value;
         if (!out.name && spy.name) out.name = spy.name;
@@ -2624,9 +2579,11 @@
           if (ym) out.releaseYear = +ym[1];
         }
         const pool = [];
-        const pushRaw = (raw) => {
+        const pushTag = (raw) => {
           if (!raw) return;
-          let s = translateTag(String(raw).trim());
+          let s = String(raw).trim();
+          if (!s) return;
+          if (typeof translateTag === 'function') s = translateTag(s);
           if (!s) return;
           const cleaned = cleanTags([s]);
           if (!cleaned || !cleaned.length) return;
@@ -2634,61 +2591,38 @@
           if (pool.some(x => x.toLowerCase() === tag.toLowerCase())) return;
           pool.push(tag);
         };
-        (out.genresAll || out.genres || []).forEach(pushRaw);
-        if (spy.tags && typeof spy.tags === 'object') {
+        if (spy.tags && typeof spy.tags === 'object' && !Array.isArray(spy.tags)) {
           Object.keys(spy.tags)
             .sort((a, b) => (spy.tags[b] || 0) - (spy.tags[a] || 0))
-            .forEach(pushRaw);
+            .forEach(pushTag);
         }
         if (typeof spy.genre === 'string') {
-          spy.genre.split(',').forEach(s => pushRaw(s.trim()));
+          spy.genre.split(',').forEach(s => pushTag(s.trim()));
         }
-        if (pool.length) {
+        // Prefer spy tags when we got a real list
+        if (pool.length >= 2) {
+          out.genresAll = pool;
+          out.genres = pool.slice(0, 3);
+        } else if (pool.length && !(out.genresAll && out.genresAll.length)) {
           out.genresAll = pool;
           out.genres = pool.slice(0, 3);
         }
-        gotDetails = true;
       }
-
-      // User tags from Steam store page (the real tags on the store)
-      try {
-        const userTags = await fetchSteamUserTags(id);
-        if (userTags && userTags.length) {
-          const pool = [];
-          const pushRaw = (raw) => {
-            const cleaned = cleanTags([raw]);
-            if (!cleaned || !cleaned.length) return;
-            const tag = cleaned[0];
-            if (pool.some(x => x.toLowerCase() === tag.toLowerCase())) return;
-            pool.push(tag);
-          };
-          // Prefer store user tags first (as on Steam page)
-          userTags.forEach(pushRaw);
-          (out.genresAll || out.genres || []).forEach(pushRaw);
-          if (pool.length) {
-            out.genresAll = pool;
-            out.genres = pool.slice(0, 3);
-          }
-        }
-      } catch (e) { /* ignore */ }
 
       if (out.genresAll && out.genresAll.length) {
         const all = cleanTags(out.genresAll) || out.genresAll;
         out.genresAll = all;
         out.genres = all.slice(0, 3);
-      } else if (out.genres && out.genres.length) {
-        const all = cleanTags(out.genres) || out.genres;
-        out.genresAll = all;
-        out.genres = all.slice(0, 3);
       }
+
       if (!out.coverUrl) out.coverUrl = coverUrlFor(id);
 
-      // Adjust year: fix store relists, but keep remakes/reboots (DOOM 2016 ≠ 1993)
-      if (out.name) {
+      // Year correction only on forced refresh (faster adds)
+      if (force && out.name) {
         try {
           const adjusted = await fetchOriginalReleaseYear(out.name, out.releaseYear);
           if (adjusted) out.releaseYear = adjusted;
-        } catch { /* keep steam year */ }
+        } catch { /* keep */ }
       }
 
       if (steamMetaCache.size > 200) {
@@ -3204,15 +3138,14 @@
           let extra = '';
           let more = '';
           if (rest.length) {
-            extra = '<span class="detail-tags-extra">' +
+            more = '<button type="button" class="tags-expand-btn" data-tags-expand="1" aria-expanded="false" title="Показать все метки">+</button>';
+            extra = '<div class="detail-tags-extra">' +
               rest.map(tg => '<span class="card-tag">' + esc(tg) + '</span>').join('') +
-              '</span>';
-            more = '<button type="button" class="tags-expand-btn" data-tags-expand="1" aria-expanded="false">' +
-              'Ещё ' + rest.length + '</button>';
+              '</div>';
           }
           detailTags.innerHTML =
-            '<div class="detail-tags-row">' + head + '</div>' +
-            extra + more;
+            '<div class="detail-tags-row">' + head + more + '</div>' +
+            extra;
         }
       }
       const hasR = g.status !== 'plan' && g.rating != null && g.rating >= 1;
@@ -3306,8 +3239,8 @@
           const wrap = exp.closest('.detail-tags-wrap') || detailTagsEl;
           const open = wrap.classList.toggle('is-open');
           exp.setAttribute('aria-expanded', open ? 'true' : 'false');
-          const n = wrap.querySelectorAll('.detail-tags-extra .card-tag').length;
-          exp.textContent = open ? 'Скрыть метки' : ('Ещё ' + n);
+          exp.textContent = open ? '−' : '+';
+          exp.title = open ? 'Свернуть' : 'Показать все метки';
           return;
         }
         const tag = e.target.closest('.card-tag, .tag');
