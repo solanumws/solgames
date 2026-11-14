@@ -270,7 +270,52 @@
       color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 10%,transparent);
     }
 
-    .filter-chips{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+    .filter-bar{
+      display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;
+      margin:0 0 14px;
+    }
+    .filter-bar .seg{
+      display:inline-flex;padding:3px;gap:2px;border-radius:11px;
+      background:var(--surface-2);border:1px solid var(--border);
+    }
+    .seg-btn{
+      border:none;background:transparent;color:var(--text-3);
+      border-radius:8px;padding:6px 12px;font:inherit;font-size:.78rem;font-weight:600;
+      cursor:pointer;transition:background .15s,color .15s,box-shadow .15s;
+    }
+    .seg-btn:hover{color:var(--text-2)}
+    .seg-btn.active{
+      background:var(--surface);color:var(--text);
+      box-shadow:0 1px 3px rgba(0,0,0,.16);
+    }
+    .filter-right{display:flex;align-items:center;gap:8px}
+    .plat-wrap{display:flex;align-items:center;gap:6px}
+    .plat-label{font-size:.72rem;font-weight:600;color:var(--text-3)}
+    .plat-select{
+      appearance:none;-webkit-appearance:none;
+      background:var(--surface-2);color:var(--text);border:1px solid var(--border);
+      border-radius:9px;padding:6px 28px 6px 10px;font:inherit;font-size:.78rem;font-weight:600;
+      cursor:pointer;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 8px center;
+    }
+    .plat-select:focus{outline:none;border-color:color-mix(in srgb,var(--accent) 50%,var(--border))}
+    .fav-filter-btn{
+      width:34px;height:34px;border-radius:10px;border:1px solid var(--border);
+      background:var(--surface-2);color:var(--text-3);cursor:pointer;
+      font-size:1rem;line-height:1;display:inline-flex;align-items:center;justify-content:center;
+      transition:background .15s,color .15s,border-color .15s;
+    }
+    .fav-filter-btn:hover{color:var(--text)}
+    .fav-filter-btn.active{color:#f43f5e;border-color:color-mix(in srgb,#f43f5e 40%,var(--border));background:color-mix(in srgb,#f43f5e 10%,var(--surface-2))}
+    @media (max-width:560px){
+      .filter-bar{flex-direction:column;align-items:stretch}
+      .filter-bar .seg{width:100%;display:flex}
+      .seg-btn{flex:1;text-align:center;padding:7px 8px}
+      .filter-right{justify-content:space-between}
+      .plat-label{display:none}
+    }
+
     .filter-chip{
       padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--border);
       color:var(--text-2);font-size:.78rem;font-weight:560;cursor:pointer;letter-spacing:-.01em;
@@ -758,19 +803,21 @@
     }
 
 
-    .status-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
+    .status-toggle{
+      display:inline-flex;padding:3px;gap:2px;border-radius:11px;
+      background:var(--surface-2);border:1px solid var(--border);
+    }
     .status-btn{
-      border:1px solid var(--border);background:var(--surface-2);color:var(--text-2);
-      border-radius:12px;padding:10px 12px;font:inherit;font-size:.84rem;font-weight:600;
-      cursor:pointer;transition:background .15s,border-color .15s,color .15s;text-align:left;
+      border:none;background:transparent;color:var(--text-3);
+      border-radius:8px;padding:7px 14px;font:inherit;font-size:.82rem;font-weight:600;
+      cursor:pointer;transition:background .15s,color .15s,box-shadow .15s;
+      line-height:1.2;
     }
-    .status-btn:hover{border-color:var(--border-hover);color:var(--text)}
+    .status-btn:hover{color:var(--text-2)}
     .status-btn.active{
-      background:color-mix(in srgb,var(--accent) 16%,var(--surface));
-      border-color:color-mix(in srgb,var(--accent) 45%,var(--border));
-      color:var(--text);
+      background:var(--surface);color:var(--text);
+      box-shadow:0 1px 3px rgba(0,0,0,.18);
     }
-    .status-btn small{display:block;font-size:.72rem;font-weight:500;color:var(--text-3);margin-top:2px}
     .field.is-disabled{opacity:.42;pointer-events:none}
     .plan-badge{
       display:inline-flex;align-items:center;font-size:.68rem;font-weight:700;letter-spacing:.02em;
@@ -886,17 +933,27 @@
           <button type="button" class="sort-pill" data-sort="year" data-dir="desc">Год ↓</button>
         </div>
       </div>
-      <div class="filter-chips" id="filterChips">
-        <span class="filter-chip active" data-p="all">Все</span>
-        <span class="filter-chip" data-status="done">Пройденные</span>
-        <span class="filter-chip" data-status="plan">В планах</span>
-        <span class="filter-chip" data-p="PC">PC</span>
-        <span class="filter-chip" data-p="Android">Android</span>
-        <span class="filter-chip" data-p="Switch">Switch</span>
-        <span class="filter-chip" data-p="PS1">PS1</span>
-        <span class="filter-chip" data-p="PS2">PS2</span>
-        <span class="filter-chip" data-p="PSP">PSP</span>
-        <span class="filter-chip" data-fav="1" title="Избранное">♥</span>
+      <div class="filter-bar" id="filterChips">
+        <div class="seg" role="group" aria-label="Статус">
+          <button type="button" class="seg-btn active" data-status="all">Все</button>
+          <button type="button" class="seg-btn" data-status="done">Пройденные</button>
+          <button type="button" class="seg-btn" data-status="plan">В планах</button>
+        </div>
+        <div class="filter-right">
+          <label class="plat-wrap">
+            <span class="plat-label">Платформа</span>
+            <select id="platFilter" class="plat-select" aria-label="Платформа">
+              <option value="all">Все</option>
+              <option value="PC">PC</option>
+              <option value="Android">Android</option>
+              <option value="Switch">Switch</option>
+              <option value="PS1">PS1</option>
+              <option value="PS2">PS2</option>
+              <option value="PSP">PSP</option>
+            </select>
+          </label>
+          <button type="button" class="fav-filter-btn" id="favFilterBtn" data-fav="1" title="Только избранное" aria-label="Избранное" aria-pressed="false">♥</button>
+        </div>
       </div>
     </div>
 
@@ -926,8 +983,8 @@
         <div class="field">
           <label>Статус</label>
           <div class="status-toggle" id="statusToggle" role="group" aria-label="Статус игры">
-            <button type="button" class="status-btn active" data-status="done">Пройдена<small>Оценка и отзыв</small></button>
-            <button type="button" class="status-btn" data-status="plan">В планах<small>Сыграю позже · без оценки</small></button>
+            <button type="button" class="status-btn active" data-status="done">Пройдена</button>
+            <button type="button" class="status-btn" data-status="plan">В планах</button>
           </div>
         </div>
         <div class="field" id="ratingField">
@@ -1469,17 +1526,23 @@
       const allowed = ['date-desc', 'rating-desc', 'rating-asc', 'year-desc', 'year-asc'];
       if (p.sort && allowed.includes(p.sort)) sortMode = p.sort;
       if (p.filter && (p.filter === 'all' || PLATS.includes(p.filter))) activePlatformFilter = p.filter;
+      if (p.statusFilter === 'done' || p.statusFilter === 'plan' || p.statusFilter === 'all') statusFilter = p.statusFilter;
       if (p.favOnly) favOnly = !!p.favOnly;
-      document.querySelectorAll('#filterChips .filter-chip').forEach(c => {
-        c.classList.remove('active');
-        if (c.dataset.fav === '1') { if (favOnly) c.classList.add('active'); }
-        else if (c.dataset.p === activePlatformFilter) c.classList.add('active');
+      document.querySelectorAll('#filterChips .seg-btn').forEach(b => {
+        b.classList.toggle('active', (b.dataset.status || 'all') === (statusFilter || 'all'));
       });
+      const platSel = $('platFilter');
+      if (platSel) platSel.value = activePlatformFilter || 'all';
+      const favBtn = $('favFilterBtn');
+      if (favBtn) {
+        favBtn.classList.toggle('active', !!favOnly);
+        favBtn.setAttribute('aria-pressed', favOnly ? 'true' : 'false');
+      }
       syncSortPills();
     }
 
     function persistUI() {
-      savePrefs({ sort: sortMode, filter: activePlatformFilter, favOnly });
+      savePrefs({ sort: sortMode, filter: activePlatformFilter, statusFilter, favOnly });
     }
 
     function syncSortPills() {
@@ -1510,10 +1573,16 @@
       activePlatformFilter = 'all';
       statusFilter = 'all';
       favOnly = false;
-      document.querySelectorAll('#filterChips .filter-chip').forEach(c => {
-        c.classList.remove('active');
-        if (c.dataset.p === 'all') c.classList.add('active');
+      document.querySelectorAll('#filterChips .seg-btn').forEach(b => {
+        b.classList.toggle('active', (b.dataset.status || 'all') === 'all');
       });
+      const platSel = $('platFilter');
+      if (platSel) platSel.value = 'all';
+      const favBtn = $('favFilterBtn');
+      if (favBtn) {
+        favBtn.classList.remove('active');
+        favBtn.setAttribute('aria-pressed', 'false');
+      }
       persistUI();
     }
 
@@ -1599,20 +1668,85 @@
       return [...freq.entries()].sort((a, b) => b[1] - a[1]).slice(0, limit || 3).map(x => x[0]);
     }
 
-    async function searchSteamByTerm(term, limit) {
-      const url = 'https://store.steampowered.com/api/storesearch/?term=' +
-        encodeURIComponent(term) + '&l=russian&cc=US';
-      try {
-        const data = await fetchJsonProxied(url, 4500);
-        const items = (data && data.items) || [];
-        return items.slice(0, limit || 8).map(it => ({
-          appid: String(it.id),
-          name: it.name,
-          tiny: it.tiny_image || null
-        })).filter(x => x.appid && x.name);
-      } catch (e) {
-        return [];
+    const GENRE_QUERY = {
+      'экшен': ['action game', 'action'],
+      'action': ['action game', 'action'],
+      'приключения': ['adventure game', 'adventure'],
+      'adventure': ['adventure game'],
+      'rpg': ['rpg', 'role playing'],
+      'стратегия': ['strategy game', 'strategy'],
+      'strategy': ['strategy game'],
+      'симулятор': ['simulation', 'simulator'],
+      'simulation': ['simulation'],
+      'инди': ['indie game', 'indie'],
+      'indie': ['indie game'],
+      'казуальная': ['casual game'],
+      'casual': ['casual game'],
+      'гонки': ['racing game', 'racing'],
+      'racing': ['racing'],
+      'спорт': ['sports game', 'sports'],
+      'sports': ['sports'],
+      'шутер': ['shooter', 'fps'],
+      'horror': ['horror game', 'horror'],
+      'хоррор': ['horror game'],
+      'открытый мир': ['open world'],
+      'open world': ['open world'],
+      'выживание': ['survival game', 'survival'],
+      'survival': ['survival'],
+      'метроидвания': ['metroidvania'],
+      'metroidvania': ['metroidvania'],
+      'рогалик': ['roguelike', 'roguelite'],
+      'roguelike': ['roguelike'],
+      'roguelite': ['roguelite'],
+      'платформер': ['platformer'],
+      'platformer': ['platformer'],
+      'головоломка': ['puzzle game', 'puzzle'],
+      'puzzle': ['puzzle'],
+      'ммо': ['mmo'],
+      'mmo': ['mmo']
+    };
+
+    function queriesForGenre(tag) {
+      const k = String(tag || '').trim().toLowerCase();
+      if (!k) return [];
+      if (GENRE_QUERY[k]) return GENRE_QUERY[k].slice();
+      // partial match
+      for (const key of Object.keys(GENRE_QUERY)) {
+        if (k.includes(key) || key.includes(k)) return GENRE_QUERY[key].slice();
       }
+      // use tag itself + english-ish
+      return [tag, k];
+    }
+
+    async function searchSteamByTerm(term, limit) {
+      const lim = limit || 8;
+      const urls = [
+        'https://store.steampowered.com/api/storesearch/?term=' + encodeURIComponent(term) + '&l=english&cc=US',
+        'https://store.steampowered.com/api/storesearch/?term=' + encodeURIComponent(term) + '&l=russian&cc=US',
+        'https://steamcommunity.com/actions/SearchApps/' + encodeURIComponent(term)
+      ];
+      for (let u = 0; u < urls.length; u++) {
+        try {
+          const data = await fetchJsonProxied(urls[u], 5000);
+          let items = [];
+          if (data && Array.isArray(data.items)) {
+            items = data.items.map(it => ({
+              appid: String(it.id),
+              name: it.name,
+              tiny: it.tiny_image || null
+            }));
+          } else if (Array.isArray(data)) {
+            items = data.map(it => ({
+              appid: String(it.appid || it.id || ''),
+              name: it.name || it.local_name || '',
+              tiny: it.logo || it.icon || null
+            }));
+          }
+          items = items.filter(x => x.appid && x.name && /^\d+$/.test(x.appid));
+          if (items.length) return items.slice(0, lim);
+        } catch (e) { /* next source */ }
+      }
+      return [];
     }
 
     async function buildRecommendations() {
@@ -1628,18 +1762,39 @@
         out.push({ appid: item.appid, name: item.name, tiny: item.tiny || null, reason: reason });
       };
 
-      const genres = topGenresFromLibrary(3);
-      if (genres.length) {
-        for (let i = 0; i < genres.length; i++) {
-          if (out.length >= 12) break;
-          const found = await searchSteamByTerm(genres[i], 6);
-          for (let j = 0; j < found.length; j++) push(found[j], genres[i]);
-        }
+      const genres = topGenresFromLibrary(5);
+      // Also derive queries from highly rated game titles (seed discovery)
+      const seeds = games
+        .filter(g => g.status !== 'plan' && g.rating >= 8)
+        .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        .slice(0, 3);
+
+      const queries = [];
+      genres.forEach(g => {
+        queriesForGenre(g).forEach(q => {
+          if (q && !queries.includes(q)) queries.push(q);
+        });
+      });
+      // If no genres, try broad queries from seed titles' first word? skip — use popular tags from any game
+      if (!queries.length) {
+        games.filter(g => g.status !== 'plan').slice(0, 20).forEach(g => {
+          (g.genres || []).forEach(tag => {
+            queriesForGenre(tag).forEach(q => {
+              if (q && !queries.includes(q)) queries.push(q);
+            });
+          });
+        });
       }
 
-      if (out.length < 8) {
+      for (let i = 0; i < queries.length && out.length < 12; i++) {
+        const found = await searchSteamByTerm(queries[i], 8);
+        for (let j = 0; j < found.length; j++) push(found[j], queries[i]);
+      }
+
+      // Only if nothing found at all — curated fallback
+      if (out.length === 0) {
         for (let i = 0; i < FALLBACK_RECS.length; i++) {
-          push(FALLBACK_RECS[i], genres.length ? 'популярное' : 'на заметку');
+          push(FALLBACK_RECS[i], 'подборка');
         }
       }
       return out.slice(0, 12);
@@ -2390,17 +2545,28 @@
 
       const usedPlats = new Set();
       games.forEach(g => (g.platforms || []).forEach(p => usedPlats.add(p)));
-      document.querySelectorAll('#filterChips .filter-chip[data-p]').forEach(c => {
-        if (c.dataset.p === 'all') return;
-        const show = usedPlats.has(c.dataset.p);
-        c.hidden = !show;
-        if (!show && activePlatformFilter === c.dataset.p) {
+      const platSel = $('platFilter');
+      if (platSel) {
+        [...platSel.options].forEach(opt => {
+          if (opt.value === 'all') { opt.hidden = false; return; }
+          opt.hidden = !usedPlats.has(opt.value);
+        });
+        if (activePlatformFilter !== 'all' && !usedPlats.has(activePlatformFilter)) {
           activePlatformFilter = 'all';
-          c.classList.remove('active');
-          const allChip = document.querySelector('#filterChips .filter-chip[data-p="all"]');
-          if (allChip) allChip.classList.add('active');
+          platSel.value = 'all';
+        } else {
+          platSel.value = activePlatformFilter || 'all';
         }
+      }
+      // status seg sync
+      document.querySelectorAll('#filterChips .seg-btn').forEach(b => {
+        b.classList.toggle('active', (b.dataset.status || 'all') === (statusFilter || 'all'));
       });
+      const favBtn = $('favFilterBtn');
+      if (favBtn) {
+        favBtn.classList.toggle('active', !!favOnly);
+        favBtn.setAttribute('aria-pressed', favOnly ? 'true' : 'false');
+      }
 
       if (!list.length) {
         const filtered = !!(q || activePlatformFilter !== 'all' || favOnly);
@@ -3349,26 +3515,36 @@
       }
     });
 
-    $('filterChips').addEventListener('click', e => {
-      const chip = e.target.closest('.filter-chip');
-      if (!chip) return;
-      if (chip.dataset.fav === '1') {
-        favOnly = !favOnly;
-        chip.classList.toggle('active', favOnly);
-      } else if (chip.dataset.status) {
-        document.querySelectorAll('#filterChips .filter-chip:not([data-fav])').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        statusFilter = chip.dataset.status;
-        activePlatformFilter = 'all';
-      } else {
-        document.querySelectorAll('#filterChips .filter-chip:not([data-fav])').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        activePlatformFilter = chip.dataset.p || 'all';
-        statusFilter = 'all';
-      }
-      persistUI();
-      render();
-    });
+    const filterBar = $('filterChips');
+    if (filterBar) {
+      filterBar.addEventListener('click', e => {
+        const seg = e.target.closest('.seg-btn');
+        if (seg) {
+          filterBar.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+          seg.classList.add('active');
+          statusFilter = seg.dataset.status || 'all';
+          persistUI();
+          render();
+          return;
+        }
+        const favBtn = e.target.closest('.fav-filter-btn');
+        if (favBtn) {
+          favOnly = !favOnly;
+          favBtn.classList.toggle('active', favOnly);
+          favBtn.setAttribute('aria-pressed', favOnly ? 'true' : 'false');
+          persistUI();
+          render();
+        }
+      });
+    }
+    const platFilterEl = $('platFilter');
+    if (platFilterEl) {
+      platFilterEl.addEventListener('change', () => {
+        activePlatformFilter = platFilterEl.value || 'all';
+        persistUI();
+        render();
+      });
+    }
 
     grid.addEventListener('click', e => {
       const editBtn = e.target.closest('[data-edit]');
