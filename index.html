@@ -1123,7 +1123,16 @@
     </div>
   </div>
 
-  
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-box">
+      <h3 id="confirmTitle">Удалить игру?</h3>
+      <p id="confirmText">Это действие нельзя отменить.</p>
+      <div class="confirm-actions">
+        <button class="btn btn-secondary" id="confirmCancel">Отмена</button>
+        <button class="btn btn-danger" id="confirmOk">Удалить</button>
+      </div>
+    </div>
+  </div>
 
   <input type="file" id="importFile" accept=".json,application/json" hidden />
   <button type="button" class="to-top" id="toTop" aria-label="Наверх" title="Наверх">
@@ -3428,6 +3437,8 @@ async function refreshGameFromSteam(id, appid) {
     $('statsBtn').onclick = openStats;
     $('statsClose').onclick = closeStats;
     $('statsOverlay').addEventListener('click', e => { if (e.target === $('statsOverlay')) closeStats(); });
+    const refreshAllBtn = $('refreshAllBtn');
+    if (refreshAllBtn) refreshAllBtn.onclick = () => refreshAllFromSteam();
 
     sortPills.addEventListener('click', e => {
       const btn = e.target.closest('.sort-pill');
