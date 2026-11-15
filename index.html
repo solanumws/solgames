@@ -10,6 +10,8 @@
   <title>SolGames</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2032%2032%22%3E%20%20%3Cdefs%3E%20%20%20%20%3ClinearGradient%20id=%22g%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%221%22%3E%20%20%20%20%20%20%3Cstop%20offset=%220%%22%20stop-color=%22%238b5cf6%22/%3E%20%20%20%20%20%20%3Cstop%20offset=%22100%%22%20stop-color=%22%236d28d9%22/%3E%20%20%20%20%3C/linearGradient%3E%20%20%3C/defs%3E%20%20%3Crect%20width=%2232%22%20height=%2232%22%20rx=%228%22%20fill=%22url(%23g)%22/%3E%20%20%3Crect%20x=%226%22%20y=%2212%22%20width=%2220%22%20height=%2212%22%20rx=%224%22%20fill=%22white%22%20fill-opacity=%22.92%22/%3E%20%20%3Cpath%20d=%22M11%2015v6M8%2018h6%22%20stroke=%22%236d28d9%22%20stroke-width=%221.8%22%20stroke-linecap=%22round%22/%3E%20%20%3Ccircle%20cx=%2221%22%20cy=%2216.5%22%20r=%221.4%22%20fill=%22%236d28d9%22/%3E%20%20%3Ccircle%20cx=%2223.5%22%20cy=%2218.5%22%20r=%221.4%22%20fill=%22%236d28d9%22/%3E%20%20%3Ccircle%20cx=%2218.5%22%20cy=%2218.5%22%20r=%221.4%22%20fill=%22%236d28d9%22/%3E%20%20%3Ccircle%20cx=%2221%22%20cy=%2220.5%22%20r=%221.4%22%20fill=%22%236d28d9%22/%3E%3C/svg%3E" type="image/svg+xml" />
   <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABLElEQVR42u2XTQrCMBCFk1JPYHoFwbUgvYLiETyDG7FLrW7deRaR3kRwI3Vr3LoROq5SdeiktT9JQQOBNoR5Xzsv0w7fTu8sYwBrZnC84EICJoRxfJ4F0LQ4BuHvACbFPyBcABvanx6wSQDYhBbeQAtS8OsAJVOw3HclXttMbuLr0hiOrrkEq4OQZZ9wPZZaKAcSYLpZRVzB6+I7AMCoGUaerCPPYeRJSqN2E876p4e63h17nbTiEDqFAajA1B51r/ZSOg4AY9TUBc4Tx+uUhrE6UDkFTQFoTwGV8ywPUL5IPVD1FFACeE9jp6DooEBLpSDwL6IOqMC/CEojtxQvhnEliMUwFrr4fD44W/0e//+IXEiAW+oLWGv6AtWrmSbh2AMmIV7NKZLkptvzJ9I4j6faqqA3AAAAAElFTkSuQmCC" type="image/png" sizes="32x32" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -300,14 +302,18 @@
     .plat-select option{font-family:var(--font);font-size:.85rem;font-weight:500;background:var(--surface);color:var(--text)}
     .fav-filter-btn{
       width:40px;height:40px;min-width:40px;border-radius:12px;
-      border:1px solid var(--border);background:var(--surface-2);color:#e11d48;
+      border:1px solid var(--border);background:var(--surface-2);color:var(--text-3);
       cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
-      flex-shrink:0;box-sizing:border-box;
-      transition:background .15s,border-color .15s,color .15s,box-shadow .15s;
+      flex-shrink:0;box-sizing:border-box;padding:0;line-height:0;
+      transition:background .18s,border-color .18s,color .18s,box-shadow .18s,transform .2s var(--spring);
     }
-    .fav-filter-btn .fav-ico{font-size:1.2rem;line-height:1;display:block}
-    .fav-filter-btn:hover{background:color-mix(in srgb,#e11d48 12%,var(--surface-2));border-color:color-mix(in srgb,#e11d48 45%,var(--border))}
+    .fav-filter-btn svg{width:18px;height:18px;display:block;overflow:visible}
+    .fav-filter-btn .heart-outline{fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+    .fav-filter-btn .heart-fill{fill:currentColor;stroke:none;opacity:0;transition:opacity .15s}
+    .fav-filter-btn:hover{color:var(--red);background:color-mix(in srgb,#e11d48 12%,var(--surface-2));border-color:color-mix(in srgb,#e11d48 45%,var(--border));transform:scale(1.05)}
     .fav-filter-btn.active{color:#fff;border-color:transparent;background:#e11d48;box-shadow:0 3px 12px color-mix(in srgb,#e11d48 35%,transparent)}
+    .fav-filter-btn.active .heart-fill{opacity:1}
+    .fav-filter-btn.active .heart-outline{opacity:0}
     @media (max-width:560px){
       .filter-bar{flex-direction:column;align-items:stretch}
       .filter-bar .seg{width:100%;display:flex}
@@ -466,13 +472,19 @@
     .card{cursor:pointer}
     .card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;padding-top:8px;border-top:1px solid var(--border)}
     .fav-btn{
-      width:34px;height:34px;border-radius:9px;border:none;background:transparent;color:var(--text-3);
-      font-size:1.1rem;cursor:pointer;display:grid;place-items:center;
+      width:36px;height:36px;border-radius:11px;border:none;background:transparent;color:var(--text-3);
+      cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+      flex-shrink:0;padding:0;line-height:0;
       transition:transform .28s var(--spring),color .2s,background .2s;
     }
-    .fav-btn:hover{background:var(--red-soft);color:var(--red);transform:scale(1.12)}
+    .fav-btn svg{width:20px;height:20px;display:block;overflow:visible}
+    .fav-btn .heart-outline{fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+    .fav-btn .heart-fill{fill:currentColor;stroke:none;opacity:0;transform-origin:center;transition:opacity .18s}
+    .fav-btn:hover{background:var(--red-soft);color:var(--red);transform:scale(1.1)}
     .fav-btn.active{color:var(--red);animation:heartPop .38s var(--spring)}
-    @keyframes heartPop{0%{transform:scale(1)}35%{transform:scale(1.35)}100%{transform:scale(1)}}
+    .fav-btn.active .heart-fill{opacity:1}
+    .fav-btn.active .heart-outline{opacity:0}
+    @keyframes heartPop{0%{transform:scale(1)}35%{transform:scale(1.28)}100%{transform:scale(1)}}
     .card-actions{display:flex;gap:5px}
 
     .empty{grid-column:1/-1;text-align:center;padding:64px 16px;animation:fadeIn .4s var(--ease-out)}
@@ -991,7 +1003,7 @@
               <option value="PSP">PSP</option>
             </select>
           </label>
-          <button type="button" class="fav-filter-btn" id="favFilterBtn" data-fav="1" title="Только избранное" aria-label="Избранное" aria-pressed="false"><span class="fav-ico" aria-hidden="true">♥</span></button>
+          <button type="button" class="fav-filter-btn" id="favFilterBtn" title="Только избранное" aria-label="Избранное" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="heart-outline" d="M12 21s-6.5-4.35-9.33-8.5C.8 9.5 1.24 5.6 4.5 3.9 6.4 2.9 8.7 3.2 10.2 4.7L12 6.5l1.8-1.8c1.5-1.5 3.8-1.8 5.7-.8 3.26 1.7 3.7 5.6 1.83 8.6C18.5 16.65 12 21 12 21z"/><path class="heart-fill" d="M12 21s-6.5-4.35-9.33-8.5C.8 9.5 1.24 5.6 4.5 3.9 6.4 2.9 8.7 3.2 10.2 4.7L12 6.5l1.8-1.8c1.5-1.5 3.8-1.8 5.7-.8 3.26 1.7 3.7 5.6 1.83 8.6C18.5 16.65 12 21 12 21z"/></svg></button>
         </div>
       </div>
     </div>
@@ -1276,7 +1288,9 @@
     const headerWrap = $('headerWrap');
     const sortPills = $('sortPills');
 
-    let games = loadGames();
+    // Sync snapshot from LS for first paint; async path may replace if IDB is newer
+    let games = [];
+    try { games = loadGamesFromLS(); } catch { games = []; }
     let editId = null;
     let selectedPlatforms = [];
     let pendingDeleteId = null;
@@ -1341,13 +1355,17 @@
         const raw = localStorage.getItem(STORAGE);
         if (raw) {
           const parsed = JSON.parse(raw);
-          return (Array.isArray(parsed) ? parsed : []).map(normalizeGame);
+          return (Array.isArray(parsed) ? parsed : [])
+            .filter(g => g && typeof g === 'object')
+            .map(normalizeGame);
         }
         for (const k of ['solgames-v4', 'solgames-v3', 'solgames-v2']) {
           const old = localStorage.getItem(k);
           if (!old) continue;
           const parsed = JSON.parse(old);
-          const list = (Array.isArray(parsed) ? parsed : []).map(normalizeGame);
+          const list = (Array.isArray(parsed) ? parsed : [])
+            .filter(g => g && typeof g === 'object')
+            .map(normalizeGame);
           localStorage.setItem(STORAGE, JSON.stringify(list));
           return list;
         }
@@ -1355,17 +1373,41 @@
       return [];
     }
 
+    function listFreshness(list) {
+      if (!Array.isArray(list) || !list.length) return 0;
+      let max = 0;
+      for (const g of list) {
+        const t = Date.parse(g && (g.updatedAt || g.createdAt)) || 0;
+        if (t > max) max = t;
+      }
+      return max;
+    }
+
     async function loadGamesAsync() {
       const fromLs = loadGamesFromLS();
       try {
-        const fromIdb = await idbGet('games');
-        if (Array.isArray(fromIdb) && fromIdb.length) {
-          
-          if (fromLs.length > fromIdb.length) {
+        const fromIdbRaw = await idbGet('games');
+        if (Array.isArray(fromIdbRaw) && fromIdbRaw.length) {
+          const fromIdb = fromIdbRaw
+            .filter(g => g && typeof g === 'object')
+            .map(normalizeGame);
+          const lsFresh = listFreshness(fromLs);
+          const idbFresh = listFreshness(fromIdb);
+          // Prefer the richer or newer copy; never silently drop a longer local list
+          if (fromLs.length > fromIdb.length || (fromLs.length === fromIdb.length && lsFresh >= idbFresh && fromLs.length)) {
+            idbSet('games', fromLs).catch(() => {});
+            return fromLs.length ? fromLs : fromIdb;
+          }
+          if (fromIdb.length && fromLs.length && idbFresh > lsFresh) {
+            // IDB newer — sync back to LS
+            try { localStorage.setItem(STORAGE, JSON.stringify(fromIdb)); } catch {}
+            return fromIdb;
+          }
+          if (fromLs.length >= fromIdb.length) {
             idbSet('games', fromLs).catch(() => {});
             return fromLs;
           }
-          return fromIdb.map(normalizeGame);
+          return fromIdb;
         }
       } catch {}
       if (fromLs.length) idbSet('games', fromLs).catch(() => {});
@@ -1581,13 +1623,38 @@
     }
 
     function normalizeGame(g) {
+      if (!g || typeof g !== 'object') {
+        return {
+          id: uid(),
+          title: 'Без названия',
+          status: 'done',
+          rating: null,
+          completedAt: null,
+          coverUrl: null,
+          review: '',
+          platforms: [],
+          links: [],
+          favorite: false,
+          releaseYear: null,
+          developers: null,
+          publishers: null,
+          genres: null,
+          genresAll: null,
+          metacritic: null,
+          steamShort: null,
+          accentColor: null,
+          replays: 0,
+          lastReplayAt: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+      }
+      const isPlan = (g.status === 'plan' || g.status === 'planned' || g.status === 'wishlist');
       return {
         id: g.id || uid(),
         title: g.title || 'Без названия',
-        status: (g.status === 'plan' || g.status === 'planned' || g.status === 'wishlist') ? 'plan' : 'done',
-        rating: (g.status === 'plan' || g.status === 'planned' || g.status === 'wishlist')
-          ? null
-          : (Math.round(Number(g.rating) || 0) || null),
+        status: isPlan ? 'plan' : 'done',
+        rating: isPlan ? null : (Math.round(Number(g.rating) || 0) || null),
         completedAt: g.completedAt || null,
         coverUrl: g.coverUrl || null,
         review: g.review || '',
@@ -2517,13 +2584,19 @@ async function resolveSteamApp(appid, sourceStr, force = false) {
       else if (statusFilter === 'done') list = list.filter(g => g.status !== 'plan');
       if (favOnly) list = list.filter(g => g.favorite);
       if (q) {
+        const norm = s => String(s || '').toLowerCase().replace(/ё/g, 'е');
+        const nq = norm(q);
         list = list.filter(g => {
-          const title = (g.title || '').toLowerCase();
-          const rev = (g.review || '').toLowerCase();
-          const plats = (g.platforms || []).join(' ').toLowerCase();
-          const tags = (g.genres || []).join(' ').toLowerCase();
+          const title = norm(g.title);
+          const plats = norm((g.platforms || []).join(' '));
+          const tagSrc = (Array.isArray(g.genresAll) && g.genresAll.length)
+            ? g.genresAll
+            : (g.genres || []);
+          const tagsJoined = norm(tagSrc.join(' '));
+          const tagHit = tagSrc.some(t => norm(t).includes(nq));
           const year = g.releaseYear != null ? String(g.releaseYear) : '';
-          return title.includes(q) || rev.includes(q) || plats.includes(q) || tags.includes(q) || year.includes(q);
+          return title.includes(nq) || plats.includes(nq)
+            || tagsJoined.includes(nq) || tagHit || year.includes(q);
         });
       }
 
@@ -2629,7 +2702,7 @@ async function resolveSteamApp(appid, sourceStr, force = false) {
               <p class="card-review ${g.review ? '' : 'is-empty'}">${g.review ? esc(g.review) : (isPlan ? 'Запланирована' : 'Без отзыва')}</p>
               ${links ? `<div class="card-links">${links}</div>` : ''}
               <div class="card-footer">
-                <button class="fav-btn ${g.favorite ? 'active' : ''}" data-fav="${g.id}" aria-label="Избранное">${g.favorite ? '♥' : '♡'}</button>
+                <button class="fav-btn ${g.favorite ? 'active' : ''}" data-fav="${g.id}" aria-label="Избранное"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="heart-outline" d="M12 21s-6.5-4.35-9.33-8.5C.8 9.5 1.24 5.6 4.5 3.9 6.4 2.9 8.7 3.2 10.2 4.7L12 6.5l1.8-1.8c1.5-1.5 3.8-1.8 5.7-.8 3.26 1.7 3.7 5.6 1.83 8.6C18.5 16.65 12 21 12 21z"/><path class="heart-fill" d="M12 21s-6.5-4.35-9.33-8.5C.8 9.5 1.24 5.6 4.5 3.9 6.4 2.9 8.7 3.2 10.2 4.7L12 6.5l1.8-1.8c1.5-1.5 3.8-1.8 5.7-.8 3.26 1.7 3.7 5.6 1.83 8.6C18.5 16.65 12 21 12 21z"/></svg></button>
                 <div class="card-actions">
                   <button class="btn btn-secondary btn-sm" data-edit="${g.id}">Изменить</button>
                   <button class="btn btn-danger btn-sm" data-del="${g.id}">Удалить</button>
@@ -2852,9 +2925,6 @@ async function resolveSteamApp(appid, sourceStr, force = false) {
       if (g.review) {
         rev.textContent = g.review;
         rev.classList.remove('empty');
-      } else if (g.steamShort) {
-        rev.textContent = g.steamShort;
-        rev.classList.remove('empty');
       } else {
         rev.textContent = 'Отзыв не написан';
         rev.classList.add('empty');
@@ -2875,17 +2945,15 @@ async function resolveSteamApp(appid, sourceStr, force = false) {
         if (g.status === 'plan') {
           markDoneBtn.hidden = false;
           markDoneBtn.onclick = () => {
-            const idx = games.findIndex(x => x.id === id);
-            if (idx === -1) return;
-            games[idx].status = 'done';
-            if (!games[idx].completedAt) {
-              games[idx].completedAt = new Date().toISOString().slice(0, 10);
-            }
-            games[idx].updatedAt = new Date().toISOString();
-            save();
+            // Do not persist status until user saves rating in the form
             closeDetail();
             openModal(id);
-            toast('Отметь оценку и сохрани', '✓');
+            formStatus = 'done';
+            syncStatusUI();
+            if (!$('fieldDate').value) {
+              $('fieldDate').value = new Date().toISOString().slice(0, 10);
+            }
+            toast('Поставь оценку и сохрани', '✓');
           };
         } else {
           markDoneBtn.hidden = true;
@@ -3007,28 +3075,47 @@ async function resolveSteamApp(appid, sourceStr, force = false) {
             const appid = appidFromGame(g);
             const meta = await resolveSteamApp(String(appid), null, true);
             const idx = games.findIndex(x => x.id === g.id);
-            if (idx === -1) return;
+            if (idx === -1) return false;
             const cur = games[idx];
-            if (meta.releaseYear) cur.releaseYear = meta.releaseYear;
-            if (meta.coverUrl) cur.coverUrl = meta.coverUrl;
-            if (meta.steamShort) cur.steamShort = meta.steamShort;
+            let changed = false;
+            if (meta.releaseYear && meta.releaseYear !== cur.releaseYear) {
+              cur.releaseYear = meta.releaseYear;
+              changed = true;
+            }
+            if (meta.coverUrl && meta.coverUrl !== cur.coverUrl) {
+              cur.coverUrl = meta.coverUrl;
+              changed = true;
+            }
+            if (meta.steamShort && meta.steamShort !== cur.steamShort) {
+              cur.steamShort = meta.steamShort;
+              changed = true;
+            }
             if (meta.name && meta.name.trim()) {
               const prev = String(cur.title || '');
               if (!prev || /^https?:\/\//i.test(prev) || /^\d{3,10}$/.test(prev)) {
                 cur.title = meta.name.trim();
+                changed = true;
               }
             }
             const all = cleanTags(meta.genresAll || meta.genres);
             if (all && all.length) {
-              cur.genresAll = all;
-              cur.genres = all.slice(0, 3);
+              const prevKey = JSON.stringify(cur.genresAll || cur.genres || []);
+              const nextKey = JSON.stringify(all);
+              if (prevKey !== nextKey) {
+                cur.genresAll = all;
+                cur.genres = all.slice(0, 3);
+                changed = true;
+              }
             }
-            cur.updatedAt = new Date().toISOString();
-            games[idx] = cur;
+            if (changed) {
+              cur.updatedAt = new Date().toISOString();
+              games[idx] = cur;
+            }
+            return changed;
           }));
           results.forEach(r => {
-            if (r.status === 'fulfilled') done++;
-            else failed++;
+            if (r.status === 'fulfilled' && r.value) done++;
+            else if (r.status === 'rejected') failed++;
           });
           save();
           render();
@@ -3038,7 +3125,8 @@ async function resolveSteamApp(appid, sourceStr, force = false) {
             await new Promise(r => setTimeout(r, 400));
           }
         }
-        toast('Готово: ' + done + ' обновлено' + (failed ? (', ошибок: ' + failed) : ''), '✓');
+        if (!done && !failed) toast('Данные уже актуальны', '✓');
+        else toast('Готово: ' + done + ' обновлено' + (failed ? (', ошибок: ' + failed) : ''), '✓');
       } catch (e) {
         console.warn(e);
         toast('Обновление прервалось', '!');
@@ -3371,9 +3459,11 @@ async function refreshGameFromSteam(id, appid) {
         trapFocus($('statsOverlay'));
         return;
       }
-      let sum = 0, rated = 0, fav = 0;
+      let sum = 0, rated = 0, fav = 0, plan = 0, doneCount = 0;
       const byPlat = {}, byRating = { high: 0, mid: 0, low: 0 };
       games.forEach(g => {
+        if (g.status === 'plan') plan++;
+        else doneCount++;
         if (g.rating >= 1) { sum += g.rating; rated++; }
         if (g.favorite) fav++;
         if (g.rating >= 8) byRating.high++;
@@ -3393,6 +3483,11 @@ async function refreshGameFromSteam(id, appid) {
           <div class="stats-hero-item"><strong>${games.length}</strong><span>Игр</span></div>
           <div class="stats-hero-item"><strong>${avg}</strong><span>Средняя</span></div>
           <div class="stats-hero-item"><strong>${fav}</strong><span>Избранное</span></div>
+        </div>
+        <div class="stats-section">
+          <h4>Статус</h4>
+          <div class="bar-row"><span class="bar-label">Пройденные</span><div class="bar-track"><div class="bar-fill" style="width:${(doneCount / total) * 100}%;background:var(--green)"></div></div><span class="bar-val">${doneCount}</span></div>
+          <div class="bar-row"><span class="bar-label">В планах</span><div class="bar-track"><div class="bar-fill" style="width:${(plan / total) * 100}%;background:var(--accent)"></div></div><span class="bar-val">${plan}</span></div>
         </div>
         <div class="stats-section">
           <h4>Оценки</h4>
@@ -3486,11 +3581,16 @@ async function refreshGameFromSteam(id, appid) {
             const patch = {};
             if (!local.releaseYear && remote.releaseYear) patch.releaseYear = remote.releaseYear;
             if ((!local.genres || !local.genres.length) && remote.genres && remote.genres.length) patch.genres = remote.genres;
+            if ((!local.genresAll || !local.genresAll.length) && remote.genresAll && remote.genresAll.length) {
+              patch.genresAll = remote.genresAll;
+              if (!patch.genres) patch.genres = remote.genresAll.slice(0, 3);
+            }
             if (!local.coverUrl && remote.coverUrl) patch.coverUrl = remote.coverUrl;
             if (!local.steamShort && remote.steamShort) patch.steamShort = remote.steamShort;
             if ((!local.links || !local.links.length) && remote.links && remote.links.length) patch.links = remote.links;
             if ((local.replays == null || local.replays === 0) && remote.replays) patch.replays = remote.replays;
             if (!local.lastReplayAt && remote.lastReplayAt) patch.lastReplayAt = remote.lastReplayAt;
+            if (!local.status && remote.status) patch.status = remote.status;
             return Object.keys(patch).length ? patch : null;
           };
 
@@ -3836,10 +3936,20 @@ async function refreshGameFromSteam(id, appid) {
     // load library
     setScore(Number(ratingInput.value) || 8);
     syncSearchClear();
+    render(); // first paint from LS
     loadGamesAsync().then(list => {
-      games = list;
-      render();
-const ric = window.requestIdleCallback || (cb => setTimeout(() => cb(), 600));
+      const prevLen = games.length;
+      const prevFresh = listFreshness(games);
+      const nextFresh = listFreshness(list);
+      // Only replace + re-render when data actually differs
+      if (list !== games && (list.length !== prevLen || nextFresh !== prevFresh || JSON.stringify(list.map(g => g.id)) !== JSON.stringify(games.map(g => g.id)))) {
+        games = list;
+        render();
+      } else if (!games.length && list.length) {
+        games = list;
+        render();
+      }
+      const ric = window.requestIdleCallback || (cb => setTimeout(() => cb(), 600));
       ric(() => {
         const need = games.filter(g => g.coverUrl && !g.accentColor).slice(0, 12);
         let pending = need.length;
@@ -3860,6 +3970,13 @@ const ric = window.requestIdleCallback || (cb => setTimeout(() => cb(), 600));
         });
       });
     });
+
+    // PWA (works when served over http(s) with sw.js + manifest next to index)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
   })();
   </script>
 </body>
