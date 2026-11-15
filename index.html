@@ -2229,25 +2229,46 @@
     }
 
     
+    function parseTagsFromStoreHtml(html) {
+      if (!html) return null;
+      const tags = [];
+      const push = (raw) => {
+        const tag = String(raw || '').replace(/\s+/g, ' ').trim();
+        if (!tag || tag.length < 2 || tag.length > 48) return;
+        if (/^\(\?\)$/.test(tag)) return;
+        if (tags.some(x => x.toLowerCase() === tag.toLowerCase())) return;
+        tags.push(tag);
+      };
+      // Popular user tags in page
+      const re = /<a[^>]*class="[^"]*app_tag[^"]*"[^>]*>([^<]+)<\/a>/gi;
+      let m;
+      while ((m = re.exec(html)) !== null && tags.length < 30) push(m[1]);
+      // JSON blob fallback: [{"tagid":…,"name":"Sci-fi",…},…]
+      if (tags.length < 8) {
+        const reJson = /\{\s*"tagid"\s*:\s*\d+\s*,\s*"name"\s*:\s*"([^"]+)"/g;
+        while ((m = reJson.exec(html)) !== null && tags.length < 30) {
+          try { push(JSON.parse('"' + m[1].replace(/\\/g, '\\\\') + '"')); }
+          catch { push(m[1]); }
+        }
+      }
+      return tags.length ? tags : null;
+    }
+
     async function fetchSteamUserTags(appid) {
       const id = String(appid);
-      const url = 'https://store.steampowered.com/app/' + id + '/?l=russian';
-      try {
-        const html = await fetchTextProxied(url, 6000);
-        if (!html) return null;
-        const tags = [];
-        const re = /<a[^>]*class="[^"]*app_tag[^"]*"[^>]*>([^<]+)<\/a>/gi;
-        let m;
-        while ((m = re.exec(html)) !== null && tags.length < 30) {
-          const tag = String(m[1] || '').replace(/\s+/g, ' ').trim();
-          if (!tag || tag.length < 2 || tag.length > 48) continue;
-          if (tags.some(x => x.toLowerCase() === tag.toLowerCase())) continue;
-          tags.push(tag);
-        }
-        return tags.length ? tags : null;
-      } catch {
-        return null;
+      const locales = ['english', 'russian'];
+      for (const l of locales) {
+        try {
+          const html = await fetchTextProxied(
+            'https://store.steampowered.com/app/' + id + '/?l=' + l,
+            6500
+          );
+          const tags = parseTagsFromStoreHtml(html);
+          if (tags && tags.length >= 5) return tags;
+          if (tags && tags.length && l === locales[locales.length - 1]) return tags;
+        } catch { /* try next locale */ }
       }
+      return null;
     }
 
 async function resolveSteamApp(appid, sourceStr, force = false) {
@@ -2379,33 +2400,55 @@ async function resolveSteamApp(appid, sourceStr, force = false) {
           if (pool.some(x => x.toLowerCase() === tag.toLowerCase())) return;
           pool.push(tag);
         };
+        let spyTagCount = 0;
         if (spy.tags && typeof spy.tags === 'object' && !Array.isArray(spy.tags)) {
-          Object.keys(spy.tags)
-            .sort((a, b) => (spy.tags[b] || 0) - (spy.tags[a] || 0))
-            .forEach(pushTag);
+          const keys = Object.keys(spy.tags)
+            .sort((a, b) => (spy.tags[b] || 0) - (spy.tags[a] || 0));
+          spyTagCount = keys.length;
+          keys.forEach(pushTag);
         }
         if (typeof spy.genre === 'string') {
           spy.genre.split(',').forEach(s => pushTag(s.trim()));
         }
-        // Prefer spy tags when we got a real list
-        if (pool.length >= 2) {
+        // Prefer spy tags when we got a real user-tag list (not just 1–2 genre strings)
+        if (pool.length >= 2 && spyTagCount >= 2) {
           out.genresAll = pool;
           out.genres = pool.slice(0, 3);
+          out._tagSource = 'spy';
         } else if (pool.length && !(out.genresAll && out.genresAll.length)) {
           out.genresAll = pool;
           out.genres = pool.slice(0, 3);
         }
       }
 
-      // HTML fallback if still fewer than 3 tags
-      if (!out.genresAll || out.genresAll.length < 3) {
+      // Official store genres alone are often only 2–3 broad labels (Action/Adventure/Indie).
+      // SteamSpy is empty for many newer titles (e.g. ROUTINE). In those cases pull user tags from the store page.
+      const needUserTags = !out.genresAll || out.genresAll.length < 8 || out._tagSource !== 'spy';
+      if (needUserTags) {
         try {
           const userTags = await fetchSteamUserTags(id);
           if (userTags && userTags.length) {
-            const cleaned = cleanTags(userTags);
-            if (cleaned && cleaned.length) {
-              out.genresAll = cleaned;
-              out.genres = cleaned.slice(0, 3);
+            const merged = [];
+            const seen = new Set();
+            const pushMerged = (raw) => {
+              let s = String(raw || '').trim();
+              if (!s) return;
+              if (typeof translateTag === 'function') s = translateTag(s);
+              const cleaned = cleanTags([s]);
+              if (!cleaned || !cleaned.length) return;
+              const tag = cleaned[0];
+              const k = tag.toLowerCase();
+              if (seen.has(k)) return;
+              seen.add(k);
+              merged.push(tag);
+            };
+            // User tags first (more specific), then whatever we already had
+            userTags.forEach(pushMerged);
+            (out.genresAll || []).forEach(pushMerged);
+            if (merged.length) {
+              out.genresAll = merged.slice(0, 16);
+              out.genres = out.genresAll.slice(0, 3);
+              out._tagSource = 'html';
             }
           }
         } catch (e) { /* ignore */ }
@@ -2413,9 +2456,10 @@ async function resolveSteamApp(appid, sourceStr, force = false) {
 
       if (out.genresAll && out.genresAll.length) {
         const all = cleanTags(out.genresAll) || out.genresAll;
-        out.genresAll = all;
-        out.genres = all.slice(0, 3);
+        out.genresAll = all.slice(0, 16);
+        out.genres = out.genresAll.slice(0, 3);
       }
+      delete out._tagSource;
 
       if (!out.coverUrl) out.coverUrl = coverUrlFor(id);
 
