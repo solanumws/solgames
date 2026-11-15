@@ -209,7 +209,10 @@
     .btn-danger{background:var(--red-soft);color:var(--red)}
     .btn-danger:hover{filter:brightness(1.08)}
     #clearAllBtn{color:var(--text-3)}
+    #clearAllBtn svg{transition:transform .28s var(--spring),color .2s}
     #clearAllBtn:hover{color:var(--red);background:var(--red-soft)}
+    #clearAllBtn:hover svg{transform:scale(1.08) rotate(-6deg)}
+    #clearAllBtn:active svg{transform:scale(.92)}
     .btn-icon{width:38px;height:38px;padding:0;border-radius:11px}
     .btn-sm{padding:6px 11px;font-size:.78rem;border-radius:9px}
 
@@ -474,14 +477,25 @@
     .fav-btn{
       width:36px;height:36px;border-radius:11px;border:none;background:transparent;color:var(--text-3);
       cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
-      flex-shrink:0;padding:0;line-height:0;
-      transition:transform .28s var(--spring),color .2s,background .2s;
+      flex-shrink:0;padding:0;line-height:0;position:relative;
+      overflow:hidden;isolation:isolate;-webkit-tap-highlight-color:transparent;
+      transition:color .2s,background .2s;
     }
-    .fav-btn svg{width:20px;height:20px;display:block;overflow:visible}
-    .fav-btn .heart-outline{fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+    .fav-btn::before{
+      content:"";position:absolute;inset:0;border-radius:inherit;background:var(--red-soft);
+      opacity:0;transition:opacity .2s;z-index:0;
+    }
+    .fav-btn svg{width:20px;height:20px;display:block;overflow:visible;position:relative;z-index:1;
+      transition:transform .28s var(--spring)}
+    .fav-btn .heart-outline{fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
     .fav-btn .heart-fill{fill:currentColor;stroke:none;opacity:0;transform-origin:center;transition:opacity .18s}
-    .fav-btn:hover{background:var(--red-soft);color:var(--red);transform:scale(1.1)}
-    .fav-btn.active{color:var(--red);animation:heartPop .38s var(--spring)}
+    .fav-btn:hover{color:var(--red)}
+    .fav-btn:hover::before{opacity:1}
+    .fav-btn:hover svg{transform:scale(1.12)}
+    .fav-btn:focus-visible{outline:none;box-shadow:none}
+    .fav-btn:focus-visible::before{opacity:1;background:color-mix(in srgb,var(--red) 16%,transparent)}
+    .fav-btn.active{color:var(--red)}
+    .fav-btn.active svg{animation:heartPop .38s var(--spring)}
     .fav-btn.active .heart-fill{opacity:1}
     .fav-btn.active .heart-outline{opacity:0}
     @keyframes heartPop{0%{transform:scale(1)}35%{transform:scale(1.28)}100%{transform:scale(1)}}
@@ -631,10 +645,20 @@
     .platform-grid{display:flex;flex-wrap:wrap;gap:7px}
     .platform-chip{
       padding:7px 12px;border-radius:9px;background:var(--bg);border:1px solid var(--border);
-      color:var(--text-2);font-size:.78rem;font-weight:560;cursor:pointer;transition:all .2s var(--ease);user-select:none;
+      color:var(--text-2);font-size:.78rem;font-weight:560;cursor:pointer;user-select:none;
+      transition:background .2s,border-color .2s,color .2s,transform .28s var(--spring),box-shadow .2s;
     }
-    .platform-chip:hover{border-color:var(--border-hover);color:var(--text)}
-    .platform-chip.active{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 38%,transparent);color:var(--accent)}
+    .platform-chip:hover{
+      border-color:var(--border-hover);color:var(--text);
+      transform:translateY(-1px);box-shadow:var(--shadow-sm);
+    }
+    .platform-chip:active{transform:scale(.94)}
+    .platform-chip.active{
+      background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 38%,transparent);color:var(--accent);
+      box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 14%,transparent);
+      transform:translateY(-1px);
+    }
+    .platform-chip.active:active{transform:scale(.94)}
 
     .links-editor{display:flex;flex-direction:column;gap:7px}
     .link-row{display:flex;gap:7px;align-items:center}
@@ -703,44 +727,74 @@
     @media (max-width:480px){.to-top{right:14px;bottom:18px;width:42px;height:42px;border-radius:12px}}
 
     /* Stats */
-    .stats-panel .modal{max-width:420px}
-    .stats-body{padding:8px 20px 22px}
+    .stats-panel .modal{max-width:440px}
+    .stats-body{padding:4px 20px 24px}
+    .stats-intro{
+      font-size:.84rem;color:var(--text-2);line-height:1.5;margin:0 0 16px;font-weight:450;
+    }
     .stats-hero{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;
+      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;
     }
     .stats-hero-item{
-      text-align:center;padding:16px 10px;border-radius:14px;
-      background:var(--bg);border:1px solid var(--border);
+      text-align:center;padding:14px 10px 12px;border-radius:16px;
+      background:linear-gradient(180deg,color-mix(in srgb,var(--surface-2) 80%,transparent),var(--bg));
+      border:1px solid var(--border);position:relative;overflow:hidden;
+    }
+    .stats-hero-item::after{
+      content:"";position:absolute;inset:auto -20% -40% -20%;height:60%;
+      background:radial-gradient(ellipse at center,var(--accent-glow),transparent 70%);
+      pointer-events:none;opacity:.55;
     }
     .stats-hero-item strong{
-      display:block;font-size:1.35rem;font-weight:700;font-family:var(--mono);
-      letter-spacing:-.03em;line-height:1.25;margin-bottom:4px;
+      display:block;font-size:1.4rem;font-weight:700;font-family:var(--mono);
+      letter-spacing:-.03em;line-height:1.2;margin-bottom:3px;position:relative;z-index:1;
     }
     .stats-hero-item span{
-      font-size:.68rem;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;
+      font-size:.66rem;color:var(--text-3);font-weight:650;text-transform:uppercase;letter-spacing:.05em;
+      position:relative;z-index:1;
     }
-    .stats-section{margin-bottom:20px}
+    .stats-hero-item.is-accent strong{color:var(--accent)}
+    .stats-hero-item.is-green strong{color:var(--green)}
+    .stats-hero-item.is-red strong{color:var(--red)}
+    .stats-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+    .stats-chip{
+      display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;
+      background:var(--surface-2);border:1px solid var(--border);font-size:.78rem;font-weight:560;color:var(--text-2);
+    }
+    .stats-chip b{font-family:var(--mono);font-weight:700;color:var(--text);font-size:.82rem}
+    .stats-chip.plan{background:color-mix(in srgb,var(--accent) 12%,var(--surface-2));border-color:color-mix(in srgb,var(--accent) 28%,var(--border));color:var(--accent)}
+    .stats-chip.plan b{color:var(--accent)}
+    .stats-chip.done{background:color-mix(in srgb,var(--green) 10%,var(--surface-2));border-color:color-mix(in srgb,var(--green) 28%,var(--border));color:var(--green)}
+    .stats-chip.done b{color:var(--green)}
+    .stats-section{
+      margin-bottom:16px;padding:14px 14px 12px;border-radius:16px;
+      background:var(--bg);border:1px solid var(--border);
+    }
     .stats-section:last-child{margin-bottom:0}
     .stats-section h4{
       font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);
-      font-weight:650;margin:0 0 12px;
+      font-weight:650;margin:0 0 6px;
+    }
+    .stats-section-desc{
+      font-size:.75rem;color:var(--text-3);margin:0 0 12px;line-height:1.4;font-weight:450;
     }
     .bar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;font-size:.8rem}
     .bar-row:last-child{margin-bottom:0}
     .bar-row .bar-label{
-      width:48px;min-width:48px;color:var(--text-2);font-weight:560;flex-shrink:0;
+      width:72px;min-width:72px;color:var(--text-2);font-weight:560;flex-shrink:0;
       font-variant-numeric:tabular-nums;
     }
-    .bar-row .bar-track{flex:1;height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+    .bar-row .bar-track{flex:1;height:9px;background:var(--surface-2);border-radius:99px;overflow:hidden}
     .bar-row .bar-fill{
       height:100%;border-radius:99px;background:var(--accent);min-width:2px;
-      transition:width .6s var(--ease);
+      transition:width .7s var(--ease);
     }
     .bar-row .bar-val{
       width:28px;min-width:28px;text-align:right;font-family:var(--mono);
       font-size:.75rem;color:var(--text-3);font-weight:600;
     }
-    .stats-empty{text-align:center;padding:32px 16px;color:var(--text-3);font-size:.9rem}
+    .stats-empty{text-align:center;padding:36px 16px;color:var(--text-3);font-size:.9rem}
+    .stats-empty strong{display:block;color:var(--text);font-size:1rem;margin-bottom:6px}
 
     .detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
     .detail-title{
@@ -754,6 +808,11 @@
       max-width:100%;min-width:0;
     }
     .detail-review.empty{color:var(--text-3);font-style:italic}
+    .detail-review.empty[data-steam-desc]::before{
+      content:"Описание Steam · ";
+      font-style:normal;font-weight:650;font-size:.72rem;letter-spacing:.03em;
+      text-transform:uppercase;color:var(--text-3);margin-right:4px;
+    }
     .detail-tools{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:2px}
     .detail-linkbtn{
       border:none;background:transparent;padding:6px 0;cursor:pointer;
@@ -963,7 +1022,12 @@
             <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
           </button>
           <button class="btn btn-ghost btn-icon" id="clearAllBtn" title="Удалить все" aria-label="Удалить все игры">
-            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16"/>
+              <path d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"/>
+              <path d="M6.5 7l.7 12.2A2 2 0 009.2 21h5.6a2 2 0 001.99-1.8L17.5 7"/>
+              <path d="M10 11v6M14 11v6"/>
+            </svg>
           </button>
         </div>
       </header>
@@ -2925,9 +2989,15 @@ async function resolveSteamApp(appid, sourceStr, force = false) {
       if (g.review) {
         rev.textContent = g.review;
         rev.classList.remove('empty');
+        rev.removeAttribute('data-steam-desc');
+      } else if (g.steamShort) {
+        rev.textContent = g.steamShort;
+        rev.classList.add('empty');
+        rev.setAttribute('data-steam-desc', '1');
       } else {
         rev.textContent = 'Отзыв не написан';
         rev.classList.add('empty');
+        rev.removeAttribute('data-steam-desc');
       }
       $('detailLinks').innerHTML = (g.links || []).filter(Boolean).map(linkChipHtml).join('');
       
@@ -3453,19 +3523,20 @@ async function refreshGameFromSteam(id, appid) {
     function openStats() {
       const body = $('statsBody');
       if (!games.length) {
-        body.innerHTML = '<div class="stats-empty">Пока нет игр</div>';
+        body.innerHTML = '<div class="stats-empty"><strong>Пока пусто</strong>Добавь первую игру — здесь появятся оценки, статусы и платформы</div>';
         $('statsOverlay').classList.add('open');
         lockBodyScroll();
         trapFocus($('statsOverlay'));
         return;
       }
-      let sum = 0, rated = 0, fav = 0, plan = 0, doneCount = 0;
+      let sum = 0, rated = 0, fav = 0, plan = 0, doneCount = 0, withReview = 0;
       const byPlat = {}, byRating = { high: 0, mid: 0, low: 0 };
       games.forEach(g => {
         if (g.status === 'plan') plan++;
         else doneCount++;
         if (g.rating >= 1) { sum += g.rating; rated++; }
         if (g.favorite) fav++;
+        if (g.review && String(g.review).trim()) withReview++;
         if (g.rating >= 8) byRating.high++;
         else if (g.rating >= 5) byRating.mid++;
         else if (g.rating >= 1) byRating.low++;
@@ -3474,29 +3545,41 @@ async function refreshGameFromSteam(id, appid) {
       const avg = rated ? (Math.round((sum / rated) * 10) / 10) : '—';
       const maxPlat = Math.max(1, ...Object.values(byPlat), 1);
       const total = games.length || 1;
+      const pct = n => Math.round((n / total) * 100);
       const platRows = Object.entries(byPlat).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([p, n]) =>
         `<div class="bar-row"><span class="bar-label">${esc(p)}</span><div class="bar-track"><div class="bar-fill" style="width:${(n / maxPlat) * 100}%"></div></div><span class="bar-val">${n}</span></div>`
-      ).join('') || '<div class="stats-empty" style="padding:8px">—</div>';
+      ).join('') || '<div class="stats-empty" style="padding:12px 0">Платформы ещё не указаны</div>';
 
+      const ratedShare = rated ? pct(rated) : 0;
       body.innerHTML = `
+        <p class="stats-intro">Сводка по вашей библиотеке: сколько игр пройдено, что в планах и как распределены оценки.</p>
         <div class="stats-hero">
-          <div class="stats-hero-item"><strong>${games.length}</strong><span>Игр</span></div>
-          <div class="stats-hero-item"><strong>${avg}</strong><span>Средняя</span></div>
-          <div class="stats-hero-item"><strong>${fav}</strong><span>Избранное</span></div>
+          <div class="stats-hero-item"><strong>${games.length}</strong><span>Всего игр</span></div>
+          <div class="stats-hero-item is-accent"><strong>${avg}</strong><span>Средняя оценка</span></div>
+          <div class="stats-hero-item is-red"><strong>${fav}</strong><span>В избранном</span></div>
+        </div>
+        <div class="stats-chips">
+          <span class="stats-chip done"><b>${doneCount}</b> пройдено</span>
+          <span class="stats-chip plan"><b>${plan}</b> в планах</span>
+          <span class="stats-chip"><b>${withReview}</b> с отзывом</span>
+          <span class="stats-chip"><b>${ratedShare}%</b> с оценкой</span>
         </div>
         <div class="stats-section">
-          <h4>Статус</h4>
-          <div class="bar-row"><span class="bar-label">Пройденные</span><div class="bar-track"><div class="bar-fill" style="width:${(doneCount / total) * 100}%;background:var(--green)"></div></div><span class="bar-val">${doneCount}</span></div>
-          <div class="bar-row"><span class="bar-label">В планах</span><div class="bar-track"><div class="bar-fill" style="width:${(plan / total) * 100}%;background:var(--accent)"></div></div><span class="bar-val">${plan}</span></div>
+          <h4>Статус прохождения</h4>
+          <p class="stats-section-desc">Доля пройденных и запланированных игр в библиотеке</p>
+          <div class="bar-row"><span class="bar-label">Пройдено</span><div class="bar-track"><div class="bar-fill" style="width:${pct(doneCount)}%;background:var(--green)"></div></div><span class="bar-val">${doneCount}</span></div>
+          <div class="bar-row"><span class="bar-label">В планах</span><div class="bar-track"><div class="bar-fill" style="width:${pct(plan)}%;background:var(--accent)"></div></div><span class="bar-val">${plan}</span></div>
         </div>
         <div class="stats-section">
           <h4>Оценки</h4>
-          <div class="bar-row"><span class="bar-label">8–10</span><div class="bar-track"><div class="bar-fill" style="width:${(byRating.high / total) * 100}%;background:var(--green)"></div></div><span class="bar-val">${byRating.high}</span></div>
-          <div class="bar-row"><span class="bar-label">5–7</span><div class="bar-track"><div class="bar-fill" style="width:${(byRating.mid / total) * 100}%;background:var(--yellow)"></div></div><span class="bar-val">${byRating.mid}</span></div>
-          <div class="bar-row"><span class="bar-label">1–4</span><div class="bar-track"><div class="bar-fill" style="width:${(byRating.low / total) * 100}%;background:var(--red)"></div></div><span class="bar-val">${byRating.low}</span></div>
+          <p class="stats-section-desc">Как вы оцениваете пройденное · без учёта игр «в планах» без оценки</p>
+          <div class="bar-row"><span class="bar-label">Отлично</span><div class="bar-track"><div class="bar-fill" style="width:${pct(byRating.high)}%;background:var(--green)"></div></div><span class="bar-val">${byRating.high}</span></div>
+          <div class="bar-row"><span class="bar-label">Норм</span><div class="bar-track"><div class="bar-fill" style="width:${pct(byRating.mid)}%;background:var(--yellow)"></div></div><span class="bar-val">${byRating.mid}</span></div>
+          <div class="bar-row"><span class="bar-label">Слабо</span><div class="bar-track"><div class="bar-fill" style="width:${pct(byRating.low)}%;background:var(--red)"></div></div><span class="bar-val">${byRating.low}</span></div>
         </div>
         <div class="stats-section">
           <h4>Платформы</h4>
+          <p class="stats-section-desc">На чём вы чаще всего играете</p>
           ${platRows}
         </div>`;
       $('statsOverlay').classList.add('open');
