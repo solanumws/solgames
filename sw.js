@@ -1,5 +1,5 @@
-/* SolGames SW v81 */
-const CACHE = 'solgames-shell-gh-v81';
+/* SolGames SW v82 */
+const CACHE = 'solgames-shell-gh-v82';
 const PRECACHE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
